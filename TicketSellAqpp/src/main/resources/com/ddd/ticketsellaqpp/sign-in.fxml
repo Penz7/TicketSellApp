@@ -42,9 +42,9 @@
                </children></Pane>
          </left>
          <center>
-            <Pane prefHeight="600.0" prefWidth="600.0" stylesheets="@../../../com.ou.css/fullpackstyling.css" BorderPane.alignment="CENTER">
+            <Pane prefHeight="600.0" prefWidth="600.0"  BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btnSignIn" alignment="CENTER" contentDisplay="CENTER" layoutX="219.0" layoutY="475.0" mnemonicParsing="false" onKeyPressed="#setKeyEnter" prefHeight="55.0" prefWidth="179.0" styleClass="button-login" text="Đăng nhập">
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="219.0" layoutY="475.0" mnemonicParsing="false"  prefHeight="55.0" prefWidth="179.0" styleClass="button-login" text="Đăng nhập">
                      <font>
                         <Font size="25.0" />
                      </font>
