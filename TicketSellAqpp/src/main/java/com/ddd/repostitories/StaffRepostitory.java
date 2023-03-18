@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class StaffRepostitory {
     //Lấy thông tin của người
     public Staff getStaffById(Integer staId) throws SQLException {
-        try(Connection connection = JdbcUtils.getConnection()){
+        try(Connection connection = JdbcUtils.getConn()){
             String query = "SELECT * FROM Person WHERE pers_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, staId);
@@ -36,7 +36,7 @@ public class StaffRepostitory {
     
      // Lấy thông tin nhân viên dựa vào username
     public Staff getStaffByUsername(String username) throws SQLException {
-        try(Connection connection = JdbcUtils.getConnection()){
+        try(Connection connection = JdbcUtils.getConn()){
             String query = "SELECT p.pers_id, p.pers_first_name, p.pers_last_name, p.pers_id_card, p.pers_phone_number, " +
                     " p.pers_sex, p.pers_date_of_birth, p.pers_joined_date, s.sta_username " +
                     "FROM Staff s JOIN Person p ON s.sta_id = p.pers_id " +

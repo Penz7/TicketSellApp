@@ -18,7 +18,24 @@ public class Staff extends Person{
     private String roleName;
     private String sex;
     private String activeName;
+    private Person person;
 
+    public Staff(String staUsername, String staPassword, Boolean staIsAdmin, String roleName, String sex, String activeName, Person person) {
+        this.staUsername = staUsername;
+        this.staPassword = staPassword;
+        this.staIsAdmin = staIsAdmin;
+        this.roleName = roleName;
+        this.sex = sex;
+        this.activeName = activeName;
+        this.person = person;
+    }
+
+    public Staff() {
+    }
+
+    
+    
+    
     public String getStaUsername() {
         return staUsername;
     }

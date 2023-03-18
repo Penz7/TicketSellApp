@@ -16,29 +16,30 @@ import java.sql.SQLException;
  * @author admin
  */
 public class SignInResponstitory {
-     
-    public Staff getAccount(String username, String password) throws SQLException{
-        try (Connection connection = JdbcUtils.getConnection()) {
-            String query = "SELECT * FROM Staff,Person  WHERE Staff.id = Person.pers_id"
-                    + " AND Staff.sta_username = ? "
-                    + " AND Staff.sta_password =  ? "
-                    + " AND Person.pers_is_active = true";
+
+    public Staff getAccount(String username, String password) throws SQLException {
+        try (Connection connection = JdbcUtils.getConn()) {
+            String query = "SELECT Staff.* \n"
+                    + "FROM Staff \n"
+                    + "INNER JOIN Person ON Staff.id = Person.pers_id\n"
+                    + "WHERE Staff.sta_username = ? \n"
+                    + "  AND Staff.sta_password = ?\n"
+                    + "  AND Person.pers_is_active = true";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet rs = preparedStatement.executeQuery();
-            
-            if(rs.next()){
+
+            if (rs.next()) {
                 Staff staff = new Staff();
-                
                 staff.setStaUsername(rs.getString("sta_username"));
                 staff.setStaPassword(rs.getString("sta_password"));
                 staff.setStaIsAdmin(rs.getBoolean("sta_is_admin"));
                 staff.setPersId(rs.getInt("id"));
-                return  staff;
-            }
-            else
+                return staff;
+            } else {
                 return null;
+            }
         }
     }
 }

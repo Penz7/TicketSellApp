@@ -64,19 +64,19 @@ public class SignInController implements Initializable{
                    MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
                 else {
                     App.currentStaff = STAFF_SERVICE.getStaffByUsername(this.txtUsername.getText().trim());
-                    if (true) // admin
+                    if (staff.getStaIsAdmin()) // admin
                         try {
                             App.setRoot("primary");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    else {      // nhan vien
+                    else       // nhan vien
                         try {
                             App.setRoot("secondary");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }
+//                    MessageBox.getBox("Thông báo", "Đăng nhập thành công", Alert.AlertType.CONFIRMATION).show();
                 }
             }
         } catch (SQLException | NoSuchAlgorithmException ex) {

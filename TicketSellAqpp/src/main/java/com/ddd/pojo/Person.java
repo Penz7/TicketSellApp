@@ -10,7 +10,7 @@ import java.util.Date;
  *
  * @author admin
  */
-public abstract class Person {
+public class Person {
     protected Integer persId;
     protected String persIdCard;
     protected String persPhoneNumber;
@@ -20,6 +20,21 @@ public abstract class Person {
     protected Date persDateOfBirth;
     protected Date persJoinedDate;
     protected Boolean persIsActive = Boolean.TRUE;
+
+    public Person(Integer persId, String persIdCard, String persPhoneNumber, Byte persSex, String persFirstName, String persLastName, Date persDateOfBirth, Date persJoinedDate) {
+        this.persId = persId;
+        this.persIdCard = persIdCard;
+        this.persPhoneNumber = persPhoneNumber;
+        this.persSex = persSex;
+        this.persFirstName = persFirstName;
+        this.persLastName = persLastName;
+        this.persDateOfBirth = persDateOfBirth;
+        this.persJoinedDate = persJoinedDate;
+    }
+
+    public Person() {
+    }
+    
 
     public Integer getPersId() {
         return persId;
