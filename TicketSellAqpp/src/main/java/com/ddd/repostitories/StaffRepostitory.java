@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.ddd.services;
+package com.ddd.repostitories;
 
 import com.ddd.utils.JdbcUtils;
 import com.ddd.pojo.Staff;
@@ -15,10 +15,11 @@ import java.sql.SQLException;
  *
  * @author admin
  */
-public class StaffService {
+public class StaffRepostitory {
+    //Lấy thông tin của người
     public Staff getStaffById(Integer staId) throws SQLException {
         try(Connection connection = JdbcUtils.getConnection()){
-            String query  = "SELECT * FROM Person WHERE pers_id = ?";
+            String query = "SELECT * FROM Person WHERE pers_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, staId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -33,7 +34,7 @@ public class StaffService {
         return null;
     }
     
-    // Lấy thông tin nhân viên dựa vào username
+     // Lấy thông tin nhân viên dựa vào username
     public Staff getStaffByUsername(String username) throws SQLException {
         try(Connection connection = JdbcUtils.getConnection()){
             String query = "SELECT p.pers_id, p.pers_first_name, p.pers_last_name, p.pers_id_card, p.pers_phone_number, " +
@@ -60,9 +61,3 @@ public class StaffService {
         return null;
     }
 }
-
-
-    
-
-    
-    

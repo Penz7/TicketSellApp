@@ -11,6 +11,7 @@ import com.ddd.services.StaffService;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,16 +23,19 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import java.sql.SQLException;
+import javafx.stage.Stage;
 
 /**
  *
  * @author admin
  */
-public class SignInController implements Initializable {
+public class SignInController implements Initializable{
+     private SignInService signInService;
+    private final static StaffService STAFF_SERVICE;
 
-    private SignInService signInService;
-    private final static StaffService staff = new StaffService();
+    static {
+        STAFF_SERVICE = new StaffService();
+    }
 
     @FXML
     private TextField txtUsername;
@@ -45,62 +49,48 @@ public class SignInController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         signInService = new SignInService();
-        this.btnSignIn.setOnMouseClicked(event -> {
-            try {
-                MessageBox.getBox("dat", "dumamay", Alert.AlertType.ERROR);
-                checkAccount();
-            } catch (IOException ex) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-   
-});
+        this.btnSignIn.setOnMouseClicked((t) -> {
+            checkAccount();
+        });
     }
-
+    
+    // Kiểm tra mật khẩu
     @FXML
-    private void checkAccount() throws IOException {
+    private void checkAccount() {
         try {
             if (checkTextInput()) {
-//                Staff staff = signInService.getAccountMD5(this.txtUsername.getText().trim(), this.txtPassword.getText().trim());
-
-//                if (staff == null) {
-//                    MessageBox.getBox("Warning", "Tài khoản mật khẩu không đúng", Alert.AlertType.ERROR).show();
-//                } else {
-                    App.currentStaff = staff.getStaffByUsername(this.txtUsername.getText().trim());
-                    if (true) {
-                        handleAdmin();
-                    } else {
-                        handleEmployee();
+                Staff staff = signInService.getAccountMD5(this.txtUsername.getText().trim(), this.txtPassword.getText().trim());
+                if (staff == null)
+                   MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
+                else {
+                    App.currentStaff = STAFF_SERVICE.getStaffByUsername(this.txtUsername.getText().trim());
+                    if (true) // admin
+                        try {
+                            App.setRoot("primary");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    else {      // nhan vien
+                        try {
+                            App.setRoot("secondary");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
-//                }
+                }
             }
         } catch (SQLException | NoSuchAlgorithmException ex) {
             Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private void handleAdmin() throws IOException {
-        try {
-            App.setRoot("primary");
-        } catch (IOException e) {
-            MessageBox.getBox("Warning", "Hiện chưa có giao diện admin", Alert.AlertType.ERROR).show();
-        }
-    }
-
-    private void handleEmployee() throws IOException {
-        try {
-            App.setRoot("secondary");
-        } catch (IOException e) {
-            MessageBox.getBox("Warning", "Hiện chưa có giao diện nhân viên", Alert.AlertType.ERROR).show();
-        }
-    }
-
     // Kiểm tra dữ liệu nhập
     private boolean checkTextInput() throws SQLException, NoSuchAlgorithmException {
         if ("".equals(this.txtUsername.getText().trim()) || this.txtUsername.getText().trim().length() < 6) {
-            MessageBox.getBox("Warning", "Tên tài khoản phải có ít nhất 6 kí tự !!", Alert.AlertType.ERROR).show();
+            MessageBox.getBox("Question", "Tên tài khoản phải có ít nhất 6 ký tự !!", Alert.AlertType.INFORMATION).show();
             return false;
         } else if ("".equals(this.txtPassword.getText().trim()) || this.txtPassword.getText().trim().length() < 6) {
-            MessageBox.getBox("Đăng nhập", "Mật khẩu phải có ít nhất 6 kí tự !!", Alert.AlertType.ERROR).show();
+          MessageBox.getBox("Question", "Mật khẩu phải có ít nhất 6 ký tự !!", Alert.AlertType.INFORMATION).show();
             return false;
         } else {
             return true;
@@ -109,14 +99,9 @@ public class SignInController implements Initializable {
 
     // Sự kiện bàn phím
     @FXML
-    public void setKeyEnter(KeyEvent event) throws SQLException {
+    public void setKeyEnter(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            try {
-                checkAccount();
-            } catch (IOException ex) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            checkAccount();
         }
     }
-
 }

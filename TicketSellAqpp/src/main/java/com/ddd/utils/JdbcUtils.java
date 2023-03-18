@@ -6,27 +6,32 @@ package com.ddd.utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 /**
  *
  * @author admin
  */
 public class JdbcUtils {
+       private final static String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private final static String HOST = "localhost";
+    private final static String DATABASE = "db_banvexe";
+    private final static String USERNAME = "root";
+    private final static String PASSWORD = "123456789";
+
     static {
         try {
-            // B1 Nap driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(DRIVER);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(JdbcUtils.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
-    
-    // Make constructor private
-    private JdbcUtils() {}
-    
-    public static Connection getConn() throws SQLException {
-        // B2 Mo ket noi
-        return DriverManager.getConnection("jdbc:mysql://localhost/db_banvexe", "root", "123456789");
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(String.format("jdbc:mysql://%s/%s", HOST, DATABASE), USERNAME, PASSWORD);
     }
+
+    public static Connection getConn() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
