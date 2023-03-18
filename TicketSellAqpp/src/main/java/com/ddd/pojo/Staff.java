@@ -14,8 +14,7 @@ public class Staff extends Person{
     private String staUsername;
     private String staPassword;
     private Boolean staIsAdmin;
-    private List<Bill> bills;
-    private String branchName;
+//    private List<Bill> bills;
     private String roleName;
     private String sex;
     private String activeName;
@@ -44,22 +43,23 @@ public class Staff extends Person{
         this.staIsAdmin = staIsAdmin;
     }
 
-    public List<Bill> getBills() {
-        return bills;
+//    public List<Bill> getBills() {
+//        return bills;
+//    }
+//
+//    public void setBills(List<Bill> bills) {
+//        this.bills = bills;
+//    }
+
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setBills(List<Bill> bills) {
-        this.bills = bills;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
-
-    public String getBranchName(){return branchName;}
-
-    public void setBranchName(String name){this.branchName= name;}
-
-
-    public String getRoleName(){return roleName;}
-
-    public void setRoleName(String name){this.roleName= name;}
+    
+    
 
     public String getSex(){return sex;}
 

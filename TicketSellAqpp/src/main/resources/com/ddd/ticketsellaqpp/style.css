@@ -7,3 +7,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Author     : admin
 */
 
+GridPane {
+    -fx-background-color: lightblue;
+    -fx-font-family: Tahoma;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-alignment: CENTER;
+    
+}
+
+HBox {
+    -fx-spacing: 5;
+}
+
+Text.Subject {
+    -fx-font-size: 30;
+    -fx-fill: red;
+    -fx-stroke: gold;
+    -fx-stroke-width: 3;
+}
+
+Button {
+    -fx-background-color: blue;
+    -fx-text-fill: white;
+}
+

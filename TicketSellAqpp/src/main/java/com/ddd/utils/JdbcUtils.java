@@ -21,6 +21,10 @@ public class JdbcUtils {
             Logger.getLogger(JdbcUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    // Make constructor private
+    private JdbcUtils() {}
+    
     public static Connection getConn() throws SQLException {
         // B2 Mo ket noi
         return DriverManager.getConnection("jdbc:mysql://localhost/db_banvexe", "root", "123456789");

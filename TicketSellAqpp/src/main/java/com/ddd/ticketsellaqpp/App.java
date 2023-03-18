@@ -1,5 +1,6 @@
 package com.ddd.ticketsellaqpp;
 
+import com.ddd.pojo.Staff;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,17 +9,23 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
 /**
  * JavaFX App
  */
 public class App extends Application {
 
     private static Scene scene;
+    public static Staff currentStaff = null;
 
     @Override
     public void start(Stage stage) throws IOException {
+
         scene = new Scene(loadFXML("sign-in"), 640, 480);
+        stage.setTitle("Quản lý siêu thị - OU Market");
+        stage.setResizable(false);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
