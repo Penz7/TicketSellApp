@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.ddd.services;
+package com.ddd.utils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,4 +26,3 @@ public class JdbcUtils {
         return DriverManager.getConnection("jdbc:mysql://localhost/db_banvexe", "root", "123456789");
     }
 }
-

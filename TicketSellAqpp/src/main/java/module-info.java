@@ -6,5 +6,5 @@ module com.ddd.ticketsellaqpp {
 
     opens com.ddd.ticketsellaqpp to javafx.fxml;
     exports com.ddd.ticketsellaqpp;
-    exports com.ddd.services;
+    
 }
