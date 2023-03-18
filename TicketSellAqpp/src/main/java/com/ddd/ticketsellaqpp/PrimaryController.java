@@ -1,5 +1,6 @@
 package com.ddd.ticketsellaqpp;
 
+import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.util.Optional;
 import javafx.fxml.FXML;
@@ -15,9 +16,7 @@ public class PrimaryController {
     @FXML
           // đăng xuất
     private void setSignOut() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Đăng xuất");
-        alert.setHeaderText("Bạn có muốn đăng xuất không ?");
+         Alert alert = MessageBox.getBox("Đăng xuất", "Bạn có muốn đăng xuất không ?", Alert.AlertType.CONFIRMATION);
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get().equals(ButtonType.OK)) {
             try {
