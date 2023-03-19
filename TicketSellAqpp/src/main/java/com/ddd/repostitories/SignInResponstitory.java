@@ -23,8 +23,7 @@ public class SignInResponstitory {
                     + "FROM Staff \n"
                     + "INNER JOIN Person ON Staff.id = Person.pers_id\n"
                     + "WHERE Staff.sta_username = ? \n"
-                    + "  AND Staff.sta_password = ?\n"
-                    + "  AND Person.pers_is_active = true";
+                    + "  AND Staff.sta_password = ?\n";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
