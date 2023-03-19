@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import org.controlsfx.control.textfield.TextFields;
 
 /**
  * FXML Controller class
@@ -26,13 +27,7 @@ public class BookingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-         this.txtSearchDestination.textProperty().addListener(e -> {
-            try {
-                this.loadTableData(this.txtSearch.getText());
-            } catch (SQLException ex) {
-                Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        });
+         this.txtSearchDestination.bindAutoComplete();
     }    
     
 }
