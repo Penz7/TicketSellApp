@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
-public class HomeSignAdmin {
+public class HomeSignStaffController {
 
    @FXML
     private Button btnStaffManagement;
@@ -40,7 +40,7 @@ public class HomeSignAdmin {
 
     @FXML
     void staffManagement(ActionEvent event) throws IOException {
-        title = "Quản lý tác giả";
+        title = "Quản lý nhân viên";
         changeScene(btnStaffManagement, "booking.fxml");
     }
 

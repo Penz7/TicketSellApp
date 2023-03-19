@@ -30,7 +30,7 @@ import javafx.stage.Stage;
  * @author admin
  */
 public class SignInController implements Initializable{
-     private SignInService signInService;
+    private SignInService signInService;
     private final static StaffService STAFF_SERVICE;
 
     static {

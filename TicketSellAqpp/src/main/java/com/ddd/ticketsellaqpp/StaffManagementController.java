@@ -4,34 +4,32 @@
  */
 package com.ddd.ticketsellaqpp;
 
+import com.ddd.pojo.Staff;
 import java.io.IOException;
-import javafx.event.ActionEvent;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
+
+
 
 /**
  *
  * @author admin
  */
 public class StaffManagementController {
-    
-    @FXML
-     private Button btnBack;
-    
-    @FXML
-    void backToAdmin(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("FXMLHome-Adm.fxml"));
-        Parent root = loader.load();
-        Scene mainScene = new Scene(root);
-        Stage primaryStage = (Stage) btnBack.getScene().getWindow();
-        primaryStage.setScene(mainScene);
-        primaryStage.setResizable(false);
-        primaryStage.setTitle("Trang chủ");
-        primaryStage.show();
+
+    private static Staff currentStaff;
+   @FXML
+   private Button btnBack;
+   
+   @FXML
+   private void backMenu() {
+        try {
+            App.setRoot("home-admin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+    
+    
 }
