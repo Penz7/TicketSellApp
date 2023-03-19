@@ -9,7 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="687.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="com.ddd.ticketsellaqpp.BookingController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="687.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.StaffManagementController">
     <stylesheets>
         <URL value="@/com/ddd/ticketsellaqpp/style.css" />
     </stylesheets>
@@ -27,5 +27,6 @@
         </columns>
       </TableView>
       <Button layoutX="507.0" layoutY="146.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Tìm vé" />
+      <Button fx:id="btnBack" layoutX="507.0" layoutY="107.0" mnemonicParsing="false" onAction="#backToAdmin" prefHeight="26.0" prefWidth="114.0" text="Quay lại" />
    </children>
 </AnchorPane>
