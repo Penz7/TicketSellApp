@@ -55,34 +55,66 @@ public class SignInController implements Initializable{
     }
     
     // Kiểm tra mật khẩu
+//    @FXML
+//    private void checkAccount() {
+//        try {
+//            if (checkTextInput()) {
+//                Staff staff = signInService.getAccountMD5(this.txtUsername.getText().trim(), this.txtPassword.getText().trim());
+//                if (staff == null)
+//                   MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
+//                else {
+//                    App.currentStaff = STAFF_SERVICE.getStaffByUsername(this.txtUsername.getText().trim());
+//                    if (staff.getStaIsAdmin()) // admin
+//                        try {
+//                            App.setRoot("home-admin");
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    else       // nhan vien
+//                        try {
+//                            App.setRoot("home-staff");
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+////                    MessageBox.getBox("Thông báo", "Đăng nhập thành công", Alert.AlertType.CONFIRMATION).show();
+//                }
+//            }
+//        } catch (SQLException | NoSuchAlgorithmException ex) {
+//            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
     @FXML
-    private void checkAccount() {
-        try {
-            if (checkTextInput()) {
-                Staff staff = signInService.getAccountMD5(this.txtUsername.getText().trim(), this.txtPassword.getText().trim());
-                if (staff == null)
-                   MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
-                else {
-                    App.currentStaff = STAFF_SERVICE.getStaffByUsername(this.txtUsername.getText().trim());
-                    if (staff.getStaIsAdmin()) // admin
-                        try {
-                            App.setRoot("primary");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    else       // nhan vien
-                        try {
-                            App.setRoot("secondary");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-//                    MessageBox.getBox("Thông báo", "Đăng nhập thành công", Alert.AlertType.CONFIRMATION).show();
+private void checkAccount() {
+    try {
+        if (!checkTextInput()) {
+            return;
+        }
+        
+        Staff staff = signInService.getAccountMD5(txtUsername.getText().trim(), txtPassword.getText().trim());
+        if (staff == null) {
+            MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
+        } else {
+            App.currentStaff = STAFF_SERVICE.getStaffByUsername(txtUsername.getText().trim());
+            if (staff.getStaIsAdmin()) {
+                // admin
+                try {
+                    App.setRoot("home-admin");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // nhan vien
+                try {
+                    App.setRoot("home-staff");
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (SQLException | NoSuchAlgorithmException ex) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    } catch (SQLException | NoSuchAlgorithmException ex) {
+        Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
     }
+}
 
     // Kiểm tra dữ liệu nhập
     private boolean checkTextInput() throws SQLException, NoSuchAlgorithmException {
