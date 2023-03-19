@@ -5,6 +5,7 @@
 package com.ddd.pojo;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
 /**
  *
@@ -12,15 +13,16 @@ import java.math.BigDecimal;
  */
 public class Ticket {
     private Integer ticketId;
-    private BigDecimal fare; // gia ve
+    private Date printingDate; // Ngay in
 
     public Ticket() {
     }
 
-    public Ticket(Integer ticketId, BigDecimal fare) {
+    public Ticket(Integer ticketId, BigDecimal fare, Date printingDate) {
         this.ticketId = ticketId;
-        this.fare = fare;
+        this.printingDate = printingDate;
     }
+
 
     public Integer getTicketId() {
         return ticketId;
@@ -30,12 +32,17 @@ public class Ticket {
         this.ticketId = ticketId;
     }
 
-    public void setFare(BigDecimal fare) {
-        this.fare = fare;
+    public Date getPrintingDate() {
+        return printingDate;
     }
 
-    public BigDecimal getFare() {
-        return fare;
+    public void setPrintingDate(Date printingDate) {
+        this.printingDate = printingDate;
+    }
+
+    @Override
+    public String toString() {
+        return getTicketId().toString(); 
     }
     
     
