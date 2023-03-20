@@ -34,6 +34,10 @@ public class SignInResponstitory {
                 user.setUsername(rs.getString("username"));
                 user.setPassword(rs.getString("password"));
                 user.setRole_id(rs.getInt("role_id"));
+                user.setUser_fullname(rs.getString("user_fullname"));
+                user.setUser_id_card(rs.getString("user_id_card"));
+                user.setUser_date_join(rs.getDate("user_date_join"));
+                user.setUser_id(rs.getInt("user_id"));
                 return user;
             } else {
                 return null;

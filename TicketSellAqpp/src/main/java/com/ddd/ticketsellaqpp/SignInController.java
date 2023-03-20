@@ -8,7 +8,6 @@ import com.ddd.utils.MessageBox;
 import com.ddd.pojo.User;
 import com.ddd.services.RoleService;
 import com.ddd.services.SignInService;
-import com.ddd.services.StaffService;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -33,11 +32,7 @@ import javafx.stage.Stage;
 public class SignInController implements Initializable {
 
     private SignInService signInService;
-    private final static StaffService STAFF_SERVICE;
 
-    static {
-        STAFF_SERVICE = new StaffService();
-    }
 
     @FXML
     private TextField txtUsername;
@@ -68,6 +63,7 @@ public class SignInController implements Initializable {
             if (user == null) {
                 MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
             } else {
+                App.currentUser = user;
                 String roleName = roleService.getRoleById(user.getRole_id()).getName_role();
                 if (roleName.trim().compareToIgnoreCase("admin") == 0) {
                     // admin
