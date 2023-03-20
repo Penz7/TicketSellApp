@@ -28,9 +28,9 @@ public class BookingRepository {
                     + "ID_NhanVien, NgayIn) VALUES "
                     + "(?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, ticket.getCustomer().getPersId());
+            preparedStatement.setInt(1, ticket.getCustomer().getUser_id());
             preparedStatement.setInt(2, ticket.getRoute().getRouteId());
-            preparedStatement.setInt(3, ticket.getStaff().getPersId());
+            preparedStatement.setInt(3, ticket.getStaff().getUser_id());
             preparedStatement.setTimestamp(4, ticket.getPrintingDate());
             int r = preparedStatement.executeUpdate();
 

@@ -16,8 +16,8 @@ public class Ticket {
     private Integer ticketId;
     private Timestamp printingDate; // Ngay in
     private Couchette couchette;
-    private Person customer;
-    private Person staff;
+    private User customer;
+    private User staff;
     private Route route;
     
     public Ticket() {
@@ -62,19 +62,19 @@ public class Ticket {
         return route;
     }
 
-    public Person getCustomer() {
+    public User getCustomer() {
         return customer;
     }
 
-    public Person getStaff() {
+    public User getStaff() {
         return staff;
     }
 
-    public void setCustomer(Person customer) {
+    public void setCustomer(User customer) {
         this.customer = customer;
     }
 
-    public void setStaff(Person staff) {
+    public void setStaff(User staff) {
         this.staff = staff;
     }
     
