@@ -4,6 +4,7 @@
  */
 package com.ddd.ticketsellaqpp;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -29,4 +30,12 @@ public class BookingController {
 //         this.txtSearchDestination.bindAutoComplete();
 //    }    
 //    
+     @FXML
+       private void backMenu() {
+        try {
+            App.setRoot("home-admin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
