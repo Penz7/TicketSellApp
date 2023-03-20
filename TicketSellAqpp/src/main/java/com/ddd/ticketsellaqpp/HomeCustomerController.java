@@ -68,7 +68,7 @@ public class HomeCustomerController implements Initializable {
     @FXML
     private void backMenu() {
         try {
-            App.setRoot("home-admin");
+            App.setRoot("home-customer");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
