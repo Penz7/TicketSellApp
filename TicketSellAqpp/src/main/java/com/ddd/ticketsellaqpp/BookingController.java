@@ -4,8 +4,14 @@
  */
 package com.ddd.ticketsellaqpp;
 
+import com.ddd.pojo.Station;
+import com.ddd.repostitories.StationRepository;
+import com.ddd.utils.MessageBox;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,14 +26,33 @@ import org.controlsfx.control.textfield.TextFields;
  * @author Admin
  */
 public class BookingController implements Initializable {
-     @FXML private TextField txtSearchDestination;
+
+    @FXML
+    private TextField txtSearchDestination;
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
+        TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
+    }
+
+    private List<String> getAllNameStation() {
+        List<String> name = new ArrayList<>();
+        List<Station> listStation = new ArrayList<>();
+        StationRepository sr = new StationRepository();
+        try {
+            listStation = sr.getAllStation();
+        } catch (SQLException ex) {
+            Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // TODO
-         this.txtSearchDestination.bindAutoComplete();
-    }    
-    
+       listStation.forEach(ls -> {
+           name.add(ls.getStationName());
+       });
+         
+         return name;
+    }
 }

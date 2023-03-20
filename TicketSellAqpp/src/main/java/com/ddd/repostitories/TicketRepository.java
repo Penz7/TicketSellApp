@@ -26,7 +26,7 @@ public class TicketRepository {
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()){
                 Ticket ticket = new Ticket();
-                ticket.setPrintingDate(rs.getDate("NgayIn"));
+                ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
                 return ticket;
             }
         }

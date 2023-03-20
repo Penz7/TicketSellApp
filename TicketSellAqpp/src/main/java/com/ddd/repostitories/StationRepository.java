@@ -39,4 +39,20 @@ public class StationRepository {
 
         return results;
     }
+      
+     public List<Station> getAllStation() throws SQLException {
+        List<Station> results = new ArrayList<>();
+
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM benxe";
+            PreparedStatement stm = conn.prepareCall(sql);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                Station s = new Station(rs.getInt("ID_Ben"), rs.getString("TenBen"));
+                results.add(s);
+            }
+        }
+
+        return results;
+    }
 }
