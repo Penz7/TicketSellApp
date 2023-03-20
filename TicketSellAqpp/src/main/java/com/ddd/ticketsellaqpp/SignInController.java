@@ -5,9 +5,9 @@
 package com.ddd.ticketsellaqpp;
 
 import com.ddd.utils.MessageBox;
-import com.ddd.pojo.Staff;
+import com.ddd.pojo.User;
+import com.ddd.services.RoleService;
 import com.ddd.services.SignInService;
-import com.ddd.services.StaffService;
 import java.io.IOException;
 import java.net.URL;
 import java.security.NoSuchAlgorithmException;
@@ -29,13 +29,10 @@ import javafx.stage.Stage;
  *
  * @author admin
  */
-public class SignInController implements Initializable{
-    private SignInService signInService;
-    private final static StaffService STAFF_SERVICE;
+public class SignInController implements Initializable {
 
-    static {
-        STAFF_SERVICE = new StaffService();
-    }
+    private SignInService signInService;
+
 
     @FXML
     private TextField txtUsername;
@@ -53,68 +50,47 @@ public class SignInController implements Initializable{
             checkAccount();
         });
     }
-    
-    // Kiểm tra mật khẩu
-//    @FXML
-//    private void checkAccount() {
-//        try {
-//            if (checkTextInput()) {
-//                Staff staff = signInService.getAccountMD5(this.txtUsername.getText().trim(), this.txtPassword.getText().trim());
-//                if (staff == null)
-//                   MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
-//                else {
-//                    App.currentStaff = STAFF_SERVICE.getStaffByUsername(this.txtUsername.getText().trim());
-//                    if (staff.getStaIsAdmin()) // admin
-//                        try {
-//                            App.setRoot("home-admin");
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-//                    else       // nhan vien
-//                        try {
-//                            App.setRoot("home-staff");
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
-////                    MessageBox.getBox("Thông báo", "Đăng nhập thành công", Alert.AlertType.CONFIRMATION).show();
-//                }
-//            }
-//        } catch (SQLException | NoSuchAlgorithmException ex) {
-//            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+
     @FXML
-private void checkAccount() {
-    try {
-        if (!checkTextInput()) {
-            return;
-        }
-        
-        Staff staff = signInService.getAccountMD5(txtUsername.getText().trim(), txtPassword.getText().trim());
-        if (staff == null) {
-            MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
-        } else {
-            App.currentStaff = STAFF_SERVICE.getStaffByUsername(txtUsername.getText().trim());
-            if (staff.getStaIsAdmin()) {
-                // admin
-                try {
-                    App.setRoot("home-admin");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    private void checkAccount() {
+        try {
+            if (!checkTextInput()) {
+                return;
+            }
+            User user = signInService.getAccountMD5(txtUsername.getText().trim(), txtPassword.getText().trim());
+            RoleService roleService = new RoleService();
+            
+            if (user == null) {
+                MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
             } else {
-                // nhan vien
-                try {
-                    App.setRoot("home-staff");
-                } catch (IOException e) {
-                    e.printStackTrace();
+                App.currentUser = user;
+                String roleName = roleService.getRoleById(user.getRole_id()).getName_role();
+                if (roleName.trim().compareToIgnoreCase("admin") == 0) {
+                    // admin
+                    try {
+                        App.setRoot("home-admin");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if (roleName.trim().compareToIgnoreCase("staff") == 0) {
+                    // nhan vien
+                    try {
+                        App.setRoot("home-staff");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        App.setRoot("home-customer");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+        } catch (SQLException | NoSuchAlgorithmException ex) {
+            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    } catch (SQLException | NoSuchAlgorithmException ex) {
-        Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
     }
-}
 
     // Kiểm tra dữ liệu nhập
     private boolean checkTextInput() throws SQLException, NoSuchAlgorithmException {
@@ -122,7 +98,7 @@ private void checkAccount() {
             MessageBox.getBox("Question", "Tên tài khoản phải có ít nhất 6 ký tự !!", Alert.AlertType.INFORMATION).show();
             return false;
         } else if ("".equals(this.txtPassword.getText().trim()) || this.txtPassword.getText().trim().length() < 6) {
-          MessageBox.getBox("Question", "Mật khẩu phải có ít nhất 6 ký tự !!", Alert.AlertType.INFORMATION).show();
+            MessageBox.getBox("Question", "Mật khẩu phải có ít nhất 6 ký tự !!", Alert.AlertType.INFORMATION).show();
             return false;
         } else {
             return true;

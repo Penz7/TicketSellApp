@@ -18,7 +18,7 @@ public class Bill {
     private BigDecimal billCustomerMoney;
     private BigDecimal billTotalMoney;
     private BigDecimal billTotalSaleMoney;
-    private Staff staff;
+    private User staff;
 
     public Integer getBillId() {
         return billId;
@@ -60,11 +60,11 @@ public class Bill {
         this.billTotalSaleMoney = billTotalSaleMoney;
     }
 
-    public Staff getStaff() {
+    public User getStaff() {
         return staff;
     }
 
-    public void setStaff(Staff staff) {
+    public void setStaff(User staff) {
         this.staff = staff;
     }
 }

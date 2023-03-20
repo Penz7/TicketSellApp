@@ -1,6 +1,6 @@
 package com.ddd.ticketsellaqpp;
 
-import com.ddd.pojo.Staff;
+import com.ddd.pojo.User;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.util.Optional;
@@ -22,7 +22,7 @@ public class HomeSignStaffController {
     @FXML
     private Button btnBookManagement;
     
-    private static Staff currentStaff; 
+    private static User currentStaff; 
     private static String title;
 
   
@@ -56,7 +56,7 @@ public class HomeSignStaffController {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get().equals(ButtonType.OK)) {
             try {
-                App.currentStaff = null;
+                App.currentUser = null;
                 App.setRoot("sign-in");
             } catch (IOException e) {
                 e.printStackTrace();

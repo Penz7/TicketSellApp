@@ -4,9 +4,11 @@
  */
 package com.ddd.ticketsellaqpp;
 
+
 import com.ddd.pojo.Station;
 import com.ddd.repostitories.StationRepository;
 import com.ddd.utils.MessageBox;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,7 +20,6 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import org.controlsfx.control.textfield.TextFields;
 
 /**
  * FXML Controller class
@@ -26,7 +27,14 @@ import org.controlsfx.control.textfield.TextFields;
  * @author Admin
  */
 public class BookingController implements Initializable {
-
+	   @FXML
+       private void backMenu() {
+        try {
+            App.setRoot("home-admin");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @FXML
     private TextField txtSearchDestination;
 
@@ -54,5 +62,4 @@ public class BookingController implements Initializable {
        });
          
          return name;
-    }
 }
