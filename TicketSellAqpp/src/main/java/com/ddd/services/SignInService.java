@@ -5,7 +5,7 @@
 package com.ddd.services;
 
 import com.ddd.utils.MD5Utils;
-import com.ddd.pojo.Staff;
+import com.ddd.pojo.User;
 import com.ddd.repostitories.SignInResponstitory;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -25,7 +25,7 @@ public class SignInService {
     }
 
     // Lay thong tin tai khoan
-    public Staff getAccountMD5(String username, String password) throws SQLException, NoSuchAlgorithmException {
+    public User getAccountMD5(String username, String password) throws SQLException, NoSuchAlgorithmException {
 //        try {
 //            password = MD5(password);
 //        } catch (Exception ex) {

@@ -4,7 +4,7 @@
  */
 package com.ddd.ticketsellaqpp;
 
-import com.ddd.pojo.Staff;
+import com.ddd.pojo.User;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
@@ -18,7 +18,7 @@ import javafx.scene.control.Button;
  */
 public class StaffManagementController {
 
-    private static Staff currentStaff;
+    private static User currentStaff;
    @FXML
    private Button btnBack;
    

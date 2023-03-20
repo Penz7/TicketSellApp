@@ -12,22 +12,21 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import org.controlsfx.control.textfield.TextFields;
 
 /**
  * FXML Controller class
  *
  * @author Admin
  */
-public class BookingController implements Initializable {
+public class BookingController {
      @FXML private TextField txtSearchDestination;
     /**
      * Initializes the controller class.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-         this.txtSearchDestination.bindAutoComplete();
-    }    
-    
+//    @Override
+//    public void initialize(URL url, ResourceBundle rb) {
+//        // TODO
+//         this.txtSearchDestination.bindAutoComplete();
+//    }    
+//    
 }

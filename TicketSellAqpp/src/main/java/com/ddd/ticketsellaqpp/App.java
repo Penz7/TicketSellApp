@@ -1,6 +1,6 @@
 package com.ddd.ticketsellaqpp;
 
-import com.ddd.pojo.Staff;
+import com.ddd.pojo.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,7 +16,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
-    public static Staff currentStaff = null;
+    public static User currentUser = null;
 
     @Override
     public void start(Stage stage) throws IOException {
