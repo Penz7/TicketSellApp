@@ -33,7 +33,6 @@ public class SignInController implements Initializable {
 
     private SignInService signInService;
 
-
     @FXML
     private TextField txtUsername;
 
@@ -43,12 +42,26 @@ public class SignInController implements Initializable {
     @FXML
     private Button btnSignIn;
 
+    @FXML
+    private Button btnRegiste;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         signInService = new SignInService();
         this.btnSignIn.setOnMouseClicked((t) -> {
             checkAccount();
         });
+        this.btnRegiste.setOnMouseClicked(t -> {
+            registeAccount();
+        });
+    }
+
+    private void registeAccount() {
+        try {
+            App.setRoot("registe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -59,7 +72,7 @@ public class SignInController implements Initializable {
             }
             User user = signInService.getAccountMD5(txtUsername.getText().trim(), txtPassword.getText().trim());
             RoleService roleService = new RoleService();
-            
+
             if (user == null) {
                 MessageBox.getBox("Question", "Tài khoản mật khẩu không đúng !!", Alert.AlertType.INFORMATION).show();
             } else {

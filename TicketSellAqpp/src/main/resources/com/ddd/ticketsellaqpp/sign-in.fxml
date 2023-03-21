@@ -44,5 +44,10 @@
       </Button>
       <TextField fx:id="txtUsername" prefHeight="35.0" prefWidth="194.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <PasswordField fx:id="txtPassword" prefHeight="36.0" prefWidth="194.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Button fx:id="btnRegiste" alignment="CENTER" layoutX="228.0" layoutY="248.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="164.0" text="Đăng ký" GridPane.columnIndex="2" GridPane.rowIndex="3">
+         <font>
+            <Font name="Tahoma Bold" size="27.0" />
+         </font>
+      </Button>
    </children>
 </GridPane>
