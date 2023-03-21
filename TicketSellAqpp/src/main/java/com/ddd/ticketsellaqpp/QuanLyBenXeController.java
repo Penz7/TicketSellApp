@@ -186,15 +186,13 @@ public class QuanLyBenXeController implements Initializable {
             StackPane secondaryLayout = new StackPane();
             Label cityLabel = new Label("Tên Thành Phố:");
             TextField cityTextField = new TextField();
-              Label idLabel = new Label("ID:");
-            TextField idTextField = new TextField();
 
             // Tạo button Xác nhận
             Button confirmButton = new Button("Xác nhận");
             Scene secondScene = new Scene(secondaryLayout, 250, 300);
-            secondaryLayout.getChildren().addAll(cityLabel, cityTextField, confirmButton,idLabel,idTextField);
+            secondaryLayout.getChildren().addAll(cityLabel, cityTextField, confirmButton);
             HBox hbox = new HBox(10);
-            hbox.getChildren().addAll(cityLabel, cityTextField,idLabel,idTextField);
+            hbox.getChildren().addAll(cityLabel, cityTextField);
             VBox vbox = new VBox(10);
             vbox.getChildren().addAll(hbox, confirmButton);
             secondaryLayout.getChildren().addAll(vbox);
@@ -207,7 +205,7 @@ public class QuanLyBenXeController implements Initializable {
 
             confirmButton.setOnAction(e -> {
                 try {
-                    if (s.addStation(Integer.parseInt(idTextField.getText()), cityTextField.getText())) {
+                    if (s.addStation(cityTextField.getText())) {
                         MessageBox.getBox("Question", "Thêm bến xe thành công!!!", Alert.AlertType.INFORMATION).show();
                         this.loadStationData(null);
 

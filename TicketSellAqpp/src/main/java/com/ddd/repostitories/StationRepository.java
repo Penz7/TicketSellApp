@@ -105,18 +105,45 @@ public class StationRepository {
         }
     }
 
-    public boolean addStation(Integer stationId, String stationName) {
-        String sql = "INSERT INTO benxe (ID_Benxe, TenBen) VALUES (?, ?)";
-        try (Connection conn = JdbcUtils.getConn(); PreparedStatement preparedStatement = conn.prepareStatement(sql)) {
-            preparedStatement.setString(1, stationId.toString());
-            preparedStatement.setString(2, stationName);
+    public boolean addStation(String stationName) {
+        String sql = "INSERT INTO benxe(TenBen) VALUES (?)";
+        Connection conn = null;
 
-            // Thực hiện truy vấn và kiểm tra kết quả
-            int rowsInserted = preparedStatement.executeUpdate();
-            return (rowsInserted > 0);
-        } catch (SQLException ex) {
-            // Log the exception or do some error handling here
+        try {
+            conn = JdbcUtils.getConn();
+            conn.setAutoCommit(false);
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, stationName);
+
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                conn.commit();
+                return true;
+            } else {
+                conn.rollback();
+                return false;
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            // Handle the error and log it
+            e.printStackTrace();
             return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
