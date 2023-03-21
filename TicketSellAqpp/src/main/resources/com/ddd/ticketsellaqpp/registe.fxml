@@ -61,8 +61,7 @@
             <Font name="Tahoma Bold" size="14.0" />
          </font>
       </Text>
-      <TextField fx:id="txtUsername" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField fx:id="txtPassword2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="txtUsername1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="txtUserfullname" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <TextField fx:id="txtUserphonenumber" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Button fx:id="btnRegis" mnemonicParsing="false" text="Đăng ký" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="8">
@@ -70,7 +69,7 @@
             <Font name="Tahoma Bold" size="15.0" />
          </font>
       </Button>
-      <PasswordField fx:id="txtPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <PasswordField fx:id="txtPassword1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="txtUseraddress" GridPane.columnIndex="1" GridPane.rowIndex="6" />
       <Text layoutX="10.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Số CCCD:" GridPane.rowIndex="7">
          <font>
@@ -78,5 +77,6 @@
          </font>
       </Text>
       <TextField fx:id="txtUseridcard" layoutX="313.0" layoutY="286.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <PasswordField fx:id="txtPassword2" layoutX="313.0" layoutY="108.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
    </children>
 </GridPane>
