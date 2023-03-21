@@ -27,10 +27,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -117,18 +120,47 @@ public class QuanLyBenXeController implements Initializable {
         });
 
         TableColumn colEdit = new TableColumn();
-        colEdit.setCellFactory(r -> {
-            Button btn = new Button("Sửa");
-            btn.setOnAction(evt -> {
+        colEdit.setCellFactory(column -> {
+            Button btn = new Button("Sửa");
+            btn.setOnAction(event -> {
                 StackPane secondaryLayout = new StackPane();
-                Scene secondScene = new Scene(secondaryLayout, 500, 600);
+                Label cityLabel = new Label("Tên Thành Phố:");
+                TextField cityTextField = new TextField();
+
+                // Tạo button Xác nhận
+                Button confirmButton = new Button("Xác nhận");
+                Scene secondScene = new Scene(secondaryLayout, 250, 300);
+                secondaryLayout.getChildren().addAll(cityLabel, cityTextField, confirmButton);
+                HBox hbox = new HBox(10);
+                hbox.getChildren().addAll(cityLabel, cityTextField);
+                VBox vbox = new VBox(10);
+                vbox.getChildren().addAll(hbox, confirmButton);
+                secondaryLayout.getChildren().addAll(vbox);
 
                 // Một cửa sổ mới (Stage)
                 Stage newWindow = new Stage();
                 newWindow.setTitle("Sửa thông tin bến xe");
                 newWindow.setScene(secondScene);
-
                 newWindow.show();
+
+                confirmButton.setOnAction(e -> {
+                    Button b = (Button) event.getSource();
+                    TableCell cell = (TableCell) b.getParent();
+                    Station st = (Station) cell.getTableRow().getItem();
+                    try {
+                        if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) {
+                            MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
+                            this.loadStationData(null);
+
+                        } else {
+                            MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.WARNING).show();
+                        }
+
+                    } catch (SQLException ex) {
+                        MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                        Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
 
             });
 
@@ -147,18 +179,48 @@ public class QuanLyBenXeController implements Initializable {
         this.tbStation.getItems().clear();
         this.tbStation.setItems(FXCollections.observableList(ques));
     }
-    
+
     @FXML
     private void addStation() {
+        this.btnAddStation.setOnAction(event -> {
             StackPane secondaryLayout = new StackPane();
-                Scene secondScene = new Scene(secondaryLayout, 500, 600);
+            Label cityLabel = new Label("Tên Thành Phố:");
+            TextField cityTextField = new TextField();
+              Label idLabel = new Label("ID:");
+            TextField idTextField = new TextField();
 
-                // Một cửa sổ mới (Stage)
-                Stage newWindow = new Stage();
-                newWindow.setTitle("Thêm bến xe");
-                newWindow.setScene(secondScene);
+            // Tạo button Xác nhận
+            Button confirmButton = new Button("Xác nhận");
+            Scene secondScene = new Scene(secondaryLayout, 250, 300);
+            secondaryLayout.getChildren().addAll(cityLabel, cityTextField, confirmButton,idLabel,idTextField);
+            HBox hbox = new HBox(10);
+            hbox.getChildren().addAll(cityLabel, cityTextField,idLabel,idTextField);
+            VBox vbox = new VBox(10);
+            vbox.getChildren().addAll(hbox, confirmButton);
+            secondaryLayout.getChildren().addAll(vbox);
 
-                newWindow.show();
+            // Một cửa sổ mới (Stage)
+            Stage newWindow = new Stage();
+            newWindow.setTitle("Thêm bến xe");
+            newWindow.setScene(secondScene);
+            newWindow.show();
+
+            confirmButton.setOnAction(e -> {
+                try {
+                    if (s.addStation(Integer.parseInt(idTextField.getText()), cityTextField.getText())) {
+                        MessageBox.getBox("Question", "Thêm bến xe thành công!!!", Alert.AlertType.INFORMATION).show();
+                        this.loadStationData(null);
+
+                    } else {
+                        MessageBox.getBox("Question", "Thêm thất bại!!!", Alert.AlertType.WARNING).show();
+                    }
+
+                } catch (SQLException ex) {
+                    MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                    Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            });
+        });
     }
 
     @FXML
