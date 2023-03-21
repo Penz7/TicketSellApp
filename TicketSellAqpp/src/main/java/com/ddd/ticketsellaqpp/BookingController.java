@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import org.controlsfx.control.textfield.TextFields;
+//import org.controlsfx.control.textfield.TextFields;
 
 /**
  * FXML Controller class
@@ -31,7 +31,7 @@ public class BookingController implements Initializable {
     @FXML
     private void backMenu() {
         try {
-            App.setRoot("home-admin");
+            App.setRoot("home-customer");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -45,7 +45,7 @@ public class BookingController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
+//        TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
     }
 
     private List<String> getAllNameStation() {
