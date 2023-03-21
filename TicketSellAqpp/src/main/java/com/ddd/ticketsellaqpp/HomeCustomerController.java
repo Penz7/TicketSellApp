@@ -36,14 +36,14 @@ public class HomeCustomerController implements Initializable {
     private Label lbUsername;
 
     @FXML
-    private Button btnBookManagement;
+    private Button btnBenXe;
 
     private static User currentUser;
 
     @FXML
-    private void setBookingStage() {
+    private void setBenxeStage() {
         try {
-            App.setRoot("booking");
+            App.setRoot("QuanLyBenXe");
         } catch (IOException e) {
             e.printStackTrace();
         }
