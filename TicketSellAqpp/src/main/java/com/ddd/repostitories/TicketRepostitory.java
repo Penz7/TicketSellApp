@@ -34,18 +34,5 @@ public class TicketRepostitory {
          return null;
     }
     
-     public <List>Ticket getTicketByDesByDepByDate(String Destination, String Departure,Date OrderDay) throws SQLException{
-        try(Connection connection = JdbcUtils.getConn()){
-            String query = "SELECT * FROM vexe WHERE id_VeXe = ?";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, Destination);
-            ResultSet rs = preparedStatement.executeQuery();
-            if(rs.next()){
-                Ticket ticket = new Ticket();
-                ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
-                return ticket;
-            }
-        }
-         return null;
-    }
+     
 }
