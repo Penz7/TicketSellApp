@@ -3,7 +3,6 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,23 +13,18 @@
         <URL value="@/com/ddd/ticketsellaqpp/style.css" />
     </stylesheets>
    <children>
-      <TextField layoutX="126.0" layoutY="112.0" />
+      <TextField fx:id="txtSearch" layoutX="126.0" layoutY="112.0" />
       <Label layoutX="39.0" layoutY="116.0" text="Tên thành phố:" />
-      <TableView layoutY="200.0" prefHeight="310.0" prefWidth="802.0">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <Button layoutX="299.0" layoutY="111.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Tìm thành phố" />
+      <TableView fx:id="tbStation" layoutX="40.0" layoutY="200.0" prefHeight="304.0" prefWidth="721.0" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="14.0" text="Quản lý bến xe">
          <font>
             <Font name="System Italic" size="41.0" />
          </font>
       </Label>
-      <Button fx:id="btnBack" layoutX="469.0" layoutY="28.0" mnemonicParsing="false" onAction="#backMenu" text="Quay lại">
+      <Button fx:id="btnBack" layoutX="595.0" layoutY="80.0" mnemonicParsing="false" onAction="#backMenu" text="Quay lại">
          <font>
             <Font name="Tahoma Bold" size="16.0" />
          </font></Button>
+      <Button fx:id="btnAddStation" layoutX="468.0" layoutY="125.0" mnemonicParsing="false" onAction="#addStation" text="Thêm bến xe" />
    </children>
 </AnchorPane>

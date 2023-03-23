@@ -12,15 +12,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  *
  * @author Admin
  */
 public class StationRepostitory {
-      public List<Station> getStationByKeyWord(String kw) throws SQLException {
-        List<Station> results = new ArrayList<>();
 
+    public List<Station> getStationByKeyWord(String kw) throws SQLException {
+        List<Station> results = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM benxe";
             if (kw != null && !kw.isEmpty()) {
@@ -38,8 +42,8 @@ public class StationRepostitory {
         }
         return results;
     }
-      
-     public List<Station> getAllStation() throws SQLException {
+
+    public List<Station> getAllStation() throws SQLException {
         List<Station> results = new ArrayList<>();
 
         try (Connection conn = JdbcUtils.getConn()) {
@@ -53,12 +57,27 @@ public class StationRepostitory {
         }
         return results;
     }
-     
-       public boolean isExistStationByKeyWord(String kw) throws SQLException {
+
+//    public boolean isExistStationByKeyWord(String kw) throws SQLException {
+//        try (Connection conn = JdbcUtils.getConn()) {
+//            String sql = "SELECT * FROM benxe";
+//            if (kw != null && !kw.isEmpty()) {
+//                sql += " WHERE TenBen = '?'";
+//            }
+//            while (.next()) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
+
+    public List<Station> getStations(String kw) throws SQLException {
+        List<Station> results = new ArrayList<>();
+
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM benxe";
             if (kw != null && !kw.isEmpty()) {
-                sql += " WHERE TenBen = '?'";
+                sql += " WHERE TenBen like concat('%', ?, '%')";
             }
             PreparedStatement stm = conn.prepareCall(sql);
             if (kw != null && !kw.isEmpty()) {
@@ -66,9 +85,75 @@ public class StationRepostitory {
             }
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                return false;
+                Station s = new Station(rs.getInt("ID_Ben"), rs.getString("TenBen"));
+                results.add(s);
             }
         }
-        return true;
+
+        return results;
+    }
+
+    public boolean deleteStation(String id) throws SQLException {
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "DELETE FROM benxe WHERE ID_Ben=?";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, id);
+
+            return stm.executeUpdate() > 0;
+        }
+    }
+
+    public boolean updateStationNameById(String id, String stationName) {
+        String sql = "UPDATE benxe SET TenBen = ? WHERE ID_Ben = ?";
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareCall(sql)) {
+            stm.setString(1, stationName);
+            stm.setString(2, id);
+            return stm.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error updating station name for ID " + id, ex);
+            return false;
+        }
+    }
+
+    public boolean addStation(String stationName) {
+        String sql = "INSERT INTO benxe(TenBen) VALUES (?)";
+        Connection conn = null;
+
+        try {
+            conn = JdbcUtils.getConn();
+            conn.setAutoCommit(false);
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, stationName);
+
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                conn.commit();
+                return true;
+            } else {
+                conn.rollback();
+                return false;
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            // Handle the error and log it
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
