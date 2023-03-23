@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Admin
  */
-public class StationRepository {
+public class StationRepostitory {
       public List<Station> getStationByKeyWord(String kw) throws SQLException {
         List<Station> results = new ArrayList<>();
 
@@ -36,7 +36,6 @@ public class StationRepository {
                 results.add(s);
             }
         }
-
         return results;
     }
       
@@ -52,7 +51,24 @@ public class StationRepository {
                 results.add(s);
             }
         }
-
         return results;
+    }
+     
+       public boolean isExistStationByKeyWord(String kw) throws SQLException {
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM benxe";
+            if (kw != null && !kw.isEmpty()) {
+                sql += " WHERE TenBen = '?'";
+            }
+            PreparedStatement stm = conn.prepareCall(sql);
+            if (kw != null && !kw.isEmpty()) {
+                stm.setString(1, kw);
+            }
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
  *
  * @author Admin
  */
-public class BookingRepository {
+public class BookingRepostitory {
 
     public boolean AddTicket(Ticket ticket, List<Couchette> couchette) throws SQLException {
         List<Ticket> results = new ArrayList<>();

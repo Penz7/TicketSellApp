@@ -15,7 +15,7 @@ import java.sql.SQLException;
  *
  * @author admin
  */
-public class SignInResponstitory {
+public class SignInRepostitory {
 
     public User getAccount(String username, String password) throws SQLException {
         try (Connection connection = JdbcUtils.getConn()) {

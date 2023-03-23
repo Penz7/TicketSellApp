@@ -7,6 +7,7 @@ package com.ddd.repostitories;
 import com.ddd.pojo.Ticket;
 import com.ddd.utils.JdbcUtils;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ import java.util.List;
  *
  * @author Admin
  */
-public class TicketRepository {
+public class TicketRepostitory {
     public Ticket getTicketById(Integer ticketId) throws SQLException{
         try(Connection connection = JdbcUtils.getConn()){
             String query = "SELECT * FROM vexe WHERE id_VeXe = ?";
@@ -33,5 +34,18 @@ public class TicketRepository {
          return null;
     }
     
-  
+     public <List>Ticket getTicketByDesByDepByDate(String Destination, String Departure,Date OrderDay) throws SQLException{
+        try(Connection connection = JdbcUtils.getConn()){
+            String query = "SELECT * FROM vexe WHERE id_VeXe = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, Destination);
+            ResultSet rs = preparedStatement.executeQuery();
+            if(rs.next()){
+                Ticket ticket = new Ticket();
+                ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
+                return ticket;
+            }
+        }
+         return null;
+    }
 }
