@@ -38,7 +38,7 @@
             <VBox alignment="CENTER" prefHeight="143.0" prefWidth="142.0">
                <children>
                   <ImageView fitHeight="98.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button fx:id="btnChuyenxe" mnemonicParsing="false" onAction="#setChuyenxeStage" text="Button" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

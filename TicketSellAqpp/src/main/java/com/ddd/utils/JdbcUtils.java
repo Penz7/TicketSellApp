@@ -25,7 +25,7 @@ public class JdbcUtils {
     
     public static Connection getConn() throws SQLException {
         // B2 Mo ket noi
-        return DriverManager.getConnection("jdbc:mysql://localhost/db_banvexe", "root", "25052002");
+        return DriverManager.getConnection("jdbc:mysql://localhost/dbtest", "root", "123456789");
     }
 
 }

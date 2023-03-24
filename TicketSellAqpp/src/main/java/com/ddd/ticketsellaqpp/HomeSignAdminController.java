@@ -33,10 +33,23 @@ public class HomeSignAdminController implements Initializable{
     @FXML
     private Button btnBenXe;
     
+    @FXML
+    private Button btnChuyenxe;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
       setInfoAcount();
     }
+    
+    @FXML
+    private void setChuyenxeStage() {
+        try {
+            App.setRoot("QuanLyChuyenXe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @FXML
