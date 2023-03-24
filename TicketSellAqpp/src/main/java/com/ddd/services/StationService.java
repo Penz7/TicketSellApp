@@ -21,8 +21,8 @@ public class StationService {
     }
     
     // Lấy các bến xe bởi từ khóa
-    public List<Station> getStationByKeyWord(String kw) throws SQLException {
-        return STATION_REPOSITORY.getStationByKeyWord(kw);
+    public Station getStationByName(String kw) throws SQLException {
+        return STATION_REPOSITORY.getStationByName(kw);
     }
     
     // Lấy các bến xe có trong hệ thống

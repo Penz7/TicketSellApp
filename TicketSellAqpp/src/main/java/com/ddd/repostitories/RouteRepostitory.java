@@ -6,12 +6,15 @@ package com.ddd.repostitories;
 
 import com.ddd.pojo.Route;
 import com.ddd.utils.JdbcUtils;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,32 +22,25 @@ import java.util.ArrayList;
  */
 public class RouteRepostitory {
 
-    public <List> Route getRoutetByDesByDepByDate(String Destination, String Departure, Date OrderDay) throws SQLException {
-        List<Route> results = new ArrayList<>();
-
+    public List<Route> getRoutetById(Integer ID_ChuyenXe) throws SQLException {
+        List<Route> routes = new ArrayList<>();
+        
         try (Connection connection = JdbcUtils.getConn()) {
-            String query = "SELECT cx.tenCX, bxd.TenBen as BenDi, bxd.TenBen as BenDen, cx.giaChuyen\n";
-            if (Destination != null && !Destination.isEmpty() && Departure != null && !Departure.isEmpty() && OrderDay != null) {
-                query += "FROM chuyenxe cx\n"
-                        + "JOIN chuyenxe_xe cxx ON cx.ID_ChuyenXe = cxx.ID_ChuyenXe\n"
-                        + "JOIN BenXe bxd ON cx.ID_BenDi = bxd.ID_ben\n"
-                        + "JOIN BenXe bxd ON cx.ID_BenDen = bxd.ID_ben\n"
-                        + "WHERE bxd.TenBen = '?' AND bxd.TenBen = '?' AND cxx.gioKhoiHanh = '?'";
-            }
-
-            PreparedStatement stm = connection.prepareCall(query);
-            if (Destination != null && !Destination.isEmpty() && Departure != null && !Departure.isEmpty() && OrderDay != null) {
-                stm.setString(1, Destination);
-                stm.setString(2, Departure);
-                stm.setDate(3, OrderDay);
-            }
-
-            ResultSet rs = stm.executeQuery();
+            String query = "SELECT * FROM chuyenxe WHERE ID_ChuyenXe = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, ID_ChuyenXe);
+            ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
-                Route route = new Route(// cho nay phai truyen routeId, nameRoute, fare);
-                results.add(route);
+                Route route = new Route(
+                        rs.getInt("ID_ChuyenXe"),
+                        rs.getString("tenCX"),
+                        rs.getBigDecimal("giaChuyen")
+                rs.getString());
+                routes.add(route);
             }
         }
-        return results;
+        return routes;
     }
+    
+    
 }

@@ -23,24 +23,23 @@ import javafx.scene.control.Alert.AlertType;
  */
 public class StationRepostitory {
 
-    public List<Station> getStationByKeyWord(String kw) throws SQLException {
-        List<Station> results = new ArrayList<>();
+    public Station getStationByName(String NameStation) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM benxe";
-            if (kw != null && !kw.isEmpty()) {
-                sql += " WHERE TenBen like concat('%', ?, '%')";
+            if (NameStation != null && !NameStation.isEmpty()) {
+                sql += " WHERE TenBen = '?'";
             }
             PreparedStatement stm = conn.prepareCall(sql);
-            if (kw != null && !kw.isEmpty()) {
-                stm.setString(1, kw);
+            if (NameStation != null && !NameStation.isEmpty()) {
+                stm.setString(1, NameStation);
             }
             ResultSet rs = stm.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 Station s = new Station(rs.getInt("ID_Ben"), rs.getString("TenBen"));
-                results.add(s);
+                return s;
             }
         }
-        return results;
+        return null;
     }
 
     public List<Station> getAllStation() throws SQLException {
@@ -70,7 +69,6 @@ public class StationRepostitory {
 //        }
 //        return true;
 //    }
-
     public List<Station> getStations(String kw) throws SQLException {
         List<Station> results = new ArrayList<>();
 

@@ -4,7 +4,7 @@
  */
 package com.ddd.ticketsellaqpp;
 
-import com.ddd.repostitories.StationRepository;
+import com.ddd.repostitories.StationRepostitory;
 import com.ddd.pojo.Station;
 import com.ddd.pojo.User;
 import com.ddd.utils.MessageBox;
@@ -42,7 +42,7 @@ import javafx.stage.Stage;
  */
 public class QuanLyBenXeController implements Initializable {
 
-    static StationRepository s = new StationRepository();
+    static StationRepostitory s = new StationRepostitory();
 
     private static User currentUser;
 

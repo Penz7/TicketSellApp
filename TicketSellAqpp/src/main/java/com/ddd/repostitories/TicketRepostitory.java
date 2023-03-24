@@ -32,7 +32,5 @@ public class TicketRepostitory {
             }
         }
          return null;
-    }
-    
-     
+    } 
 }
