@@ -20,14 +20,18 @@
       <TextField fx:id="txtSearchDeparture" layoutX="224.0" layoutY="126.0" />
       <Label layoutX="232.0" layoutY="96.0" text="Chọn nơi đi" />
       <Label layoutX="464.0" layoutY="96.0" text="Chọn ngày đi" />
-      <DatePicker layoutX="426.0" layoutY="126.0" />
-      <TableView layoutY="310.0" prefHeight="200.0" prefWidth="801.0">
+      <DatePicker fx:id="dpDateOrder" layoutX="426.0" layoutY="126.0" />
+      <TableView fx:id="tvRoute" layoutY="310.0" prefHeight="200.0" prefWidth="801.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+          <TableColumn prefWidth="90.39999693632126" text="Mã chuyến xe" />
+          <TableColumn prefWidth="131.99996948242188" text="Tên chuyến xe" />
+            <TableColumn prefWidth="110.40000915527344" text="Tên xe" />
+            <TableColumn minWidth="0.0" prefWidth="112.0" text="Giờ khởi hành" />
+            <TableColumn minWidth="0.0" prefWidth="93.60003662109375" text="Ghế" />
+            <TableColumn prefWidth="112.0" text="Giá vé" />
         </columns>
       </TableView>
-      <Button layoutX="644.0" layoutY="125.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Tìm vé" />
+      <Button layoutX="644.0" layoutY="125.0" mnemonicParsing="false" onAction="#findRoute" prefHeight="26.0" prefWidth="114.0" text="Tìm vé" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="14.0" text="OU Bus">
          <font>
             <Font name="System Italic" size="41.0" />

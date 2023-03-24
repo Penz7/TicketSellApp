@@ -14,20 +14,58 @@ public class Route {
     private int routeId;
     private String nameRoute;
     private BigDecimal fare;
+    private Station destination;
+    private Station departure;
+    private Coach coachName;
+    private RouteCoach departureTime;
+    private Couchette couchette;
 
     public Route() {
-    }
-
-    public Route(int routeId, String nameRoute, BigDecimal fare) {
-        this.routeId = routeId;
-        this.nameRoute = nameRoute;
-        this.fare = fare;
     }
 
     public BigDecimal getFare() {
         return fare;
     }
 
+    public Coach getCoachName() {
+        return coachName;
+    }
+
+    public Couchette getCouchette() {
+        return couchette;
+    }
+
+    public RouteCoach getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(RouteCoach departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public void setCoachName(Coach coachName) {
+        this.coachName = coachName;
+    }
+
+    public void setCouchette(Couchette couchette) {
+        this.couchette = couchette;
+    }
+
+    
+    
+    public Route(int routeId, String nameRoute, BigDecimal fare, Station destination, Station departure, Coach coachName, RouteCoach departureTime, Couchette couchette) {
+        this.routeId = routeId;
+        this.nameRoute = nameRoute;
+        this.fare = fare;
+        this.destination = destination;
+        this.departure = departure;
+        this.coachName = coachName;
+        this.departureTime = departureTime;
+        this.couchette = couchette;
+    }
+
+    
+    
     public String getNameRoute() {
         return nameRoute;
     }
@@ -47,6 +85,21 @@ public class Route {
     public void setRouteId(int routeId) {
         this.routeId = routeId;
     }
-    
-    
+
+    public Station getDeparture() {
+        return departure;
+    }
+
+    public Station getDestination() {
+        return destination;
+    }
+
+    public void setDeparture(Station departure) {
+        this.departure = departure;
+    }
+
+    public void setDestination(Station destination) {
+        this.destination = destination;
+    }
+
 }
