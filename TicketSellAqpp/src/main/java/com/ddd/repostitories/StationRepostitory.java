@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -57,18 +58,6 @@ public class StationRepostitory {
         return results;
     }
 
-//    public boolean isExistStationByKeyWord(String kw) throws SQLException {
-//        try (Connection conn = JdbcUtils.getConn()) {
-//            String sql = "SELECT * FROM benxe";
-//            if (kw != null && !kw.isEmpty()) {
-//                sql += " WHERE TenBen = '?'";
-//            }
-//            while (.next()) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
     public List<Station> getStations(String kw) throws SQLException {
         List<Station> results = new ArrayList<>();
 
@@ -152,6 +141,18 @@ public class StationRepostitory {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public boolean isExistStationByName(String name) throws SQLException {
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM benxe";
+            if (name != null && !name.isEmpty()) {
+                sql += " WHERE TenBen = '?'";
+            }
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, name);
+            return stm.executeQuery().next();
         }
     }
 }
