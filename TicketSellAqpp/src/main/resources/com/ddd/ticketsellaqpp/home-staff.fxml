@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -12,7 +13,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="71.0" prefWidth="600.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trang quản lý hệ thống">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trang quản trị hệ thống">
                <font>
                   <Font name="Tahoma Bold" size="29.0" />
                </font>
@@ -22,6 +23,15 @@
       <HBox alignment="CENTER_LEFT" prefHeight="143.0" prefWidth="600.0">
          <children>
             <VBox alignment="CENTER" prefHeight="143.0" prefWidth="142.0">
+               <children>
+                  <ImageView fitHeight="98.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button mnemonicParsing="false" text="Button" />
+               </children>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="143.0" prefWidth="142.0">
                <children>
                   <ImageView fitHeight="98.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
                   <Button mnemonicParsing="false" text="Button" />
@@ -48,6 +58,31 @@
       <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button mnemonicParsing="false" onAction="#setSignOut" prefHeight="43.0" prefWidth="102.0" text="Đăng xuất" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label text="Thông tin cá nhân" />
+         </children>
+      </HBox>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <VBox prefHeight="98.0" prefWidth="298.0">
+               <children>
+                  <Label text="Họ và tên " />
+                  <Label fx:id="lbUserfullname" prefHeight="18.0" prefWidth="201.0" />
+                  <Label text="SĐT" />
+                  <Label fx:id="lbUserphonenumber" prefHeight="18.0" prefWidth="214.0" />
+               </children>
+            </VBox>
+            <VBox prefHeight="98.0" prefWidth="302.0">
+               <children>
+                  <Label text="Ngày đăng ký" />
+                  <Label fx:id="lblJoinedDate" prefHeight="18.0" prefWidth="190.0" />
+                  <Label text="Tên tài khoản" />
+                  <Label fx:id="lbUsername" prefHeight="18.0" prefWidth="181.0" />
+               </children>
+            </VBox>
          </children>
       </HBox>
    </children>

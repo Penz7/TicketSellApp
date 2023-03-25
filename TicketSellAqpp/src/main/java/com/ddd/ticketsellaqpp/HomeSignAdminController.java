@@ -29,12 +29,7 @@ public class HomeSignAdminController implements Initializable{
 
     @FXML
     private Label lbUsername;
-  
-    @FXML
-    private Button btnBenXe;
-    
-    @FXML
-    private Button btnChuyenxe;
+ 
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,6 +51,24 @@ public class HomeSignAdminController implements Initializable{
     private void setBenxeStage() {
         try {
             App.setRoot("QuanLyBenXe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+     @FXML
+    private void setQuyDinh() {
+        try {
+            App.setRoot("QuyDinh");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+     @FXML
+    private void setStaffStage() {
+        try {
+            App.setRoot("QuanLyNhanVien");
         } catch (IOException e) {
             e.printStackTrace();
         }

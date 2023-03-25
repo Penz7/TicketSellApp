@@ -63,12 +63,12 @@ public class BookingController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        try {
-            this.loadTableStation();
-            this.loadStationData(null);
-        } catch (SQLException ex) {
-            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+////            this.loadTableStation();
+////            this.loadStationData(null);
+////        } catch (SQLException ex) {
+////            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
         TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
     }
