@@ -80,7 +80,15 @@ public class BookingController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
         this.loadTableColumns();
+//        try {
+////            this.loadTableStation();
+////            this.loadStationData(null);
+////        } catch (SQLException ex) {
+////            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+
         TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
         TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
     }
@@ -164,7 +172,6 @@ public class BookingController implements Initializable {
     }
 
     private void loadRouteData(Integer routeId) throws SQLException {
-
         List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
         this.tvRoute.getItems().clear();
         this.tvRoute.setItems(FXCollections.observableList(data));

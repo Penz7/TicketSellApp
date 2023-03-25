@@ -84,92 +84,114 @@ public class QuanLyBenXeController implements Initializable {
         TableColumn colStationName = new TableColumn("Tên thành phố");
         colStationName.setCellValueFactory(new PropertyValueFactory("stationName"));
 
-        TableColumn colDel = new TableColumn();
+        TableColumn<Station, Void> colDel = new TableColumn<>("Xóa");
         colDel.setCellFactory(r -> {
-            Button btn = new Button("Delete");
+            return new TableCell<Station, Void>() {
+                private final Button btn = new Button("Xóa");
 
-            btn.setOnAction(evt -> {
-                Alert a = MessageBox.getBox("Question",
-                        "Are you sure to delete this question?",
-                        Alert.AlertType.CONFIRMATION);
-                a.showAndWait().ifPresent(res -> {
-                    if (res == ButtonType.OK) {
-                        Button b = (Button) evt.getSource();
-                        TableCell cell = (TableCell) b.getParent();
-                        Station st = (Station) cell.getTableRow().getItem();
-                        try {
-                            if (s.deleteStation(st.getStationId().toString())) {
-                                MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
-                                this.loadStationData(null);
-                            } else {
-                                MessageBox.getBox("Question", "Xóa thất bại!!!", Alert.AlertType.WARNING).show();
+                {
+                    btn.setOnAction(evt -> {
+                        Alert a = MessageBox.getBox("Question",
+                                "Are you sure to delete this question?",
+                                Alert.AlertType.CONFIRMATION);
+                        a.showAndWait().ifPresent(res -> {
+                            if (res == ButtonType.OK) {
+                                Button b = (Button) evt.getSource();
+                                TableCell cell = (TableCell) b.getParent();
+                                Station st = (Station) cell.getTableRow().getItem();
+                                try {
+                                    if (s.deleteStation(st.getStationId().toString())) {
+                                        MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
+                                        loadStationData(null);
+                                    } else {
+                                        MessageBox.getBox("Question", "Xóa thất bại!!!", Alert.AlertType.WARNING).show();
+                                    }
+
+                                } catch (SQLException ex) {
+                                    MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                                    Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
                             }
+                        });
+                    });
 
-                        } catch (SQLException ex) {
-                            MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                }
 
+                @Override
+                public void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
                     }
-                });
-            });
-
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
-            return c;
+                }
+            };
         });
 
-        TableColumn colEdit = new TableColumn();
+        TableColumn<Station, Void> colEdit = new TableColumn<>("Sửa");
         colEdit.setCellFactory(column -> {
-            Button btn = new Button("Sửa");
-            btn.setOnAction(event -> {
-                StackPane secondaryLayout = new StackPane();
-                Label cityLabel = new Label("Tên Thành Phố:");
-                TextField cityTextField = new TextField();
+            return new TableCell<Station, Void>() {
+                private final Button btn = new Button("Sửa");
 
-                // Tạo button Xác nhận
-                Button confirmButton = new Button("Xác nhận");
-                Scene secondScene = new Scene(secondaryLayout, 250, 300);
-                secondaryLayout.getChildren().addAll(cityLabel, cityTextField, confirmButton);
-                HBox hbox = new HBox(10);
-                hbox.getChildren().addAll(cityLabel, cityTextField);
-                VBox vbox = new VBox(10);
-                vbox.getChildren().addAll(hbox, confirmButton);
-                secondaryLayout.getChildren().addAll(vbox);
+                {
+                    btn.setOnAction(event -> {
+                        StackPane secondaryLayout = new StackPane();
+                        Label cityLabel = new Label("Tên Thành Phố:");
+                        TextField cityTextField = new TextField();
 
-                // Một cửa sổ mới (Stage)
-                Stage newWindow = new Stage();
-                newWindow.setTitle("Sửa thông tin bến xe");
-                newWindow.setScene(secondScene);
-                newWindow.show();
+                        // Tạo button Xác nhận
+                        Button confirmButton = new Button("Xác nhận");
+                        Scene secondScene = new Scene(secondaryLayout, 250, 300);
+                        secondaryLayout.getChildren().addAll(cityLabel, cityTextField, confirmButton);
+                        HBox hbox = new HBox(10);
+                        hbox.getChildren().addAll(cityLabel, cityTextField);
+                        VBox vbox = new VBox(10);
+                        vbox.getChildren().addAll(hbox, confirmButton);
+                        secondaryLayout.getChildren().addAll(vbox);
 
-                confirmButton.setOnAction(e -> {
-                    Button b = (Button) event.getSource();
-                    TableCell cell = (TableCell) b.getParent();
-                    Station st = (Station) cell.getTableRow().getItem();
-                    try {
-                        if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) {
-                            MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
-                            this.loadStationData(null);
+                        // Một cửa sổ mới (Stage)
+                        Stage newWindow = new Stage();
+                        newWindow.setTitle("Sửa thông tin bến xe");
+                        newWindow.setScene(secondScene);
+                        newWindow.show();
 
-                        } else {
-                            MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.WARNING).show();
-                        }
+                        confirmButton.setOnAction(e -> {
+                            Button b = (Button) event.getSource();
+                            TableCell cell = (TableCell) b.getParent();
+                            Station st = (Station) cell.getTableRow().getItem();
+                            try {
+                                if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) {
+                                    MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
+                                    loadStationData(null);
 
-                    } catch (SQLException ex) {
-                        MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                        Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                } else {
+                                    MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.WARNING).show();
+                                }
+
+                            } catch (SQLException ex) {
+                                MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                                Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        });
+
+                    });
+
+                }
+
+                @Override
+                public void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
                     }
-                });
+                }
 
-            });
-
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
-            return c;
-
+            };
         });
-
         this.tbStation.getColumns().addAll(colStationId, colStationName, colDel, colEdit);
     }
 
