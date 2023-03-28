@@ -17,12 +17,12 @@ public class RouteCoachCouchette {
     private String coachName;
     private Timestamp departureTime;
     private Integer couchetteID;
-    private BigDecimal fare;
+    private Double fare;
 
     public RouteCoachCouchette() {
     }
 
-    public RouteCoachCouchette(Integer routeID, String routeName, String coachName, Timestamp departureTime, Integer couchetteID, BigDecimal fare) {
+    public RouteCoachCouchette(Integer routeID, String routeName, String coachName, Timestamp departureTime, Integer couchetteID, Double fare) {
         this.routeID = routeID;
         this.routeName = routeName;
         this.coachName = coachName;
@@ -43,7 +43,7 @@ public class RouteCoachCouchette {
         return departureTime;
     }
 
-    public BigDecimal getFare() {
+    public Double getFare() {
         return fare;
     }
 
@@ -67,7 +67,7 @@ public class RouteCoachCouchette {
         this.departureTime = departureTime;
     }
 
-    public void setFare(BigDecimal fare) {
+    public void setFare(Double fare) {
         this.fare = fare;
     }
 
