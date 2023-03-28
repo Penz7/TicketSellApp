@@ -51,11 +51,13 @@ public class BookingController implements Initializable {
 
     private final static RouteCoachCouchetteService ROUTE_COACH_COUCHETTE_SERVICE;
     private final static RouteService ROUTE_SERVICE;
+    private final static StationService STATION_SERVICE;
 
     static {
         ROUTE_COACH_COUCHETTE_SERVICE = new RouteCoachCouchetteService();
         ROUTE_SERVICE = new RouteService();
-//      DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        STATION_SERVICE = new StationService();
+//      //DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     @FXML
@@ -112,14 +114,16 @@ public class BookingController implements Initializable {
 
     @FXML
     public void findRoute() throws SQLException {
-        MessageBox.getBox("OK", "Da vao", Alert.AlertType.NONE);
         List<Route> listRoute = new ArrayList<>();
-        listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(txtSearchDestination.getText(), txtSearchDeparture.getText(), dpDateOrder.getValue().toString());
+        listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(
+                STATION_SERVICE.getStationByName(txtSearchDestination.getText()).getStationId().toString(),
+                STATION_SERVICE.getStationByName(txtSearchDeparture.getText()).getStationId().toString(),
+                java.sql.Date.valueOf(dpDateOrder.getValue()));
         for (Route r : listRoute) {
             // only changes num, not the array element
             loadRouteData(r.getRouteId());
         }
-        
+
     }
 
     private void loadTableColumns() {

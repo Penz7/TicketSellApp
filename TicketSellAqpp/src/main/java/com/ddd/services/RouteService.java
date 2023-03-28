@@ -6,6 +6,7 @@ package com.ddd.services;
 
 import com.ddd.pojo.Route;
 import com.ddd.repostitories.RouteRepostitory;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class RouteService {
     }
     
     // Lấy danh sách các chuyến xe bởi id bến đến, id bến đi và ngày đặt
-    public List<Route> getRouteByDesIdByDepId(String desId, String depId, String orderDate) throws SQLException {
+    public List<Route> getRouteByDesIdByDepId(String desId, String depId, Date orderDate) throws SQLException {
         return ROUTE_REPOSITORY.getRouteByDesIdByDepId(desId, depId, orderDate);
     }
 }

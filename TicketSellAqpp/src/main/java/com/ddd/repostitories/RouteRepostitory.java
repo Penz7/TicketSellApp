@@ -94,7 +94,7 @@ public class RouteRepostitory {
     }
 
     
-    public List<Route> getRouteByDesIdByDepId(String desId, String depId, String orderDate) throws SQLException {
+    public List<Route> getRouteByDesIdByDepId(String desId, String depId, Date orderDate) throws SQLException {
         List<Route> route = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT chuyenxe.ID_ChuyenXe, chuyenxe.tenCX, chuyenxe.giaChuyen, chuyenxe.ID_benDen, chuyenxe.ID_benDi\n"
@@ -107,7 +107,7 @@ public class RouteRepostitory {
             if (desId != null && !desId.isEmpty() && depId != null && !depId.isEmpty()) {
                 stm.setString(1, desId=desId.trim());
                 stm.setString(2, depId=depId.trim());
-                stm.setString(3, orderDate=orderDate.trim());
+                stm.setDate(3, orderDate);
             }
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
