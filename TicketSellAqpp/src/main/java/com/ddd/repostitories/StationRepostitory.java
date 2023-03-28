@@ -26,9 +26,9 @@ public class StationRepostitory {
 
     public Station getStationByName(String NameStation) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT * FROM benxe";
+            String sql = "SELECT * FROM benxe \n";
             if (NameStation != null && !NameStation.isEmpty()) {
-                sql += " WHERE TenBen = '?'";
+                sql += "WHERE TenBen = ?";
             }
             PreparedStatement stm = conn.prepareCall(sql);
             if (NameStation != null && !NameStation.isEmpty()) {

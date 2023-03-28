@@ -101,12 +101,12 @@ public class RouteRepostitory {
                     + "FROM chuyenxe\n"
                     + "INNER JOIN chuyenxe_xe ON chuyenxe.ID_ChuyenXe = chuyenxe_xe.ID_ChuyenXe\n";
             if (desId != null && !desId.isEmpty() && depId != null && !depId.isEmpty()) {
-                sql += "WHERE chuyenxe.ID_benDen = '?' AND chuyenxe.ID_benDi = '?' AND chuyenxe_xe.gioKhoiHanh like concat('%', ?, '%')";
+                sql += "WHERE chuyenxe.ID_benDen = ? AND chuyenxe.ID_benDi = ? AND chuyenxe_xe.gioKhoiHanh like concat('%',?,'%')";
             }
             PreparedStatement stm = conn.prepareCall(sql);
             if (desId != null && !desId.isEmpty() && depId != null && !depId.isEmpty()) {
-                stm.setString(1, desId=desId.trim());
-                stm.setString(2, depId=depId.trim());
+                stm.setInt(1, Integer.valueOf(desId));
+                stm.setInt(2, Integer.valueOf(depId));
                 stm.setDate(3, orderDate);
             }
             ResultSet rs = stm.executeQuery();

@@ -144,7 +144,7 @@ public class BookingController implements Initializable {
         col3.setPrefWidth(150);
 
         TableColumn<RouteCoachCouchette, Integer> col4 = new TableColumn("Ghế");
-        col4.setCellValueFactory(new PropertyValueFactory("couchette"));
+        col4.setCellValueFactory(new PropertyValueFactory("couchetteID"));
         col4.setPrefWidth(70);
 
         TableColumn<RouteCoachCouchette, BigDecimal> col5 = new TableColumn("Giá vé");
