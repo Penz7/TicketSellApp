@@ -41,11 +41,15 @@ public class RouteRepostitory {
                 Route route = new Route(
                         rs.getInt("ID_ChuyenXe"),
                         rs.getString("tenCX"),
-                        rs.getBigDecimal("giaChuyen"),
+                        rs.getDouble("giaChuyen"),
                         rs.getInt("ID_benDen"),
                         rs.getInt("ID_benDi")
                 );
                 routes.add(route);
+            }
+        }
+        return routes;
+    }
 
 
 //    public List<Route> getRoutetById(Integer ID_ChuyenXe) throws SQLException {
@@ -110,7 +114,7 @@ public class RouteRepostitory {
                 Route r = new Route(
                         rs.getInt("ID_ChuyenXe"),
                         rs.getString("tenCX"),
-                        rs.getBigDecimal("giaChuyen"),
+                        rs.getDouble("giaChuyen"),
                         rs.getInt("ID_benDen"),
                         rs.getInt("ID_benDi"));
                 route.add(r);
