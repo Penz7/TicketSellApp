@@ -41,7 +41,7 @@ public class RouteCoachCouchetteRepostitory {
                         rs.getString("TenXe"),
                         rs.getTimestamp("gioKhoiHanh"),
                         rs.getInt("ID_Ghe"),
-                        rs.getBigDecimal("giaChuyen"));
+                        rs.getDouble("giaChuyen"));
                 data.add(routeCoachCouchette);
             }
         }
