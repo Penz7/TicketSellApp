@@ -151,38 +151,48 @@ public class BookingController implements Initializable {
         col5.setCellValueFactory(new PropertyValueFactory("fare"));
         col2.setPrefWidth(100);
 
-        TableColumn colOrderTicket = new TableColumn();
+        TableColumn<RouteCoachCouchette, Void> colOrderTicket = new TableColumn<>("Đặt");
         colOrderTicket.setCellFactory(r -> {
-            Button btn = new Button("Đặt");
-
-            btn.setOnAction(evt -> {
-                if ("Đặt".equals(btn.getText())) {
-                    Alert a = MessageBox.getBox("Đặt vé",
-                            "Bạn có chắc đặt vé này",
-                            Alert.AlertType.CONFIRMATION);
-                    a.showAndWait().ifPresent(res -> {
-                        if (res == ButtonType.OK) {
-                            btn.setText("Hủy");
-                            MessageBox.getBox("Đặt vé", "Đặt vé thành công", Alert.AlertType.INFORMATION).show();
+            return new TableCell<RouteCoachCouchette, Void>() {
+                private final Button btn = new Button("Đặt");
+                {
+                    btn.setOnAction(evt -> {
+                        if ("Đặt".equals(btn.getText())) {
+                            Alert a = MessageBox.getBox("Đặt vé",
+                                    "Bạn có chắc đặt vé này",
+                                    Alert.AlertType.CONFIRMATION);
+                            a.showAndWait().ifPresent(res -> {
+                                if (res == ButtonType.OK) {
+                                    btn.setText("Hủy");
+                                    MessageBox.getBox("Đặt vé", "Đặt vé thành công", Alert.AlertType.INFORMATION).show();
+                                }
+                            });
+                        } else {
+                            if ("Hủy".equals(btn.getText())) {
+                                Alert a = MessageBox.getBox("Hủy vé",
+                                        "Bạn có chắc hủy vé này",
+                                        Alert.AlertType.CONFIRMATION);
+                                a.showAndWait().ifPresent(res -> {
+                                    if (res == ButtonType.OK) {
+                                        btn.setText("Đặt");
+                                        MessageBox.getBox("Hủy vé", "Hủy vé thành công", Alert.AlertType.INFORMATION).show();
+                                    }
+                                });
+                            }
                         }
                     });
-                } else {
-                    if ("Hủy".equals(btn.getText())) {
-                        Alert a = MessageBox.getBox("Hủy vé",
-                                "Bạn có chắc hủy vé này",
-                                Alert.AlertType.CONFIRMATION);
-                        a.showAndWait().ifPresent(res -> {
-                            if (res == ButtonType.OK) {
-                                btn.setText("Đặt");
-                                MessageBox.getBox("Hủy vé", "Hủy vé thành công", Alert.AlertType.INFORMATION).show();
-                            }
-                        });
+                }
+
+                @Override
+                public void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || getTableRow().getItem() == null) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(btn);
                     }
                 }
-            });
-            TableCell c = new TableCell();
-            c.setGraphic(btn);
-            return c;
+            };
         });
 
         this.tvRoute.getColumns().addAll(col0, col1, col2, col3, col4, col5, colOrderTicket);
