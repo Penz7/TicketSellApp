@@ -156,16 +156,29 @@ public class BookingController implements Initializable {
             Button btn = new Button("Đặt");
 
             btn.setOnAction(evt -> {
-                Alert a = MessageBox.getBox("Đặt vé",
-                        "Bạn có chắc đặt vé này",
-                        Alert.AlertType.CONFIRMATION);
-                a.showAndWait().ifPresent(res -> {
-                    if (res == ButtonType.OK) {
-                        Button b = (Button) evt.getSource();
-                        TableCell cell = (TableCell) b.getParent();
-                        MessageBox.getBox("Đặt vé", "Đặt vé thành công", Alert.AlertType.INFORMATION).show();
+                if ("Đặt".equals(btn.getText())) {
+                    Alert a = MessageBox.getBox("Đặt vé",
+                            "Bạn có chắc đặt vé này",
+                            Alert.AlertType.CONFIRMATION);
+                    a.showAndWait().ifPresent(res -> {
+                        if (res == ButtonType.OK) {
+                            btn.setText("Hủy");
+                            MessageBox.getBox("Đặt vé", "Đặt vé thành công", Alert.AlertType.INFORMATION).show();
+                        }
+                    });
+                } else {
+                    if ("Hủy".equals(btn.getText())) {
+                        Alert a = MessageBox.getBox("Hủy vé",
+                                "Bạn có chắc hủy vé này",
+                                Alert.AlertType.CONFIRMATION);
+                        a.showAndWait().ifPresent(res -> {
+                            if (res == ButtonType.OK) {
+                                btn.setText("Đặt");
+                                MessageBox.getBox("Hủy vé", "Hủy vé thành công", Alert.AlertType.INFORMATION).show();
+                            }
+                        });
                     }
-                });
+                }
             });
             TableCell c = new TableCell();
             c.setGraphic(btn);

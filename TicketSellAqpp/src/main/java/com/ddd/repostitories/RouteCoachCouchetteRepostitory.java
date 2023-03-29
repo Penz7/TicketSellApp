@@ -27,7 +27,7 @@ public class RouteCoachCouchetteRepostitory {
                     + "JOIN chuyenxe_xe ON chuyenxe.ID_ChuyenXe = chuyenxe_xe.ID_ChuyenXe\n"
                     + "JOIN xe ON chuyenxe_xe.ID_Xe = xe.ID_Xe\n"
                     + "JOIN ghe ON xe.ID_Xe = ghe.ID_Xe\n"
-                    + "WHERE chuyenxe.ID_ChuyenXe = ?";
+                    + "WHERE ghe.TinhTrangGhe = 0 AND chuyenxe.ID_ChuyenXe = ?";
             if (routeId == null) {
                 return data;
             }
