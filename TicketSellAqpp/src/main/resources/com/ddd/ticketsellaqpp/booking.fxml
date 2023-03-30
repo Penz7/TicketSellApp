@@ -37,7 +37,7 @@
       <TextField disable="true" layoutX="42.0" layoutY="273.0" prefHeight="26.0" prefWidth="150.0" />
       <Label layoutX="226.0" layoutY="255.0" text="Số lượng" />
       <TextField disable="true" layoutX="224.0" layoutY="273.0" prefHeight="26.0" prefWidth="51.0" />
-      <Button disable="true" layoutX="644.0" layoutY="273.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Đặt vé" />
+      <Button disable="true" layoutX="644.0" layoutY="273.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="114.0" text="Xác nhận đặt vé" />
       <Button layoutX="719.0" layoutY="14.0" mnemonicParsing="false" onAction="#backMenu" text="Quay trở về" />
    </children>
 </AnchorPane>

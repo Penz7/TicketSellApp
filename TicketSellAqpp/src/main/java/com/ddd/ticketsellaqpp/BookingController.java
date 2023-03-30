@@ -14,6 +14,7 @@ import com.ddd.services.RouteService;
 import com.ddd.services.StationService;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
@@ -40,6 +41,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
@@ -81,24 +83,24 @@ public class BookingController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+        public void initialize(URL url, ResourceBundle rb) {
 
-        this.loadTableColumns();
-//        try {
-////            this.loadTableStation();
-////            this.loadStationData(null);
-////        } catch (SQLException ex) {
-////            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+            this.loadTableColumns();
+    //        try {
+    ////            this.loadTableStation();
+    ////            this.loadStationData(null);
+    ////        } catch (SQLException ex) {
+    ////            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+    //        }
 
-        TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
-        TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
-    }
+            TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
+            TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
+        }
 
     private List<String> getAllNameStation() {
         List<String> name = new ArrayList<>();
         List<Station> listStation = new ArrayList<>();
-        StationService sr = new StationService();
+        StationService sr = new StationService();           
         try {
             listStation = sr.getAllStation();
         } catch (SQLException ex) {
@@ -154,13 +156,11 @@ public class BookingController implements Initializable {
         TableColumn<RouteCoachCouchette, Void> colOrderTicket = new TableColumn<>("Đặt");
         colOrderTicket.setCellFactory(r -> {
             return new TableCell<RouteCoachCouchette, Void>() {
-                private final Button btn = new Button("Đặt");
+                private final Button btn = new Button("\u0110\u1EB7t");
                 {
                     btn.setOnAction(evt -> {
-                        if ("Đặt".equals(btn.getText())) {
-                            Alert a = MessageBox.getBox("Đặt vé",
-                                    "Bạn có chắc đặt vé này",
-                                    Alert.AlertType.CONFIRMATION);
+                        if ("đặt".equalsIgnoreCase(btn.getText())) {
+                            Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc đặt vé này", Alert.AlertType.CONFIRMATION);
                             a.showAndWait().ifPresent(res -> {
                                 if (res == ButtonType.OK) {
                                     btn.setText("Hủy");
@@ -168,10 +168,8 @@ public class BookingController implements Initializable {
                                 }
                             });
                         } else {
-                            if ("Hủy".equals(btn.getText())) {
-                                Alert a = MessageBox.getBox("Hủy vé",
-                                        "Bạn có chắc hủy vé này",
-                                        Alert.AlertType.CONFIRMATION);
+                            if ("hủy".equalsIgnoreCase(btn.getText())) {
+                                Alert a = MessageBox.getBox("Hủy vé", "Bạn có chắc hủy vé này", Alert.AlertType.CONFIRMATION);
                                 a.showAndWait().ifPresent(res -> {
                                     if (res == ButtonType.OK) {
                                         btn.setText("Đặt");
@@ -191,6 +189,11 @@ public class BookingController implements Initializable {
                     } else {
                         setGraphic(btn);
                     }
+                    setOnMousePressed(event -> {
+                        if (event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 1) {
+                            btn.fire();
+                        }
+                    });
                 }
             };
         });
