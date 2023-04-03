@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="481.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.HomeSignAdminController">
+<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="481.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.QuyDinhController">
     <stylesheets>
         <URL value="@/com/ddd/ticketsellaqpp/style.css" />
     </stylesheets>
@@ -20,6 +20,6 @@
          <font>
             <Font name="Tahoma Bold" size="16.0" />
          </font></Button>
-      <Button layoutX="50.0" layoutY="177.0" mnemonicParsing="false" text="Số ghế trong 1 xe" />
+      <Button layoutX="62.0" layoutY="169.0" mnemonicParsing="false" onAction="#getSeat" text="Button" />
    </children>
 </AnchorPane>
