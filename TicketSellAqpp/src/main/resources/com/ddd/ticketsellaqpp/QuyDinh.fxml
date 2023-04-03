@@ -20,6 +20,6 @@
          <font>
             <Font name="Tahoma Bold" size="16.0" />
          </font></Button>
-      <Button layoutX="62.0" layoutY="169.0" mnemonicParsing="false" onAction="#getSeat" text="Button" />
+      <Button layoutX="62.0" layoutY="169.0" mnemonicParsing="false" onAction="#getSeat" text="Quản lý ghế" />
    </children>
 </AnchorPane>
