@@ -106,9 +106,7 @@ public class BookingController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (Integer.parseInt(txtOrderCount.getText()) > 0) {
-            this.btnOrder.setDisable(false);
-        }
+
         setInfoAcount();
         this.loadTableColumns();
         //        try {
@@ -156,31 +154,51 @@ public class BookingController implements Initializable {
     private void loadTableColumns() {
 
         TableColumn<RouteCoachCouchette, Integer> col0 = new TableColumn("Mã chuyến xe");
-        col0.setCellValueFactory(new PropertyValueFactory("routeID"));
-        col0.setPrefWidth(100);
+
+        col0.setCellValueFactory(
+                new PropertyValueFactory("routeID"));
+        col0.setPrefWidth(
+                100);
 
         TableColumn<RouteCoachCouchette, String> col1 = new TableColumn("Tên chuyến xe");
-        col1.setCellValueFactory(new PropertyValueFactory("routeName"));
-        col1.setPrefWidth(150);
+
+        col1.setCellValueFactory(
+                new PropertyValueFactory("routeName"));
+        col1.setPrefWidth(
+                150);
 
         TableColumn<RouteCoachCouchette, String> col2 = new TableColumn("Tên xe");
-        col2.setCellValueFactory(new PropertyValueFactory("coachName"));
-        col2.setPrefWidth(150);
+
+        col2.setCellValueFactory(
+                new PropertyValueFactory("coachName"));
+        col2.setPrefWidth(
+                150);
 
         TableColumn<RouteCoachCouchette, Date> col3 = new TableColumn("Giờ khởi hành");
-        col3.setCellValueFactory(new PropertyValueFactory("departureTime"));
-        col3.setPrefWidth(150);
+
+        col3.setCellValueFactory(
+                new PropertyValueFactory("departureTime"));
+        col3.setPrefWidth(
+                150);
 
         TableColumn<RouteCoachCouchette, Integer> col4 = new TableColumn("Ghế");
-        col4.setCellValueFactory(new PropertyValueFactory("couchetteID"));
-        col4.setPrefWidth(70);
+
+        col4.setCellValueFactory(
+                new PropertyValueFactory("couchetteID"));
+        col4.setPrefWidth(
+                70);
 
         TableColumn<RouteCoachCouchette, BigDecimal> col5 = new TableColumn("Giá vé");
-        col5.setCellValueFactory(new PropertyValueFactory("fare"));
-        col2.setPrefWidth(100);
+
+        col5.setCellValueFactory(
+                new PropertyValueFactory("fare"));
+        col2.setPrefWidth(
+                100);
 
         TableColumn<RouteCoachCouchette, Void> colOrderTicket = new TableColumn<>("Đặt");
-        colOrderTicket.setCellFactory(r -> {
+
+        colOrderTicket.setCellFactory(r
+                -> {
             return new TableCell<RouteCoachCouchette, Void>() {
                 private final Button btn = new Button("\u0110\u1EB7t");
 
@@ -196,7 +214,10 @@ public class BookingController implements Initializable {
                                 if (res == ButtonType.OK) {
                                     cbTicketOrdered.getItems().add(st.getCouchetteID().toString());
                                     int itemCount = cbTicketOrdered.getItems().size();
-                                    txtOrderCount.setText("" + itemCount);
+                                    txtOrderCount.setText(Integer.toString(itemCount));
+                                    if(itemCount > 0) {
+                                        btnOrder.setDisable(false);
+                                    }
                                     btn.setText("Hủy");
                                     MessageBox.getBox("Đặt vé", "Đặt vé xe thành công", Alert.AlertType.INFORMATION).show();
                                 }
@@ -213,7 +234,10 @@ public class BookingController implements Initializable {
                                             }
                                         }
                                         int itemCount = cbTicketOrdered.getItems().size();
-                                        txtOrderCount.setText("" + itemCount);
+                                        txtOrderCount.setText(Integer.toString(itemCount));
+                                        if (itemCount == 0) {
+                                            btnOrder.setDisable(true);
+                                        }
                                         btn.setText("Đặt");
                                         MessageBox.getBox("Hủy vé", "Hủy vé thành công", Alert.AlertType.INFORMATION).show();
                                     }
@@ -238,9 +262,11 @@ public class BookingController implements Initializable {
                     });
                 }
             };
-        });
+        }
+        );
 
-        this.tvRoute.getColumns().addAll(col0, col1, col2, col3, col4, col5, colOrderTicket);
+        this.tvRoute.getColumns()
+                .addAll(col0, col1, col2, col3, col4, col5, colOrderTicket);
     }
 
     private void setInfoAcount() {
