@@ -138,9 +138,14 @@ public class BookingController implements Initializable {
                 STATION_SERVICE.getStationByName(txtSearchDestination.getText()).getStationId().toString(),
                 STATION_SERVICE.getStationByName(txtSearchDeparture.getText()).getStationId().toString(),
                 java.sql.Date.valueOf(dpDateOrder.getValue()));
-        for (Route r : listRoute) {
-            // only changes num, not the array element
-            loadRouteData(r.getRouteId());
+        if (listRoute.isEmpty()) {
+            MessageBox.getBox("Warning", "không có chuyến xe nào", Alert.AlertType.ERROR).show();
+        } else {
+            for (Route r : listRoute) {
+                // only changes num, not the array element
+                loadRouteData(r.getRouteId());
+
+            }
         }
 
     }
@@ -186,7 +191,7 @@ public class BookingController implements Initializable {
 
         col5.setCellValueFactory(
                 new PropertyValueFactory("fare"));
-        col2.setPrefWidth(
+        col5.setPrefWidth(
                 100);
 
         TableColumn<RouteCoachCouchette, Void> colOrderTicket = new TableColumn<>("Đặt");
@@ -290,17 +295,16 @@ public class BookingController implements Initializable {
                 } catch (SQLException ex) {
                     Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-               
+
             }
         });
     }
 
     private void loadRouteData(Integer routeId) throws SQLException {
         List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
-        this.tvRoute.getItems().clear();
         this.tvRoute.setItems(FXCollections.observableList(data));
     }
-    
+
     public static User getCurrentUser() {
         return currentUser;
     }
