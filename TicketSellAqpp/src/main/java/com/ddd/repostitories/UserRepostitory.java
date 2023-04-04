@@ -55,7 +55,7 @@ public class UserRepostitory {
 
         return results;
     }
-
+    
     public List<User> getStaff(String kw) throws SQLException {
         List<User> results = new ArrayList<>();
         String sql = "SELECT * FROM user WHERE role_id = 2";
@@ -166,5 +166,30 @@ public class UserRepostitory {
             }
         }
     }
-
+    
+     public User getOneUserByID(Integer ID) throws SQLException {
+    try (Connection conn = JdbcUtils.getConn();
+            PreparedStatement stm = conn.prepareStatement("SELECT * FROM user WHERE user_id = ?")) {
+        stm.setInt(1, ID);
+        try (ResultSet rs = stm.executeQuery()) {
+            if (rs.next()) {
+                User s = new User(
+                        rs.getInt(ID),
+                        rs.getString("user_fullname"),
+                        rs.getString("user_id_card"),
+                        rs.getString("user_phone_number"),
+                        rs.getDate("user_date_of_birth"),
+                        rs.getDate("user_date_join"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("user_address"),
+                        rs.getInt("role_id")
+                );
+                return s;
+            } else {
+                throw new SQLException("No user found with ID " + ID);
+            }
+        }
+    }
+}
 }

@@ -4,6 +4,8 @@
  */
 package com.ddd.services;
 
+import com.ddd.pojo.Couchette;
+import com.ddd.pojo.Ticket;
 import com.ddd.repostitories.BookingRepostitory;
 import com.ddd.utils.JdbcUtils;
 import java.sql.Connection;
@@ -19,7 +21,16 @@ import java.util.Objects;
  * @author Admin
  */
 public class BookingService {
-//    private final static BookingRepostitory BOOKING_REPOSITORY;
+
+    private final static BookingRepostitory BOOKING_REPOSTITORY;
+
+    static {
+        BOOKING_REPOSTITORY = new BookingRepostitory();
+    }
+    
+    public boolean AddTicket(Ticket ticket, Couchette couchette) throws SQLException {
+        return BOOKING_REPOSTITORY.AddTicket(ticket, couchette);
+    }
 
     public boolean checkSeatLimit(int maVeXe) throws SQLException {
         String query = "SELECT COUNT(*) AS seat_count FROM ghe g JOIN vexe v ON g.ID_Ghe = v.ID_Ghe WHERE v.ID_VeXe = ? AND g.TinhTrangGhe = 1";

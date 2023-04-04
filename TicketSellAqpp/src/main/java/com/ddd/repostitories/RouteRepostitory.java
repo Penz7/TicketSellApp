@@ -27,16 +27,16 @@ import javafx.collections.ObservableList;
  * @author Admin
  */
 public class RouteRepostitory {
-    
+
     public List<Route> getRoutesById(Integer id) throws SQLException {
         List<Route> routes = new ArrayList<>();
         String query = "SELECT ID_ChuyenXe, tenCX, giaChuyen FROM chuyenxe WHERE ID_ChuyenXe = ?";
-        
+
         try (Connection connection = JdbcUtils.getConn(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            
+
             preparedStatement.setInt(1, id);
             ResultSet rs = preparedStatement.executeQuery();
-            
+
             if (rs.next()) {
                 Route route = new Route(
                         rs.getInt("ID_ChuyenXe"),
@@ -50,7 +50,6 @@ public class RouteRepostitory {
         }
         return routes;
     }
-
 
 //    public List<Route> getRoutetById(Integer ID_ChuyenXe) throws SQLException {
 //        List<Route> routes = new ArrayList<>();
@@ -93,7 +92,6 @@ public class RouteRepostitory {
         return results;
     }
 
-    
     public List<Route> getRouteByDesIdByDepId(String desId, String depId, Date orderDate) throws SQLException {
         List<Route> route = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
@@ -122,7 +120,6 @@ public class RouteRepostitory {
         }
         return route;
     }
-
 
     public boolean deleteRoute(Integer id) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
@@ -217,5 +214,17 @@ public class RouteRepostitory {
 //            return 0;
 //        }
 //    }
-
+    public Route getOneRouteByID(Integer ID) throws SQLException {
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM chuyenxe WHERE ID_ChuyenXe = ?")) {
+            stm.setInt(1, ID);
+            try (ResultSet rs = stm.executeQuery()) {
+                if (rs.next()) {
+                    Route s = new Route(rs.getInt("ID_Chuyenxe"), rs.getString("tenCX"), rs.getDouble("giaChuyen"), rs.getInt("ID_benDen"), rs.getInt("ID_benDi"));
+                    return s;
+                } else {
+                    throw new SQLException("No route found with ID " + ID);
+                }
+            }
+        }
+    }
 }

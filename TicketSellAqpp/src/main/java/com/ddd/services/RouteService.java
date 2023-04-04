@@ -32,4 +32,8 @@ public class RouteService {
     public List<Route> getRouteByDesIdByDepId(String desId, String depId, Date orderDate) throws SQLException {
         return ROUTE_REPOSITORY.getRouteByDesIdByDepId(desId, depId, orderDate);
     }
+    
+       public Route getOneRouteByID(Integer ID) throws SQLException {
+           return ROUTE_REPOSITORY.getOneRouteByID(ID);
+       }
 }

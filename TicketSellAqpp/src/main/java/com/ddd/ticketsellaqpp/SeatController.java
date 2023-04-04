@@ -4,8 +4,8 @@
  */
 package com.ddd.ticketsellaqpp;
 
-import com.ddd.pojo.Seat;
-import com.ddd.repostitories.SeatReposititory;
+import com.ddd.pojo.Couchette;
+import com.ddd.repostitories.CouchetteRepostitory;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -31,7 +31,7 @@ import javafx.stage.Stage;
  */
 public class SeatController implements Initializable {
 
-    static SeatReposititory s = new SeatReposititory();
+    static CouchetteRepostitory s = new CouchetteRepostitory();
 
     @FXML
     private Button btnSeat;
@@ -43,19 +43,19 @@ public class SeatController implements Initializable {
             TextField idTextField = new TextField();
             Button searchBtn = new Button("Tìm kiếm");
 
-            TableView<Seat> seatTable = new TableView<>();
-            TableColumn<Seat, Integer> idColumn = new TableColumn<>("Số ghế");
+            TableView<Couchette> seatTable = new TableView<>();
+            TableColumn<Couchette, Integer> idColumn = new TableColumn<>("Số ghế");
             idColumn.setCellValueFactory(new PropertyValueFactory<>("ID_Ghe"));
 
-            TableColumn<Seat, Boolean> seatStatusColumn = new TableColumn<>("Tình trạng ghế");
+            TableColumn<Couchette, Boolean> seatStatusColumn = new TableColumn<>("Tình trạng ghế");
             seatStatusColumn.setCellValueFactory(new PropertyValueFactory<>("TinhTrangGhe"));
 
-            TableColumn<Seat, Integer> coachIdColumn = new TableColumn<>("Xe");
+            TableColumn<Couchette, Integer> coachIdColumn = new TableColumn<>("Xe");
             coachIdColumn.setCellValueFactory(new PropertyValueFactory<>("ID_Xe"));
 
             seatTable.getColumns().addAll(idColumn, seatStatusColumn, coachIdColumn);
 
-            List<Seat> seats = s.getSeatByCoadID(null);
+            List<Couchette> seats = s.getSeatByCoadID(null);
             seatTable.setItems(FXCollections.observableList(seats));
 
             HBox hbox = new HBox(10);

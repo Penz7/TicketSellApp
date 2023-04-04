@@ -6,39 +6,63 @@ package com.ddd.pojo;
 
 /**
  *
- * @author Admin
+ * @author admin
  */
 public class Couchette {
-    private Integer couchetteID;
-    private Integer status; // 0 la chua co ai dat, 1 la da co khach dat
+    private Integer CouchetteId;
+    private Boolean Status;
+    private Integer CouchId;
+
+    public Couchette(Integer ID_Ghe, Boolean TinhTrangGhe, Integer ID_Xe) {
+        this.CouchetteId = ID_Ghe;
+        this.Status = TinhTrangGhe;
+        this.CouchId = ID_Xe;
+    }
 
     public Couchette() {
     }
 
-    public Couchette(Integer couchetteID, Integer status) {
-        this.couchetteID = couchetteID;
-        this.status = status;
+    public Integer getID_Ghe() {
+        return CouchetteId;
     }
 
-    public void setCouchetteID(Integer couchetteID) {
-        this.couchetteID = couchetteID;
+    public void setID_Ghe(Integer ID_Ghe) {
+        this.CouchetteId = ID_Ghe;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public Integer getCouchId() {
+        return CouchId;
     }
 
-    public Integer getStatus() {
-        return status;
+    public void setCouchId(Integer CouchId) {
+        this.CouchId = CouchId;
     }
 
-    public Integer getCouchetteID() {
-        return couchetteID;
+    public Boolean getTinhTrangGhe() {
+        return Status;
     }
 
-    @Override
-    public String toString() {
-        return super.toString(); 
+    public void setTinhTrangGhe(Boolean TinhTrangGhe) {
+        this.Status = TinhTrangGhe;
     }
+
+    public Integer getCouchetteId() {
+        return CouchetteId;
+    }
+
+    public void setCouchetteId(Integer CouchetteId) {
+        this.CouchetteId = CouchetteId;
+    }
+
+    public void setStatus(Boolean Status) {
+        this.Status = Status;
+    }
+
+    public Boolean getStatus() {
+        return Status;
+    }
+
+    
+    
     
 }

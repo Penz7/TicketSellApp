@@ -7,17 +7,25 @@ package com.ddd.ticketsellaqpp;
 import com.ddd.pojo.Route;
 import com.ddd.pojo.RouteCoachCouchette;
 import com.ddd.pojo.Station;
+import com.ddd.pojo.Ticket;
 import com.ddd.pojo.User;
-import com.ddd.repostitories.SeatReposititory;
+import com.ddd.repostitories.CouchetteRepostitory;
+import com.ddd.services.BookingService;
+import com.ddd.services.CouchetteService;
 import com.ddd.services.RouteCoachCouchetteService;
 import com.ddd.services.RouteService;
 import com.ddd.services.StationService;
+import com.ddd.services.TicketService;
+import com.ddd.services.UserService;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -46,18 +54,27 @@ import org.controlsfx.control.textfield.TextFields;
  */
 public class BookingController implements Initializable {
 
-    static SeatReposititory seat = new SeatReposititory();
+    static CouchetteRepostitory seat = new CouchetteRepostitory();
 
     private static User currentUser;
     private final static RouteCoachCouchetteService ROUTE_COACH_COUCHETTE_SERVICE;
     private final static RouteService ROUTE_SERVICE;
     private final static StationService STATION_SERVICE;
+    private final static BookingService BOOKING_SERVICE;
+    private final static TicketService TICKET_SERVICE;
+    private final static CouchetteService COUCHETTE_SERVICE;
+    private final static UserService USER_SERVICE;
+    private final static DateTimeFormatter DTF;
 
     static {
         ROUTE_COACH_COUCHETTE_SERVICE = new RouteCoachCouchetteService();
         ROUTE_SERVICE = new RouteService();
         STATION_SERVICE = new StationService();
-//      //DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        BOOKING_SERVICE = new BookingService();
+        TICKET_SERVICE = new TicketService();
+        COUCHETTE_SERVICE = new CouchetteService();
+        USER_SERVICE = new UserService();
+        DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
 
     @FXML
@@ -94,6 +111,8 @@ public class BookingController implements Initializable {
     TableView<RouteCoachCouchette> tvRoute;
     @FXML
     DatePicker dpDateOrder;
+    
+    List<Integer> routeId = new ArrayList();
 
     /**
      * Initializes the controller class.
@@ -217,7 +236,7 @@ public class BookingController implements Initializable {
                             Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc đặt vé này", Alert.AlertType.CONFIRMATION);
                             a.showAndWait().ifPresent(res -> {
                                 if (res == ButtonType.OK) {
-
+                                    routeId.add(st.getRouteID());
                                     cbTicketOrdered.getItems().add(st.getCouchetteID().toString());
                                     int itemCount = cbTicketOrdered.getItems().size();
                                     txtOrderCount.setText(Integer.toString(itemCount));
@@ -288,12 +307,20 @@ public class BookingController implements Initializable {
 
     @FXML
     private void checkOrder() {
-        Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc chắn chưa!", Alert.AlertType.CONFIRMATION);
+        Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
+        Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF)) ;
         a.showAndWait().ifPresent(res -> {
             if (res == ButtonType.OK) {
+                int count = 0;
                 try {
                     for (Object item : cbTicketOrdered.getItems()) {
                         seat.updateStatusSeat(Integer.parseInt((String) item), true);
+                        Ticket t = new Ticket(printingDate,
+                                COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)), 
+                                USER_SERVICE.getOneUserByID(App.currentUser.getUser_id()),
+                                USER_SERVICE.getOneUserByID(5),
+                                ROUTE_SERVICE.getOneRouteByID(routeId.get(count++)));
+                        BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)));
                     }
                     this.txtOrderCount.setText("");
                     this.cbTicketOrdered.getItems().clear();

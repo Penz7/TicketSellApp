@@ -22,12 +22,6 @@ public class Ticket {
     
     public Ticket() {
     }
-
-    public Ticket(Integer ticketId, BigDecimal fare, Timestamp printingDate) {
-        this.ticketId = ticketId;
-        this.printingDate = printingDate;
-    }
-
     
     public Integer getTicketId() {
         return ticketId;
@@ -76,6 +70,14 @@ public class Ticket {
 
     public void setStaff(User staff) {
         this.staff = staff;
+    }
+
+    public Ticket(Timestamp printingDate, Couchette couchette, User customer, User staff, Route route) {
+        this.printingDate = printingDate;
+        this.couchette = couchette;
+        this.customer = customer;
+        this.staff = staff;
+        this.route = route;
     }
     
     
