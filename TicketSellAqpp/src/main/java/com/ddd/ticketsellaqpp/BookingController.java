@@ -133,19 +133,25 @@ public class BookingController implements Initializable {
 
     @FXML
     public void findRoute() throws SQLException {
-        List<Route> listRoute = new ArrayList<>();
-        listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(
-                STATION_SERVICE.getStationByName(txtSearchDestination.getText()).getStationId().toString(),
-                STATION_SERVICE.getStationByName(txtSearchDeparture.getText()).getStationId().toString(),
-                java.sql.Date.valueOf(dpDateOrder.getValue()));
-        if (listRoute.isEmpty()) {
-            MessageBox.getBox("Warning", "không có chuyến xe nào", Alert.AlertType.ERROR).show();
-        } else {
-            for (Route r : listRoute) {
-                // only changes num, not the array element
-                loadRouteData(r.getRouteId());
+        if (txtSearchDestination.getText() != null && txtSearchDestination.getText() != "" && txtSearchDeparture.getText() != null && txtSearchDeparture.getText() != "" && dpDateOrder.getValue() != null) {
+            List<Route> listRoute = new ArrayList<>();
+            listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(
+                    STATION_SERVICE.getStationByName(txtSearchDestination.getText()).getStationId().toString(),
+                    STATION_SERVICE.getStationByName(txtSearchDeparture.getText()).getStationId().toString(),
+                    java.sql.Date.valueOf(dpDateOrder.getValue()));
+            if (listRoute.isEmpty()) {
+                MessageBox.getBox("Warning", "Không có chuyến xe cần tìm", Alert.AlertType.INFORMATION).show();
+            } else {
+                for (Route r : listRoute) {
+                    // only changes num, not the array element
+                    loadRouteData(r.getRouteId());
 
+                }
             }
+
+        }
+        else{
+            MessageBox.getBox("Warning", "Chưa nhập đủ dữ liệu cần thiết!", Alert.AlertType.WARNING).show();
         }
 
     }
