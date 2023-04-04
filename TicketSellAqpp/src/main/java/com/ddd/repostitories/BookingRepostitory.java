@@ -29,9 +29,9 @@ public class BookingRepostitory {
                     + "(?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, couchette.getCouchetteId());
-            preparedStatement.setInt(2, ticket.getCustomer().getUser_id());
-            preparedStatement.setInt(3, ticket.getRoute().getRouteId());
-            preparedStatement.setInt(4, ticket.getStaff().getUser_id());
+            preparedStatement.setInt(2, ticket.getCustomer());
+            preparedStatement.setInt(3, ticket.getRoute());
+            preparedStatement.setInt(4, ticket.getStaff());
             preparedStatement.setTimestamp(5, ticket.getPrintingDate());
             preparedStatement.executeUpdate();
             try {

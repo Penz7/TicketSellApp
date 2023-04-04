@@ -316,10 +316,10 @@ public class BookingController implements Initializable {
                     for (Object item : cbTicketOrdered.getItems()) {
                         seat.updateStatusSeat(Integer.parseInt((String) item), true);
                         Ticket t = new Ticket(printingDate,
-                                COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)), 
-                                USER_SERVICE.getOneUserByID(App.currentUser.getUser_id()),
-                                USER_SERVICE.getOneUserByID(5),
-                                ROUTE_SERVICE.getOneRouteByID(routeId.get(count++)));
+                                Integer.parseInt((String) item), 
+                                App.currentUser.getUser_id(),
+                                5,
+                                routeId.get(count++));
                         BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)));
                     }
                     this.txtOrderCount.setText("");

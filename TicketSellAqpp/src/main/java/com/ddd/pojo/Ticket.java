@@ -15,10 +15,10 @@ import java.sql.Timestamp;
 public class Ticket {
     private Integer ticketId;
     private Timestamp printingDate; // Ngay in
-    private Couchette couchette;
-    private User customer;
-    private User staff;
-    private Route route;
+    private Integer couchetteId;
+    private Integer customerId;
+    private Integer staffId;
+    private Integer routeId;
     
     public Ticket() {
     }
@@ -39,45 +39,45 @@ public class Ticket {
         this.printingDate = printingDate;
     }
 
-    public Couchette getCouchette() {
-        return couchette;
+    public Integer getCouchette() {
+        return couchetteId;
     }
 
-    public void setCouchette(Couchette couchette) {
-        this.couchette = couchette;
+    public void setCouchette(Integer couchette) {
+        this.couchetteId = couchette;
     }
 
 
-    public void setRoute(Route route) {
-        this.route = route;
+    public void setRoute(Integer route) {
+        this.routeId = route;
     }
 
-    public Route getRoute() {
-        return route;
+    public Integer getRoute() {
+        return routeId;
     }
 
-    public User getCustomer() {
-        return customer;
+    public Integer getCustomer() {
+        return customerId;
     }
 
-    public User getStaff() {
-        return staff;
+    public Integer getStaff() {
+        return staffId;
     }
 
-    public void setCustomer(User customer) {
-        this.customer = customer;
+    public void setCustomer(Integer customer) {
+        this.customerId = customer;
     }
 
-    public void setStaff(User staff) {
-        this.staff = staff;
+    public void setStaff(Integer staff) {
+        this.staffId = staff;
     }
 
-    public Ticket(Timestamp printingDate, Couchette couchette, User customer, User staff, Route route) {
+    public Ticket(Timestamp printingDate, Integer couchette, Integer customer, Integer staff, Integer route) {
         this.printingDate = printingDate;
-        this.couchette = couchette;
-        this.customer = customer;
-        this.staff = staff;
-        this.route = route;
+        this.couchetteId = couchette;
+        this.customerId = customer;
+        this.staffId = staff;
+        this.routeId = route;
     }
     
     
