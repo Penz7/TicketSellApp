@@ -37,6 +37,7 @@ public class SignInRepostitory {
                 user.setUser_fullname(rs.getString("user_fullname"));
                 user.setUser_id_card(rs.getString("user_id_card"));
                 user.setUser_date_join(rs.getDate("user_date_join"));
+                user.setUser_address(rs.getString("user_address"));
                 user.setUser_phone_number(rs.getString("user_phone_number"));
                 user.setUser_id(rs.getInt("user_id"));
                 return user;

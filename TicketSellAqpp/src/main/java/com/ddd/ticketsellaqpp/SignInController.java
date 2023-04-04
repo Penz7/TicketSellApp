@@ -94,7 +94,7 @@ public class SignInController implements Initializable {
                     }
                 } else {
                     try {
-                        App.setRoot("home-customer");
+                        App.setRoot("booking");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

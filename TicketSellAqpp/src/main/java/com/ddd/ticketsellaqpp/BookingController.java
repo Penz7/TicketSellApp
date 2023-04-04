@@ -4,10 +4,12 @@
  */
 package com.ddd.ticketsellaqpp;
 
+import com.ddd.pojo.Couchette;
 import com.ddd.pojo.Route;
 import com.ddd.pojo.RouteCoach;
 import com.ddd.pojo.RouteCoachCouchette;
 import com.ddd.pojo.Station;
+import com.ddd.pojo.User;
 import com.ddd.repostitories.StationRepostitory;
 import com.ddd.services.RouteCoachCouchetteService;
 import com.ddd.services.RouteService;
@@ -35,6 +37,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -51,6 +54,7 @@ import org.controlsfx.control.textfield.TextFields;
  */
 public class BookingController implements Initializable {
 
+    private static User currentUser;
     private final static RouteCoachCouchetteService ROUTE_COACH_COUCHETTE_SERVICE;
     private final static RouteService ROUTE_SERVICE;
     private final static StationService STATION_SERVICE;
@@ -61,6 +65,24 @@ public class BookingController implements Initializable {
         STATION_SERVICE = new StationService();
 //      //DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     }
+
+    @FXML
+    private TextField txtUsername;
+
+    @FXML
+    private TextField txtUserphone;
+
+    @FXML
+    private TextField txtUseraddress;
+
+    @FXML
+    private TextField txtOrderCount;
+
+    @FXML
+    private ComboBox cbTicketOrdered;
+
+    @FXML
+    private Button btnOrder;
 
     @FXML
     private void backMenu() {
@@ -83,24 +105,27 @@ public class BookingController implements Initializable {
      * Initializes the controller class.
      */
     @Override
-        public void initialize(URL url, ResourceBundle rb) {
-
-            this.loadTableColumns();
-    //        try {
-    ////            this.loadTableStation();
-    ////            this.loadStationData(null);
-    ////        } catch (SQLException ex) {
-    ////            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
-    //        }
-
-            TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
-            TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
+    public void initialize(URL url, ResourceBundle rb) {
+        if (Integer.parseInt(txtOrderCount.getText()) > 0) {
+            this.btnOrder.setDisable(false);
         }
+        setInfoAcount();
+        this.loadTableColumns();
+        //        try {
+        ////            this.loadTableStation();
+        ////            this.loadStationData(null);
+        ////        } catch (SQLException ex) {
+        ////            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+        //        }
+
+        TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
+        TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
+    }
 
     private List<String> getAllNameStation() {
         List<String> name = new ArrayList<>();
         List<Station> listStation = new ArrayList<>();
-        StationService sr = new StationService();           
+        StationService sr = new StationService();
         try {
             listStation = sr.getAllStation();
         } catch (SQLException ex) {
@@ -129,6 +154,7 @@ public class BookingController implements Initializable {
     }
 
     private void loadTableColumns() {
+
         TableColumn<RouteCoachCouchette, Integer> col0 = new TableColumn("Mã chuyến xe");
         col0.setCellValueFactory(new PropertyValueFactory("routeID"));
         col0.setPrefWidth(100);
@@ -157,14 +183,22 @@ public class BookingController implements Initializable {
         colOrderTicket.setCellFactory(r -> {
             return new TableCell<RouteCoachCouchette, Void>() {
                 private final Button btn = new Button("\u0110\u1EB7t");
+
                 {
                     btn.setOnAction(evt -> {
+
+                        Button b = (Button) evt.getSource();
+                        TableCell cell = (TableCell) b.getParent();
+                        RouteCoachCouchette st = (RouteCoachCouchette) cell.getTableRow().getItem();
                         if ("đặt".equalsIgnoreCase(btn.getText())) {
                             Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc đặt vé này", Alert.AlertType.CONFIRMATION);
                             a.showAndWait().ifPresent(res -> {
                                 if (res == ButtonType.OK) {
+                                    cbTicketOrdered.getItems().add(st.getCouchetteID().toString());
+                                    int itemCount = cbTicketOrdered.getItems().size();
+                                    txtOrderCount.setText("" + itemCount);
                                     btn.setText("Hủy");
-                                    MessageBox.getBox("Đặt vé", "Đặt vé thành công", Alert.AlertType.INFORMATION).show();
+                                    MessageBox.getBox("Đặt vé", "Đặt vé xe thành công", Alert.AlertType.INFORMATION).show();
                                 }
                             });
                         } else {
@@ -172,6 +206,14 @@ public class BookingController implements Initializable {
                                 Alert a = MessageBox.getBox("Hủy vé", "Bạn có chắc hủy vé này", Alert.AlertType.CONFIRMATION);
                                 a.showAndWait().ifPresent(res -> {
                                     if (res == ButtonType.OK) {
+                                        for (Object item : cbTicketOrdered.getItems()) {
+                                            if (item.equals(st.getCouchetteID().toString())) {
+                                                cbTicketOrdered.getItems().remove(item);
+                                                break;
+                                            }
+                                        }
+                                        int itemCount = cbTicketOrdered.getItems().size();
+                                        txtOrderCount.setText("" + itemCount);
                                         btn.setText("Đặt");
                                         MessageBox.getBox("Hủy vé", "Hủy vé thành công", Alert.AlertType.INFORMATION).show();
                                     }
@@ -201,10 +243,28 @@ public class BookingController implements Initializable {
         this.tvRoute.getColumns().addAll(col0, col1, col2, col3, col4, col5, colOrderTicket);
     }
 
+    private void setInfoAcount() {
+        User user = new User();
+        user = App.currentUser;
+        if (App.currentUser.getUser_id() > 0) {
+            this.txtUsername.setText(user.getUser_fullname());
+            this.txtUserphone.setText(user.getUser_phone_number());
+            this.txtUseraddress.setText(user.getUser_address());
+        }
+    }
+
     private void loadRouteData(Integer routeId) throws SQLException {
         List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
         this.tvRoute.getItems().clear();
         this.tvRoute.setItems(FXCollections.observableList(data));
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        BookingController.currentUser = currentUser;
     }
 
 }

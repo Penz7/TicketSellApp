@@ -12,12 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 
-
-public class HomeSignAdminController implements Initializable{
+public class HomeSignAdminController implements Initializable {
 
     private static User currentUser;
-    
-     @FXML
+
+    @FXML
     private Label lbUserfullname;
 
     @FXML
@@ -28,13 +27,12 @@ public class HomeSignAdminController implements Initializable{
 
     @FXML
     private Label lbUsername;
- 
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-      setInfoAcount();
+        setInfoAcount();
     }
-    
+
     @FXML
     private void setChuyenxeStage() {
         try {
@@ -44,8 +42,6 @@ public class HomeSignAdminController implements Initializable{
         }
     }
 
-
-
     @FXML
     private void setBenxeStage() {
         try {
@@ -54,8 +50,8 @@ public class HomeSignAdminController implements Initializable{
             e.printStackTrace();
         }
     }
-    
-     @FXML
+
+    @FXML
     private void setQuyDinh() {
         try {
             App.setRoot("QuyDinh");
@@ -63,8 +59,8 @@ public class HomeSignAdminController implements Initializable{
             e.printStackTrace();
         }
     }
-    
-     @FXML
+
+    @FXML
     private void setStaffStage() {
         try {
             App.setRoot("QuanLyNhanVien");
@@ -72,8 +68,8 @@ public class HomeSignAdminController implements Initializable{
             e.printStackTrace();
         }
     }
-    
-     private void setInfoAcount() {
+
+    private void setInfoAcount() {
         User user = new User();
         user = App.currentUser;
         if (App.currentUser.getUser_id() > 0) {
@@ -83,8 +79,6 @@ public class HomeSignAdminController implements Initializable{
             this.lbUsername.setText(":   " + user.getUsername());
         }
     }
-    
-    
 
     // đăng xuất
     @FXML
@@ -108,11 +102,5 @@ public class HomeSignAdminController implements Initializable{
     public static void setCurrentUser(User currentUser) {
         HomeSignAdminController.currentUser = currentUser;
     }
-
-    
-
-   
-    
-    
 
 }
