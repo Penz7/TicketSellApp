@@ -41,9 +41,9 @@ public class HomeCustomerController implements Initializable {
     private static User currentUser;
 
     @FXML
-    private void setBenxeStage() {
+    private void setBooking() {
         try {
-            App.setRoot("QuanLyBenXe");
+            App.setRoot("booking");
         } catch (IOException e) {
             e.printStackTrace();
         }

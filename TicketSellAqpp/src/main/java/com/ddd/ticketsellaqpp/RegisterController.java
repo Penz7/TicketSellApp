@@ -6,6 +6,7 @@ package com.ddd.ticketsellaqpp;
 
 import com.ddd.services.RegisterService;
 import com.ddd.utils.MessageBox;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -81,6 +82,15 @@ public class RegisterController implements Initializable {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    @FXML
+    private void signInAccount() {
+        try {
+            App.setRoot("sign-in");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
