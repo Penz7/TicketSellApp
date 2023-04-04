@@ -4,34 +4,26 @@
  */
 package com.ddd.ticketsellaqpp;
 
-import com.ddd.pojo.Couchette;
 import com.ddd.pojo.Route;
-import com.ddd.pojo.RouteCoach;
 import com.ddd.pojo.RouteCoachCouchette;
 import com.ddd.pojo.Station;
 import com.ddd.pojo.User;
-import com.ddd.repostitories.StationRepostitory;
+import com.ddd.repostitories.SeatReposititory;
 import com.ddd.services.RouteCoachCouchetteService;
 import com.ddd.services.RouteService;
 import com.ddd.services.StationService;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.time.format.DateTimeFormatter;
-import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -53,6 +45,8 @@ import org.controlsfx.control.textfield.TextFields;
  * @author Admin
  */
 public class BookingController implements Initializable {
+
+    static SeatReposititory seat = new SeatReposititory();
 
     private static User currentUser;
     private final static RouteCoachCouchetteService ROUTE_COACH_COUCHETTE_SERVICE;
@@ -212,10 +206,11 @@ public class BookingController implements Initializable {
                             Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc đặt vé này", Alert.AlertType.CONFIRMATION);
                             a.showAndWait().ifPresent(res -> {
                                 if (res == ButtonType.OK) {
+
                                     cbTicketOrdered.getItems().add(st.getCouchetteID().toString());
                                     int itemCount = cbTicketOrdered.getItems().size();
                                     txtOrderCount.setText(Integer.toString(itemCount));
-                                    if(itemCount > 0) {
+                                    if (itemCount > 0) {
                                         btnOrder.setDisable(false);
                                     }
                                     btn.setText("Hủy");
@@ -227,6 +222,7 @@ public class BookingController implements Initializable {
                                 Alert a = MessageBox.getBox("Hủy vé", "Bạn có chắc hủy vé này", Alert.AlertType.CONFIRMATION);
                                 a.showAndWait().ifPresent(res -> {
                                     if (res == ButtonType.OK) {
+
                                         for (Object item : cbTicketOrdered.getItems()) {
                                             if (item.equals(st.getCouchetteID().toString())) {
                                                 cbTicketOrdered.getItems().remove(item);
@@ -279,12 +275,32 @@ public class BookingController implements Initializable {
         }
     }
 
+    @FXML
+    private void checkOrder() {
+        Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc chắn chưa!", Alert.AlertType.CONFIRMATION);
+        a.showAndWait().ifPresent(res -> {
+            if (res == ButtonType.OK) {
+                try {
+                    for (Object item : cbTicketOrdered.getItems()) {
+                        seat.updateStatusSeat(Integer.parseInt((String) item), true);
+                    }
+                    this.txtOrderCount.setText("");
+                    this.cbTicketOrdered.getItems().clear();
+                    findRoute();
+                } catch (SQLException ex) {
+                    Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
+            }
+        });
+    }
+
     private void loadRouteData(Integer routeId) throws SQLException {
         List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
         this.tvRoute.getItems().clear();
         this.tvRoute.setItems(FXCollections.observableList(data));
     }
-
+    
     public static User getCurrentUser() {
         return currentUser;
     }
