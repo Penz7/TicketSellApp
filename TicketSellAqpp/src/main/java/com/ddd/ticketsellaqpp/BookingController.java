@@ -111,7 +111,7 @@ public class BookingController implements Initializable {
     TableView<RouteCoachCouchette> tvRoute;
     @FXML
     DatePicker dpDateOrder;
-    
+
     List<Integer> routeId = new ArrayList();
 
     /**
@@ -168,8 +168,7 @@ public class BookingController implements Initializable {
                 }
             }
 
-        }
-        else{
+        } else {
             MessageBox.getBox("Warning", "Chưa nhập đủ dữ liệu cần thiết!", Alert.AlertType.WARNING).show();
         }
 
@@ -244,7 +243,7 @@ public class BookingController implements Initializable {
                                         btnOrder.setDisable(false);
                                     }
                                     btn.setText("Hủy");
-                                    MessageBox.getBox("Đặt vé", "Đặt vé xe thành công", Alert.AlertType.INFORMATION).show();
+                                    MessageBox.getBox("Đặt vé", "Vé xe đã vào danh sách xác nhận", Alert.AlertType.INFORMATION).show();
                                 }
                             });
                         } else {
@@ -308,17 +307,17 @@ public class BookingController implements Initializable {
     @FXML
     private void checkOrder() {
         Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
-        Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF)) ;
+        Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
         a.showAndWait().ifPresent(res -> {
             if (res == ButtonType.OK) {
                 int count = 0;
                 try {
                     for (Object item : cbTicketOrdered.getItems()) {
                         seat.updateStatusSeat(Integer.parseInt((String) item), true);
-                        Ticket t = new Ticket(printingDate,
-                                Integer.parseInt((String) item), 
+                        Ticket t = new Ticket(null,
+                                Integer.parseInt((String) item),
                                 App.currentUser.getUser_id(),
-                                5,
+                                USER_SERVICE.getOneUserIdByName("System").getUser_id(),
                                 routeId.get(count++));
                         BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)));
                     }
