@@ -264,7 +264,17 @@ public class BookingController implements Initializable {
                                     if (itemCount > 0) {
                                         btnOrder.setDisable(false);
                                     }
-                                    btn.setText("Hủy");
+                                    for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                                        Integer currentRouteId = entry.getKey();
+                                        List<Integer> list = map.get(currentRouteId);
+                                        if (!list.isEmpty()) {
+                                            for (Integer couchetteId : list) {
+                                                if (st.getRouteID() == currentRouteId && st.getCouchetteID() == couchetteId) {
+                                                    btn.setText("Hủy");
+                                                }
+                                            }
+                                        }
+                                    }                             
                                     MessageBox.getBox("Đặt vé", "Vé xe đã vào danh sách xác nhận", Alert.AlertType.INFORMATION).show();
                                 }
                             });
