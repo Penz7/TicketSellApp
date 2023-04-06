@@ -27,7 +27,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -112,7 +114,7 @@ public class BookingController implements Initializable {
     @FXML
     DatePicker dpDateOrder;
 
-    List<Integer> routeId = new ArrayList();
+    Map<Integer /*ID route*/, List<Integer> /*ID cua*/> map = new HashMap<>();
 
     /**
      * Initializes the controller class.
@@ -235,9 +237,24 @@ public class BookingController implements Initializable {
                             Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc đặt vé này", Alert.AlertType.CONFIRMATION);
                             a.showAndWait().ifPresent(res -> {
                                 if (res == ButtonType.OK) {
-                                    routeId.add(st.getRouteID());
-                                    cbTicketOrdered.getItems().add(st.getCouchetteID().toString());
-                                    int itemCount = cbTicketOrdered.getItems().size();
+                                    if (map.containsKey(st.getRouteID()) == true) {
+                                        map.get(st.getRouteID()).add(st.getCouchetteID());
+                                    } else {
+                                        List<Integer> list1 = new ArrayList<>();
+                                        list1.add(st.getCouchetteID());
+                                        map.put(st.getRouteID(), list1);
+                                    }
+                                    cbTicketOrdered.getItems().clear();
+                                    for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                                        Integer routeId = entry.getKey();
+                                        List<Integer> couchetteId = entry.getValue();
+                                        if(map.get(routeId).isEmpty() == false)
+                                            cbTicketOrdered.getItems().add("Chuyến: " + routeId + " - " + "Ghế: " + couchetteId);
+                                    }
+                                    int itemCount = 0;
+                                    for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                                        itemCount += entry.getValue().size();
+                                    }
                                     txtOrderCount.setText(Integer.toString(itemCount));
                                     if (itemCount > 0) {
                                         btnOrder.setDisable(false);
@@ -251,14 +268,23 @@ public class BookingController implements Initializable {
                                 Alert a = MessageBox.getBox("Hủy vé", "Bạn có chắc hủy vé này", Alert.AlertType.CONFIRMATION);
                                 a.showAndWait().ifPresent(res -> {
                                     if (res == ButtonType.OK) {
-
-                                        for (Object item : cbTicketOrdered.getItems()) {
-                                            if (item.equals(st.getCouchetteID().toString())) {
-                                                cbTicketOrdered.getItems().remove(item);
-                                                break;
-                                            }
+                                        if (map.isEmpty()) {
+                                            MessageBox.getBox("Lỗi hủy vé", "Vé hiện tại trong giỏ đợi đang rỗng!", Alert.AlertType.CONFIRMATION).showAndWait();
+                                        } else {
+                                            map.get(st.getRouteID()).remove(Integer.valueOf(st.getCouchetteID()));
+                                            cbTicketOrdered.getItems().remove("Chuyến: " + st.getRouteID() + " - " + "Ghế: " + "[" + st.getCouchetteID()+"]");
                                         }
-                                        int itemCount = cbTicketOrdered.getItems().size();
+//                                        routeId.remove(st.getRouteID());
+//                                        for (Object item : cbTicketOrdered.getItems()) {
+//                                            if (item.equals(st.getCouchetteID().toString())) {
+//                                                cbTicketOrdered.getItems().remove(item);
+//                                                break;
+//                                            }
+//                                        }
+                                        int itemCount = 0;
+                                        for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                                            itemCount += entry.getValue().size();
+                                        }
                                         txtOrderCount.setText(Integer.toString(itemCount));
                                         if (itemCount == 0) {
                                             btnOrder.setDisable(true);
@@ -273,6 +299,7 @@ public class BookingController implements Initializable {
                 }
 
                 @Override
+
                 public void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty || getTableRow().getItem() == null) {
@@ -319,17 +346,19 @@ public class BookingController implements Initializable {
                                 USER_SERVICE.getOneUserIdByName("System").getUser_id(),
                                 routeId.get(count++));
                         if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)))) {
-                            MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
                             seat.updateStatusSeat(Integer.parseInt((String) item), true);
                         } else {
                             MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
                         }
                     }
+                    MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
                     this.txtOrderCount.setText("");
                     this.cbTicketOrdered.getItems().clear();
                     findRoute();
+
                 } catch (SQLException ex) {
-                    Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(BookingController.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
