@@ -21,9 +21,8 @@ import java.util.List;
 public class BookingRepostitory {
 
     public boolean AddTicket(Ticket ticket, Couchette couchette) throws SQLException {
-        List<Ticket> results = new ArrayList<>();
-
         try (Connection connection = JdbcUtils.getConn()) {
+            connection.setAutoCommit(false);
             String query = "INSERT INTO vexe (ID_Ghe, ID_KhachHang, ID_ChuyenXe, "
                     + "ID_NhanVien, NgayIn) VALUES "
                     + "(?,?,?,?,?)";
@@ -34,17 +33,12 @@ public class BookingRepostitory {
             preparedStatement.setInt(4, ticket.getStaff());
             preparedStatement.setTimestamp(5, ticket.getPrintingDate());
             preparedStatement.executeUpdate();
-            try {
-                connection.commit();
-                return true;
-            } catch (SQLException ex) {
-                System.err.println(ex.getMessage());
-                return false;
-            }
+            connection.commit();
+            return true;
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            return false;
         }
     }
-    
-    
+
 }
-
-

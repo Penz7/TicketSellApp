@@ -136,9 +136,8 @@ public class BookingController implements Initializable {
     private List<String> getAllNameStation() {
         List<String> name = new ArrayList<>();
         List<Station> listStation = new ArrayList<>();
-        StationService sr = new StationService();
         try {
-            listStation = sr.getAllStation();
+            listStation = STATION_SERVICE.getAllStation();
         } catch (SQLException ex) {
             Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -160,6 +159,7 @@ public class BookingController implements Initializable {
                     java.sql.Date.valueOf(dpDateOrder.getValue()));
             if (listRoute.isEmpty()) {
                 MessageBox.getBox("Warning", "Không có chuyến xe cần tìm", Alert.AlertType.INFORMATION).show();
+                loadRouteData(null);
             } else {
                 for (Route r : listRoute) {
                     // only changes num, not the array element
@@ -313,13 +313,17 @@ public class BookingController implements Initializable {
                 int count = 0;
                 try {
                     for (Object item : cbTicketOrdered.getItems()) {
-                        seat.updateStatusSeat(Integer.parseInt((String) item), true);
                         Ticket t = new Ticket(null,
                                 Integer.parseInt((String) item),
                                 App.currentUser.getUser_id(),
                                 USER_SERVICE.getOneUserIdByName("System").getUser_id(),
                                 routeId.get(count++));
-                        BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)));
+                        if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(Integer.parseInt((String) item)))) {
+                            MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
+                            seat.updateStatusSeat(Integer.parseInt((String) item), true);
+                        } else {
+                            MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
+                        }
                     }
                     this.txtOrderCount.setText("");
                     this.cbTicketOrdered.getItems().clear();
