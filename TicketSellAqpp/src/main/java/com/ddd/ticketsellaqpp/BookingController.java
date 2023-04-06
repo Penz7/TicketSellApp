@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -341,12 +342,13 @@ public class BookingController implements Initializable {
         Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
         a.showAndWait().ifPresent(res -> {
             if (res == ButtonType.OK) {
-                int count = 0;
                 try {
                     for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
                         Integer currentRouteId = entry.getKey();
-                        List<Integer> list = entry.getValue();
-                        for (int i : list) {
+                        List<Integer> list = map.get(currentRouteId);
+                        Iterator<Integer> iterator = list.iterator();
+                        while (iterator.hasNext()) {
+                            int i = iterator.next();
                             Ticket t = new Ticket(null,
                                     i,
                                     App.currentUser.getUser_id(),
@@ -354,6 +356,7 @@ public class BookingController implements Initializable {
                                     currentRouteId);
                             if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
                                 seat.updateStatusSeat(i, true);
+                                iterator.remove();
                             } else {
                                 MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
                             }
