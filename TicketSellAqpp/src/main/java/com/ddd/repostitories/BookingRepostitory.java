@@ -40,5 +40,25 @@ public class BookingRepostitory {
             return false;
         }
     }
-
+    
+     public List<Ticket> getAllTicketByCustomerId(Integer customerId) throws SQLException{
+         List<Ticket> tickets = new ArrayList<>();
+        try(Connection connection = JdbcUtils.getConn()){
+            String query = "SELECT * FROM vexe WHERE ID_KhachHang = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, customerId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()){
+                Ticket ticket = new Ticket();
+                ticket.setTicketId(rs.getInt("ID_VeXe"));
+                ticket.setCouchette(rs.getInt("ID_Ghe"));
+                ticket.setCustomer(rs.getInt("ID_KhachHang"));
+                ticket.setRoute(rs.getInt("ID_ChuyenXe"));
+                ticket.setStaff(rs.getInt("ID_NhanVien"));
+                ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
+                tickets.add(ticket);
+            }
+        }
+         return tickets;
+    } 
 }

@@ -27,7 +27,7 @@ public class BookingService {
     static {
         BOOKING_REPOSTITORY = new BookingRepostitory();
     }
-    
+
     public boolean AddTicket(Ticket ticket, Couchette couchette) throws SQLException {
         return BOOKING_REPOSTITORY.AddTicket(ticket, couchette);
     }
@@ -50,5 +50,9 @@ public class BookingService {
             }
             return true;
         }
+    }
+
+    public List<Ticket> getAllTicketByCustomerId(Integer customerId) throws SQLException {
+        return BOOKING_REPOSTITORY.getAllTicketByCustomerId(customerId);
     }
 }

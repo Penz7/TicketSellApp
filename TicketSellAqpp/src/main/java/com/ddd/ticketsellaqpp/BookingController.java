@@ -46,6 +46,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
@@ -103,6 +104,9 @@ public class BookingController implements Initializable {
     private Button btnFindRoute;
 
     @FXML
+    private TextArea txtArea;
+
+    @FXML
     private void backMenu() {
         try {
             App.setRoot("home-customer");
@@ -129,12 +133,11 @@ public class BookingController implements Initializable {
 
         setInfoAcount();
         this.loadTableColumns();
-        //        try {
-        ////            this.loadTableStation();
-        ////            this.loadStationData(null);
-        ////        } catch (SQLException ex) {
-        ////            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
-        //        }
+        try {
+            this.loadTicketOrdered();
+        } catch (SQLException ex) {
+            Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
         TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
@@ -155,6 +158,7 @@ public class BookingController implements Initializable {
 
         return name;
     }
+
 
     @FXML
     public void findRoute() throws SQLException {
@@ -407,6 +411,7 @@ public class BookingController implements Initializable {
                     this.txtSearchDeparture.setDisable(false);
                     this.txtSearchDestination.setDisable(false);
                     this.dpDateOrder.setDisable(false);
+                    loadTicketOrdered();
                     this.tvRoute.refresh();
                     findRoute();
 
@@ -461,7 +466,6 @@ public class BookingController implements Initializable {
 //    private boolean addTicketToBooking(Ticket ticket, int couchetteId) throws SQLException {
 //        return BOOKING_SERVICE.AddTicket(ticket, COUCHETTE_SERVICE.getOneCouchetteByID(couchetteId));
 //    }
-
     private void loadRouteData(Integer routeId) throws SQLException {
 
         List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
@@ -475,5 +479,23 @@ public class BookingController implements Initializable {
     public static void setCurrentUser(User currentUser) {
         BookingController.currentUser = currentUser;
     }
-
+    
+       public void loadTicketOrdered() throws SQLException {
+        StringBuilder sb = new StringBuilder();
+        if (BOOKING_SERVICE.getAllTicketByCustomerId(App.currentUser.getUser_id()).isEmpty()) {
+            txtArea.clear();
+        } else {
+            for (Ticket ticket : BOOKING_SERVICE.getAllTicketByCustomerId(App.currentUser.getUser_id())) {
+                String info = "Mã vé: " + ticket.getTicketId() + " - Mã chuyến: " + ticket.getRoute() + " - Ghế: " + ticket.getCouchette();
+                if (ticket.getPrintingDate() == null) {
+                    info += " - Tình trạng vé: Chưa lấy vé";
+                } else {
+                    info += " - Tình trạng vé: Đã lấy vé";
+                }
+                sb.append(info);
+                sb.append("\n\n"); // add two new lines between each ticket info
+            }
+            txtArea.setText(sb.toString());
+        }
+    }
 }

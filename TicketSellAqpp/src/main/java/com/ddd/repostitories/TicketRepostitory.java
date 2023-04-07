@@ -27,6 +27,11 @@ public class TicketRepostitory {
             ResultSet rs = preparedStatement.executeQuery();
             if(rs.next()){
                 Ticket ticket = new Ticket();
+                ticket.setTicketId(rs.getInt("ID_VeXe"));
+                ticket.setCouchette(rs.getInt("ID_Ghe"));
+                ticket.setCustomer(rs.getInt("ID_KhachHang"));
+                ticket.setRoute(rs.getInt("ID_ChuyenXe"));
+                ticket.setStaff(rs.getInt("ID_NhanVien"));
                 ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
                 return ticket;
             }
