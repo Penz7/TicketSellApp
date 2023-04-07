@@ -102,7 +102,7 @@ public class RouteRepostitory {
                 sql += "WHERE chuyenxe.ID_benDen = ? AND chuyenxe.ID_benDi = ? AND chuyenxe_xe.gioKhoiHanh like concat('%',?,'%')";
             }
             PreparedStatement stm = conn.prepareCall(sql);
-            if (desId != null && !desId.isEmpty() && depId != null && !depId.isEmpty()) {
+            if (desId != "null" && !desId.isEmpty() && depId != "null" && !depId.isEmpty()) {
                 stm.setInt(1, Integer.valueOf(desId));
                 stm.setInt(2, Integer.valueOf(depId));
                 stm.setDate(3, orderDate);

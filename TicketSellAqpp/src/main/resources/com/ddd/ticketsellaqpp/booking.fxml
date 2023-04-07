@@ -22,7 +22,7 @@
       <Label layoutX="464.0" layoutY="96.0" text="Chọn ngày đi" />
       <DatePicker fx:id="dpDateOrder" layoutX="426.0" layoutY="126.0" />
       <TableView fx:id="tvRoute" layoutY="310.0" prefHeight="200.0" prefWidth="801.0" />
-      <Button layoutX="644.0" layoutY="125.0" mnemonicParsing="false" onAction="#findRoute" prefHeight="26.0" prefWidth="114.0" text="Tìm vé" />
+      <Button fx:id="btnFindRoute" layoutX="644.0" layoutY="125.0" mnemonicParsing="false" onAction="#findRoute" prefHeight="26.0" prefWidth="114.0" text="Tìm vé" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="14.0" text="OU Bus">
          <font>
             <Font name="System Italic" size="41.0" />

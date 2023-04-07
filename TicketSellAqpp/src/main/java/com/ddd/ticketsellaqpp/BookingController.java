@@ -24,6 +24,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -99,6 +100,9 @@ public class BookingController implements Initializable {
     private Button btnOrder;
 
     @FXML
+    private Button btnFindRoute;
+
+    @FXML
     private void backMenu() {
         try {
             App.setRoot("home-customer");
@@ -155,22 +159,37 @@ public class BookingController implements Initializable {
     @FXML
     public void findRoute() throws SQLException {
         if (txtSearchDestination.getText() != null && txtSearchDestination.getText() != "" && txtSearchDeparture.getText() != null && txtSearchDeparture.getText() != "" && dpDateOrder.getValue() != null) {
-            List<Route> listRoute = new ArrayList<>();
-            listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(
-                    STATION_SERVICE.getStationByName(txtSearchDestination.getText()).getStationId().toString(),
-                    STATION_SERVICE.getStationByName(txtSearchDeparture.getText()).getStationId().toString(),
-                    java.sql.Date.valueOf(dpDateOrder.getValue()));
-            if (listRoute.isEmpty()) {
-                MessageBox.getBox("Warning", "Không có chuyến xe cần tìm", Alert.AlertType.INFORMATION).show();
+            // Lấy ngày tháng năm hiện tại
+            LocalDate currentDate = LocalDate.now();
+
+            // Chuyển đổi giá trị dpDateOrder sang kiểu LocalDate
+            LocalDateTime dateTimeOrder = dpDateOrder.getValue().atStartOfDay();
+            LocalDate dateOrder = dateTimeOrder.toLocalDate();
+            if (STATION_SERVICE.getStationByName(txtSearchDestination.getText()) == null) {
+                MessageBox.getBox("Warning", "Bạn đã nhập chuyến đến không đúng", Alert.AlertType.INFORMATION).show();
+                loadRouteData(null);
+            } else if (STATION_SERVICE.getStationByName(txtSearchDeparture.getText()) == null) {
+                MessageBox.getBox("Warning", "Bạn đã nhập chuyến đi không đúng", Alert.AlertType.INFORMATION).show();
+                loadRouteData(null);
+            } else if (dateOrder.isBefore(currentDate) || dateOrder.equals(currentDate)) {
+                MessageBox.getBox("Warning", "Bạn đã nhập ngày ở quá khứ", Alert.AlertType.INFORMATION).show();
                 loadRouteData(null);
             } else {
-                for (Route r : listRoute) {
-                    // only changes num, not the array element
-                    loadRouteData(r.getRouteId());
-
+                List<Route> listRoute = new ArrayList<>();
+                listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(
+                        STATION_SERVICE.getStationByName(txtSearchDestination.getText()).getStationId().toString(),
+                        STATION_SERVICE.getStationByName(txtSearchDeparture.getText()).getStationId().toString(),
+                        java.sql.Date.valueOf(dpDateOrder.getValue()));
+                if (listRoute.isEmpty() == true) {
+                    MessageBox.getBox("Warning", "Không có chuyến xe cần tìm", Alert.AlertType.INFORMATION).show();
+                    loadRouteData(null);
+                } else {
+                    for (Route r : listRoute) {
+                        // only changes num, not the array element
+                        loadRouteData(r.getRouteId());
+                    }
                 }
             }
-
         } else {
             MessageBox.getBox("Warning", "Chưa nhập đủ dữ liệu cần thiết!", Alert.AlertType.WARNING).show();
         }
@@ -263,6 +282,10 @@ public class BookingController implements Initializable {
                                     txtOrderCount.setText(Integer.toString(itemCount));
                                     if (itemCount > 0) {
                                         btnOrder.setDisable(false);
+                                        btnFindRoute.setDisable(true);
+                                        txtSearchDeparture.setDisable(true);
+                                        txtSearchDestination.setDisable(true);
+                                        dpDateOrder.setDisable(true);
                                     }
                                     for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
                                         Integer currentRouteId = entry.getKey();
@@ -274,7 +297,7 @@ public class BookingController implements Initializable {
                                                 }
                                             }
                                         }
-                                    }                             
+                                    }
                                     MessageBox.getBox("Đặt vé", "Vé xe đã vào danh sách xác nhận", Alert.AlertType.INFORMATION).show();
                                 }
                             });
@@ -303,6 +326,10 @@ public class BookingController implements Initializable {
                                         txtOrderCount.setText(Integer.toString(itemCount));
                                         if (itemCount == 0) {
                                             btnOrder.setDisable(true);
+                                            btnFindRoute.setDisable(false);
+                                            txtSearchDeparture.setDisable(false);
+                                            txtSearchDestination.setDisable(false);
+                                            dpDateOrder.setDisable(false);
                                         }
                                         btn.setText("Đặt");
                                         MessageBox.getBox("Hủy vé", "Hủy vé thành công", Alert.AlertType.INFORMATION).show();
@@ -376,6 +403,11 @@ public class BookingController implements Initializable {
                     MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
                     this.txtOrderCount.setText("");
                     this.cbTicketOrdered.getItems().clear();
+                    this.btnFindRoute.setDisable(false);
+                    this.txtSearchDeparture.setDisable(false);
+                    this.txtSearchDestination.setDisable(false);
+                    this.dpDateOrder.setDisable(false);
+                    this.tvRoute.refresh();
                     findRoute();
 
                 } catch (SQLException ex) {
@@ -389,6 +421,7 @@ public class BookingController implements Initializable {
     }
 
     private void loadRouteData(Integer routeId) throws SQLException {
+
         List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
         this.tvRoute.setItems(FXCollections.observableList(data));
     }
