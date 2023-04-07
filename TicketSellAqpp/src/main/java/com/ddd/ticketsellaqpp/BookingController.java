@@ -420,6 +420,48 @@ public class BookingController implements Initializable {
         );
     }
 
+//    @FXML 
+//    private void processBooking() {
+//        Alert confirmationDialog = showConfirmationDialog();
+//        confirmationDialog.showAndWait().ifPresent(res -> {
+//            if (res == ButtonType.OK) {
+//                try {
+//                    for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+//                        Integer currentRouteId = entry.getKey();
+//                        List<Integer> couchetteIds = map.get(currentRouteId);
+//                        Iterator<Integer> iterator = couchetteIds.iterator();
+//                        while (iterator.hasNext()) {
+//                            int couchetteId = iterator.next();
+//                            int userId = App.currentUser.getUser_id();
+//                            int systemUserId = USER_SERVICE.getOneUserIdByName("Duy nến").getUser_id();
+//                            Ticket ticket = new Ticket(null, couchetteId, userId, systemUserId, currentRouteId);
+//                            if (addTicketToBooking(ticket, couchetteId)) {
+//                                seat.updateStatusSeat(couchetteId, true);
+//                                iterator.remove();
+//                            } else {
+//                                MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
+//                            }
+//                        }
+//                    }
+//                    MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
+//                    this.txtOrderCount.setText("");
+//                    this.cbTicketOrdered.getItems().clear();
+//                    loadRouteData(null);
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//    }
+//
+//    private Alert showConfirmationDialog() {
+//        return MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
+//    }
+//
+//    private boolean addTicketToBooking(Ticket ticket, int couchetteId) throws SQLException {
+//        return BOOKING_SERVICE.AddTicket(ticket, COUCHETTE_SERVICE.getOneCouchetteByID(couchetteId));
+//    }
+
     private void loadRouteData(Integer routeId) throws SQLException {
 
         List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
