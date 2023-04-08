@@ -19,6 +19,7 @@ public class Ticket {
     private Integer customerId;
     private Integer staffId;
     private Integer routeId;
+    private boolean isConfirm;
     
     public Ticket() {
     }
@@ -72,14 +73,22 @@ public class Ticket {
         this.staffId = staff;
     }
 
-    public Ticket(Timestamp printingDate, Integer couchette, Integer customer, Integer staff, Integer route) {
+    public boolean isIsConfirm() {
+        return isConfirm;
+    }
+
+    public void setIsConfirm(boolean isConfirm) {
+        this.isConfirm = isConfirm;
+    }
+
+    public Ticket(Timestamp printingDate, Integer couchette, Integer customer, Integer staff, Integer route, Boolean isConfirm) {
         this.printingDate = printingDate;
         this.couchetteId = couchette;
         this.customerId = customer;
         this.staffId = staff;
         this.routeId = route;
+        this.isConfirm = isConfirm;
     }
-    
     
     
     @Override

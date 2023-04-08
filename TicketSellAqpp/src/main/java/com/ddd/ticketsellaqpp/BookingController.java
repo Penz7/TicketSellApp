@@ -393,8 +393,9 @@ public class BookingController implements Initializable {
                             Ticket t = new Ticket(null,
                                     i,
                                     App.currentUser.getUser_id(),
-                                    USER_SERVICE.getOneUserIdByName("System").getUser_id(),
-                                    currentRouteId);
+                                    USER_SERVICE.getOneUserIdByName("Duy nến").getUser_id(),
+                                    currentRouteId,
+                                    false);
                             if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
                                 seat.updateStatusSeat(i, true);
                                 iterator.remove();

@@ -32,6 +32,15 @@ public class HomeSignStaffController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         setInfoAcount();
     }
+    
+    @FXML
+    private void setTicketStage() {
+        try {
+            App.setRoot("QuanLyVeXe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void setInfoAcount() {
         User user = new User();
