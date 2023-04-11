@@ -5,48 +5,51 @@
 package com.ddd.pojo;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  *
  * @author Admin
  */
 public class RouteCoach {
-    private Route route;
-    private Coach coach;
-    private Time departureTime; // giờ khởi hành
+    private Integer routeId;
+    private Integer coachId;
+    private Timestamp departureTime; // giờ khởi hành
 
     public RouteCoach() {
     }
 
-    public RouteCoach(Route route, Coach coach, Time departureTime) {
-        this.route = route;
-        this.coach = coach;
+    public RouteCoach(Integer routeId, Integer coachId, Timestamp departureTime) {
+        this.routeId = routeId;
+        this.coachId = coachId;
         this.departureTime = departureTime;
     }
 
-    public Coach getCoach() {
-        return coach;
+    public Integer getCoachId() {
+        return coachId;
     }
 
-    public Time getDepartureTime() {
+    public Timestamp getDepartureTime() {
         return departureTime;
     }
 
-    public Route getRoute() {
-        return route;
+    public Integer getRouteId() {
+        return routeId;
     }
 
-    public void setCoach(Coach coach) {
-        this.coach = coach;
+    public void setCoachId(Integer coachId) {
+        this.coachId = coachId;
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
-    }
-
-    public void setDepartureTime(Time departureTime) {
+    public void setDepartureTime(Timestamp departureTime) {
         this.departureTime = departureTime;
     }
+
+    public void setRouteId(Integer routeId) {
+        this.routeId = routeId;
+    }
+
+   
     
     
 }

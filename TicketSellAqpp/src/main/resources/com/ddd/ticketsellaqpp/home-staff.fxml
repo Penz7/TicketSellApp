@@ -20,7 +20,7 @@
             </Text>
          </children>
       </HBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="143.0" prefWidth="600.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="143.0" prefWidth="600.0" stylesheets="@../../../Style/HomeCustomerStyle.css">
          <children>
             <VBox alignment="CENTER" prefHeight="143.0" prefWidth="142.0">
                <children>

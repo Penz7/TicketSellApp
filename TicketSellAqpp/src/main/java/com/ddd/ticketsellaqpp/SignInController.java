@@ -23,6 +23,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -44,6 +46,9 @@ public class SignInController implements Initializable {
 
     @FXML
     private Button btnRegiste;
+    
+    @FXML
+    AnchorPane anc;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -54,6 +59,7 @@ public class SignInController implements Initializable {
         this.btnRegiste.setOnMouseClicked(t -> {
             registeAccount();
         });
+        anc.setStyle("-fx-background-color: #E0FFFF;");
     }
 
     private void registeAccount() {
