@@ -13,7 +13,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="71.0" prefWidth="600.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trang quản trị hệ thống">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trang hệ thống nhân viên">
                <font>
                   <Font name="Tahoma Bold" size="29.0" />
                </font>
@@ -25,7 +25,7 @@
             <VBox alignment="CENTER" prefHeight="143.0" prefWidth="142.0">
                <children>
                   <ImageView fitHeight="98.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button mnemonicParsing="false" onAction="#setTicketStage" text="Button" />
+                  <Button mnemonicParsing="false" onAction="#setTicketStage" text="Quản lý vé xe" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -34,7 +34,7 @@
             <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="143.0" prefWidth="142.0">
                <children>
                   <ImageView fitHeight="98.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
-                  <Button mnemonicParsing="false" text="Button" />
+                  <Button mnemonicParsing="false" onAction="#setTicketSeller" text="Bán vé trực tiếp" />
                </children>
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

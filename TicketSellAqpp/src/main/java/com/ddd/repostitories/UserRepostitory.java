@@ -85,6 +85,36 @@ public class UserRepostitory {
         }
         return results;
     }
+    
+        public List<User> getCustomer(String kw) throws SQLException {
+        List<User> results = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role_id = 3";
+        if (kw != null && !kw.isEmpty()) {
+            sql += " AND user_fullname LIKE CONCAT('%', ?, '%')";
+        }
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+            if (kw != null && !kw.isEmpty()) {
+                stm.setString(1, kw);
+            }
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                User s = new User(
+                        rs.getInt("user_id"),
+                        rs.getString("user_fullname"),
+                        rs.getString("user_id_card"),
+                        rs.getString("user_phone_number"),
+                        rs.getDate("user_date_of_birth"),
+                        rs.getDate("user_date_join"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("user_address"),
+                        rs.getInt("role_id")
+                );
+                results.add(s);
+            }
+        }
+        return results;
+    }
 
     public boolean updateUserById(String user_fullname, String user_id_card, String user_phone_number, Date user_date_of_birth, String username, String password, String user_address, Integer user_id) {
         String sql = "UPDATE user SET user_fullname = ?, user_id_card = ?, user_phone_number = ?, user_date_of_birth = ?, username = ?,password = ?, user_address =?  WHERE user_id = ?";
@@ -120,6 +150,58 @@ public class UserRepostitory {
 
         try {
             Integer role_id = 2;
+            java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+            conn = JdbcUtils.getConn();
+            conn.setAutoCommit(false);
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, user_fullname);
+            statement.setString(2, user_id_card);
+            statement.setString(3, user_phone_number);
+            statement.setDate(4, user_date_of_birth);
+            statement.setDate(5, date);
+            statement.setString(6, username);
+            statement.setString(7, password);
+            statement.setString(8, user_address);
+            statement.setInt(9, role_id);
+
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                conn.commit();
+                return true;
+            } else {
+                conn.rollback();
+                return false;
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            // Handle the error and log it
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    public boolean addCustomer(String user_fullname, String user_id_card, String user_phone_number, Date user_date_of_birth, String username, String password, String user_address) {
+        String sql = "INSERT INTO user (user_fullname,user_id_card,user_phone_number,user_date_of_birth,user_date_join,username,password,user_address,role_id ) VALUES (?,?,?,?,?,?,?,?,?)";
+        Connection conn = null;
+
+        try {
+            Integer role_id = 3;
             java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
             conn = JdbcUtils.getConn();
             conn.setAutoCommit(false);

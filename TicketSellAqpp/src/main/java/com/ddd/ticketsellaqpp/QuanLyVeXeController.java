@@ -55,14 +55,31 @@ public class QuanLyVeXeController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         try {
-            this.confirmOrder();
-            this.loadTableTicket();
-            this.loadTicketData();
+            confirmOrder();
+            loadTableTicket();
+            loadTicketData(null);
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = newValue.trim();
+            if (searchText.isEmpty()) {
+                try {
+                    loadTicketData(null); // Load all tickets
+                } catch (SQLException ex) {
+                    Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (searchText.matches("\\d+")) {
+                int ticketId = Integer.parseInt(searchText);
+                try {
+                    loadTicketData(ticketId); // Load tickets by ID
+                } catch (SQLException ex) {
+                    Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } // No need for an else statement here since invalid input is ignored
+        });
     }
 
     private void loadTableTicket() {
@@ -100,7 +117,7 @@ public class QuanLyVeXeController implements Initializable {
                             try {
                                 if (s.deleteTicket(ticket.getTicketId())) {
                                     MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
-                                    loadTicketData();
+                                    loadTicketData(null);
                                 } else {
                                     MessageBox.getBox("Question", "Xóa thất bại!!!", Alert.AlertType.WARNING).show();
                                 }
@@ -127,8 +144,8 @@ public class QuanLyVeXeController implements Initializable {
         tbTicket.getColumns().addAll(colTicketId, colCouchetteId, colCustomerId, colRouteId, colStaffId, colPrintingDate, colIsConfirm, colCancel);
     }
 
-    private void loadTicketData() throws SQLException {
-        List<Ticket> tickets = s.getAllTickets();
+    private void loadTicketData(Integer kw) throws SQLException {
+        List<Ticket> tickets = s.getAllTickets(kw);
         this.tbTicket.setItems(FXCollections.observableList(tickets));
     }
 
@@ -162,9 +179,9 @@ public class QuanLyVeXeController implements Initializable {
                     boolean isConfirmed = s.checkConfirmOrder(ticketId);
                     if (isConfirmed) {
                         Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
-                        if(s.addDateStaffOrder(App.currentUser.getUser_id(), printingDate,ticketId)) {
-                        MessageBox.getBox("Question", "Xác nhận thành công!!!", Alert.AlertType.INFORMATION).show();
-                        loadTicketData();
+                        if (s.addDateStaffOrder(App.currentUser.getUser_id(), printingDate, ticketId)) {
+                            MessageBox.getBox("Question", "Xác nhận thành công!!!", Alert.AlertType.INFORMATION).show();
+                            loadTicketData(null);
                         } else {
                             MessageBox.getBox("Warning", "Thêm thất bại", Alert.AlertType.ERROR);
                         }
