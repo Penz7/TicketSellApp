@@ -28,7 +28,37 @@ Text.Subject {
 }
 
 Button {
-    -fx-background-color: blue;
+    -fx-background-color: #1E90FF;
     -fx-text-fill: white;
 }
 
+.table-view {
+    -fx-background-color: #FFFFFF;
+}
+
+.table-view .column-header,
+.table-view .column-header .filler,
+.table-view .column-header-background .filler {
+    -fx-background-color: #1E90FF;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.table-row-cell {
+    -fx-background-color: #E6F2F9;
+    -fx-text-fill: #333333;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #D0E7F8;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #BBDEFB;
+}
+
+.table-cell {
+    -fx-alignment: CENTER;
+}

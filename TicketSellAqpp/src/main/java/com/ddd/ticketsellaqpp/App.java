@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.scene.image.Image;
 
 
 /**
@@ -25,6 +26,7 @@ public class App extends Application {
         stage.setResizable(false);
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/image/bus.png")));
         stage.show();
     }
 

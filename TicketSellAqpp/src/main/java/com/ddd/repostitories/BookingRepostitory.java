@@ -40,15 +40,18 @@ public class BookingRepostitory {
             return false;
         }
     }
-    
-     public List<Ticket> getAllTicketByCustomerId(Integer customerId) throws SQLException{
-         List<Ticket> tickets = new ArrayList<>();
-        try(Connection connection = JdbcUtils.getConn()){
-            String query = "SELECT * FROM vexe WHERE ID_KhachHang = ?";
+
+    public List<Ticket> getAllTicketByCustomerId(Integer customerId) throws SQLException {
+        List<Ticket> tickets = new ArrayList<>();
+        try (Connection connection = JdbcUtils.getConn()) {
+            String query = "SELECT *\n"
+                    + "FROM vexe\n"
+                    + "WHERE ID_KhachHang = ?\n"
+                    + "ORDER BY ID_VeXe DESC";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, customerId);
             ResultSet rs = preparedStatement.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Ticket ticket = new Ticket();
                 ticket.setTicketId(rs.getInt("ID_VeXe"));
                 ticket.setCouchette(rs.getInt("ID_Ghe"));
@@ -59,6 +62,6 @@ public class BookingRepostitory {
                 tickets.add(ticket);
             }
         }
-         return tickets;
-    } 
+        return tickets;
+    }
 }

@@ -10,9 +10,11 @@ import com.ddd.pojo.Station;
 import com.ddd.pojo.Ticket;
 import com.ddd.pojo.User;
 import com.ddd.repostitories.CouchetteRepostitory;
+import com.ddd.repostitories.RouteCoachRepostitory;
 import com.ddd.services.BookingService;
 import com.ddd.services.CouchetteService;
 import com.ddd.services.RouteCoachCouchetteService;
+import com.ddd.services.RouteCoachService;
 import com.ddd.services.RouteService;
 import com.ddd.services.StationService;
 import com.ddd.services.TicketService;
@@ -52,6 +54,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import org.controlsfx.control.textfield.TextFields;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -71,6 +80,7 @@ public class BookingController implements Initializable {
     private final static CouchetteService COUCHETTE_SERVICE;
     private final static UserService USER_SERVICE;
     private final static DateTimeFormatter DTF;
+    private final static RouteCoachService ROUTE_COACH_SERVICE;
 
     static {
         ROUTE_COACH_COUCHETTE_SERVICE = new RouteCoachCouchetteService();
@@ -81,6 +91,7 @@ public class BookingController implements Initializable {
         COUCHETTE_SERVICE = new CouchetteService();
         USER_SERVICE = new UserService();
         DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        ROUTE_COACH_SERVICE = new RouteCoachService();
     }
 
     @FXML
@@ -144,7 +155,6 @@ public class BookingController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
         TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
         TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
     }
@@ -508,6 +518,9 @@ public class BookingController implements Initializable {
         } else {
             for (Ticket ticket : BOOKING_SERVICE.getAllTicketByCustomerId(App.currentUser.getUser_id())) {
                 String info = "Mã vé: " + ticket.getTicketId() + " - Mã chuyến: " + ticket.getRoute() + " - Ghế: " + ticket.getCouchette();
+                LocalDateTime departureTime = (ROUTE_COACH_SERVICE.getOneRouteCoachById(ticket.getRoute(), COUCHETTE_SERVICE.getOneCouchetteByID(ticket.getCouchette()).getCouchId())).getDepartureTime().toLocalDateTime();
+                String formattedDepartureTime = DTF.format(departureTime);
+                info += "- Thời gian: " + formattedDepartureTime;
                 if (ticket.getPrintingDate() == null) {
                     info += " - Tình trạng vé: Chưa lấy vé";
                 } else {
