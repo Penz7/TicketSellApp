@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,6 +127,7 @@ public class BookingController implements Initializable {
     TableView<RouteCoachCouchette> tvRoute;
     @FXML
     DatePicker dpDateOrder;
+     private boolean canBookTicket = false;
 
     Map<Integer /*ID route*/, List<Integer> /*ID cua*/> map = new HashMap<>();
 
@@ -178,7 +180,7 @@ public class BookingController implements Initializable {
             } else if (STATION_SERVICE.getStationByName(txtSearchDeparture.getText()) == null) {
                 MessageBox.getBox("Warning", "Bạn đã nhập chuyến đi không đúng", Alert.AlertType.INFORMATION).show();
                 loadRouteData(null);
-            } else if (dateOrder.isBefore(currentDate) || dateOrder.equals(currentDate)) {
+            } else if (dateOrder.isBefore(currentDate)) {
                 MessageBox.getBox("Warning", "Bạn đã nhập ngày ở quá khứ", Alert.AlertType.INFORMATION).show();
                 loadRouteData(null);
             } else {
@@ -256,7 +258,7 @@ public class BookingController implements Initializable {
 
                 {
                     btn.setOnAction(evt -> {
-
+                     
                         Button b = (Button) evt.getSource();
                         TableCell cell = (TableCell) b.getParent();
                         RouteCoachCouchette st = (RouteCoachCouchette) cell.getTableRow().getItem();
@@ -337,7 +339,9 @@ public class BookingController implements Initializable {
                                 });
                             }
                         }
+                        
                     });
+                            
                 }
 
                 @Override
@@ -379,6 +383,7 @@ public class BookingController implements Initializable {
 
     @FXML
     private void checkOrder() {
+           if(checkTimeOrder() == false) {  
         Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
         Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
         a.showAndWait().ifPresent(res -> {
@@ -424,6 +429,9 @@ public class BookingController implements Initializable {
             }
         }
         );
+           } else {
+               MessageBox.getBox("Warning", "Chuyến xe bạn đang đặt sắp khởi hành trong 60 phút nữa!!! Vui lòng chọn chuyến xe khác ", Alert.AlertType.ERROR);
+           }
     }
 
     @FXML
@@ -539,6 +547,27 @@ public class BookingController implements Initializable {
             }
             txtArea.setText(sb.toString());
         }
+    }
+
+   
+
+    public boolean checkTimeOrder() {
+        this.tvRoute.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                Timestamp departureTimestamp = newSelection.getDepartureTime();
+                LocalTime departureTime = departureTimestamp.toLocalDateTime().toLocalTime();
+                LocalTime currentTime = LocalTime.now();
+                LocalTime bookingTime = currentTime.plusMinutes(60);
+                if (departureTime.isAfter(currentTime) && departureTime.isBefore(bookingTime)) {
+                    canBookTicket = true;
+                } else {
+                    canBookTicket = false;
+                }
+            } else {
+                canBookTicket = false;
+            }
+        });
+        return canBookTicket;
     }
 
     @FXML
