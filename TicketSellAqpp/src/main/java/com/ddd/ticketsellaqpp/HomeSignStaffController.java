@@ -41,6 +41,15 @@ public class HomeSignStaffController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    @FXML
+    private void setTicketSeller() {
+        try {
+            App.setRoot("SellTicket");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void setInfoAcount() {
         User user = new User();

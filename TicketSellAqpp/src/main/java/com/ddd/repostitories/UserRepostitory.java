@@ -85,6 +85,36 @@ public class UserRepostitory {
         }
         return results;
     }
+    
+        public List<User> getCustomer(String kw) throws SQLException {
+        List<User> results = new ArrayList<>();
+        String sql = "SELECT * FROM user WHERE role_id = 3";
+        if (kw != null && !kw.isEmpty()) {
+            sql += " AND user_fullname LIKE CONCAT('%', ?, '%')";
+        }
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+            if (kw != null && !kw.isEmpty()) {
+                stm.setString(1, kw);
+            }
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                User s = new User(
+                        rs.getInt("user_id"),
+                        rs.getString("user_fullname"),
+                        rs.getString("user_id_card"),
+                        rs.getString("user_phone_number"),
+                        rs.getDate("user_date_of_birth"),
+                        rs.getDate("user_date_join"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("user_address"),
+                        rs.getInt("role_id")
+                );
+                results.add(s);
+            }
+        }
+        return results;
+    }
 
     public boolean updateUserById(String user_fullname, String user_id_card, String user_phone_number, Date user_date_of_birth, String username, String password, String user_address, Integer user_id) {
         String sql = "UPDATE user SET user_fullname = ?, user_id_card = ?, user_phone_number = ?, user_date_of_birth = ?, username = ?,password = ?, user_address =?  WHERE user_id = ?";
