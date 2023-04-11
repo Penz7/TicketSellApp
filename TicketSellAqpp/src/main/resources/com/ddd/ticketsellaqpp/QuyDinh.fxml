@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="481.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.QuyDinhController">
-    <stylesheets>
-        <URL value="@/com/ddd/ticketsellaqpp/style.css" />
-    </stylesheets>
+<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="481.0" styleClass="mainFxmlClass" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.QuyDinhController">
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="52.0" text="Quy định ">
          <font>
