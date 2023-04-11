@@ -195,6 +195,58 @@ public class UserRepostitory {
             }
         }
     }
+    
+    public boolean addCustomer(String user_fullname, String user_id_card, String user_phone_number, Date user_date_of_birth, String username, String password, String user_address) {
+        String sql = "INSERT INTO user (user_fullname,user_id_card,user_phone_number,user_date_of_birth,user_date_join,username,password,user_address,role_id ) VALUES (?,?,?,?,?,?,?,?,?)";
+        Connection conn = null;
+
+        try {
+            Integer role_id = 3;
+            java.sql.Date date = java.sql.Date.valueOf(LocalDate.now());
+            conn = JdbcUtils.getConn();
+            conn.setAutoCommit(false);
+            PreparedStatement statement = conn.prepareStatement(sql);
+
+            statement.setString(1, user_fullname);
+            statement.setString(2, user_id_card);
+            statement.setString(3, user_phone_number);
+            statement.setDate(4, user_date_of_birth);
+            statement.setDate(5, date);
+            statement.setString(6, username);
+            statement.setString(7, password);
+            statement.setString(8, user_address);
+            statement.setInt(9, role_id);
+
+            int rowsInserted = statement.executeUpdate();
+
+            if (rowsInserted > 0) {
+                conn.commit();
+                return true;
+            } else {
+                conn.rollback();
+                return false;
+            }
+        } catch (SQLException e) {
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+            }
+            // Handle the error and log it
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 
     public User getOneUserByID(Integer ID) throws SQLException {
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM user WHERE user_id = ?")) {

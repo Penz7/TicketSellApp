@@ -146,7 +146,7 @@ public class QuanLyKhachHangController implements Initializable  {
             try {
                 LocalDate birthDate = dpBirth.getValue();
                 java.sql.Date sqlBirthDate = java.sql.Date.valueOf(birthDate);
-                if (s.addUser(txtFullname.getText(), txtUserIdCard.getText(), txtPhone.getText(), sqlBirthDate, txtUsername.getText(), txtPassword.getText(), txtAdress.getText())) {
+                if (s.addCustomer(txtFullname.getText(), txtUserIdCard.getText(), txtPhone.getText(), sqlBirthDate, txtUsername.getText(), txtPassword.getText(), txtAdress.getText())) {
                     MessageBox.getBox("Question", "Thêm khách hàng thành công!!!", Alert.AlertType.INFORMATION).show();
                     loadCustomerData(null);
                 } else {
