@@ -50,6 +50,15 @@ public class HomeSignAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    @FXML
+    private void setChuyenxexeStage() {
+        try {
+            App.setRoot("QuanLyChuyenXeXe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void setQuyDinh() {
