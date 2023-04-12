@@ -139,16 +139,16 @@ public class QuanLyChuyenXeXeController implements Initializable {
                         TableCell cell = (TableCell) b.getParent();
                         RouteCoach st = (RouteCoach) cell.getTableRow().getItem();
                         StackPane secondaryLayout = new StackPane();
-                        Label lb1 = new Label("Thời gian khởi hành cần sửa:");
-                        TextField txtTimefield = new TextField();
+                        Label lbXe = new Label("ID Xe:");
+                        ComboBox<Integer> coach = new ComboBox<>();
+                        Label lbThoigian = new Label("Thời gian khởi hành:");
+                        TextField txtThoigian = new TextField();
                         Label lb2 = new Label("Thời gian có dạng là: YYYY-MM-DD 20:20:00");
-
-                        // Tạo button Xác nhận
                         Button confirmButton = new Button("Xác nhận");
                         Scene secondScene = new Scene(secondaryLayout, 600, 200);
-                        secondaryLayout.getChildren().addAll(lb1, txtTimefield, lb2, confirmButton);
+                        secondaryLayout.getChildren().addAll( lbXe, coach, lbThoigian, txtThoigian, confirmButton);
                         HBox hbox = new HBox(10);
-                        hbox.getChildren().addAll(lb1, txtTimefield, lb2);
+                        hbox.getChildren().addAll( lbXe, coach, lbThoigian, txtThoigian, lb2);
                         VBox vbox = new VBox(10);
                         vbox.getChildren().addAll(hbox, confirmButton);
                         secondaryLayout.getChildren().addAll(vbox);
@@ -159,11 +159,19 @@ public class QuanLyChuyenXeXeController implements Initializable {
                         newWindow.setScene(secondScene);
                         newWindow.show();
 
+                        try {
+                            coach.getItems().addAll(s.getIdCoach());
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(QuanLyChuyenXeXeController.class
+                                    .getName()).log(Level.SEVERE, null, ex);
+                        }
                         confirmButton.setOnAction(e -> {
-                            if (!txtTimefield.getText().isEmpty()) {
+                            Integer id_xe = coach.getValue();
+                            if (!txtThoigian.getText().isEmpty()) {
                                 try {
-                                    dateFormat.parse(txtTimefield.getText());
-                                    if (s.updateRouteCoachbyID(txtTimefield.getText(), st.getRouteId())) {
+                                    dateFormat.parse(txtThoigian.getText());
+                                    if (s.updateRouteCoachbyID(txtThoigian.getText(), st.getRouteId(),id_xe)) {
                                         MessageBox.getBox("Thông báo", "Sửa chuyến xe xe thành công!!!", Alert.AlertType.INFORMATION).show();
                                         loadRouteData(null);
                                     } else {

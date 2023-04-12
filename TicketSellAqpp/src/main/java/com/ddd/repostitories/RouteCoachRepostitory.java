@@ -79,11 +79,12 @@ public class RouteCoachRepostitory {
         }
     }
 
-    public boolean updateRouteCoachbyID(String gioKhoiHanh, int idChuyenXe) {
-        String sql = "UPDATE chuyenxe_xe SET gioKhoiHanh = ? WHERE ID_ChuyenXe = ?";
+    public boolean updateRouteCoachbyID(String gioKhoiHanh, int idChuyenXe,int idXe) {
+        String sql = "UPDATE chuyenxe_xe SET gioKhoiHanh = ? AND idXe=? WHERE ID_ChuyenXe = ?";
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
             stm.setString(1, gioKhoiHanh);
             stm.setInt(2, idChuyenXe);
+             stm.setInt(3, idXe);
             return stm.executeUpdate() > 0;
         } catch (SQLException ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error updating station name for ID " + idChuyenXe, ex);
