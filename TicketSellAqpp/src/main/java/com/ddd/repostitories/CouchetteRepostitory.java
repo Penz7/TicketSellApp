@@ -22,21 +22,25 @@ import java.util.logging.Logger;
 public class CouchetteRepostitory {
 
 //    Lấy ghế trong các xe
-    public List<Couchette> getSeatByCoadID(Integer kw) throws SQLException {
-        List<Couchette> results = new ArrayList<>();
+    public List<Couchette> getSeatsByVehicleId(Integer vehicleId) throws SQLException {
+        List<Couchette> seats = new ArrayList<>();
+        String sql = "SELECT * FROM ghe";
+        if (vehicleId != null) {
+            sql += " WHERE ID_Xe = ?";
+        }
 
-        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM ghe" + (kw != null ? " WHERE ID_Xe = ?" : ""));) {
-            if (kw != null) {
-                stm.setInt(1, kw);
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            if (vehicleId != null) {
+                stmt.setInt(1, vehicleId);
             }
-            ResultSet rs = stm.executeQuery();
+            ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Couchette s = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"));
-                results.add(s);
+                Couchette seat = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"));
+                seats.add(seat);
             }
         }
 
-        return results;
+        return seats;
     }
 
     public Couchette getOneCouchetteByID(Integer ID) throws SQLException {

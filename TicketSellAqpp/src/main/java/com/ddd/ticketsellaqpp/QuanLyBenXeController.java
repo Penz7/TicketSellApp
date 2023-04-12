@@ -121,7 +121,7 @@ public class QuanLyBenXeController implements Initializable {
                 @Override
                 public void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || getTableRow().getItem() == null) {
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                         setGraphic(null);
                     } else {
                         setGraphic(btn);
@@ -183,7 +183,7 @@ public class QuanLyBenXeController implements Initializable {
                 @Override
                 public void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || getTableRow().getItem() == null) {
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                         setGraphic(null);
                     } else {
                         setGraphic(btn);

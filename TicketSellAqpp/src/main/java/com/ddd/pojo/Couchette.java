@@ -13,21 +13,13 @@ public class Couchette {
     private Boolean Status;
     private Integer CouchId;
 
-    public Couchette(Integer ID_Ghe, Boolean TinhTrangGhe, Integer ID_Xe) {
-        this.CouchetteId = ID_Ghe;
-        this.Status = TinhTrangGhe;
-        this.CouchId = ID_Xe;
+    public Couchette(Integer CouchetteId, Boolean Status, Integer CouchId) {
+        this.CouchetteId = CouchetteId;
+        this.Status = Status;
+        this.CouchId = CouchId;
     }
 
     public Couchette() {
-    }
-
-    public Integer getID_Ghe() {
-        return CouchetteId;
-    }
-
-    public void setID_Ghe(Integer ID_Ghe) {
-        this.CouchetteId = ID_Ghe;
     }
 
     public Integer getCouchId() {
@@ -38,14 +30,6 @@ public class Couchette {
         this.CouchId = CouchId;
     }
 
-    public Boolean getTinhTrangGhe() {
-        return Status;
-    }
-
-    public void setTinhTrangGhe(Boolean TinhTrangGhe) {
-        this.Status = TinhTrangGhe;
-    }
-
     public Integer getCouchetteId() {
         return CouchetteId;
     }
@@ -54,13 +38,15 @@ public class Couchette {
         this.CouchetteId = CouchetteId;
     }
 
+    public Boolean getStatus() {
+        return Status;
+    }
+
     public void setStatus(Boolean Status) {
         this.Status = Status;
     }
 
-    public Boolean getStatus() {
-        return Status;
-    }
+   
 
     
     

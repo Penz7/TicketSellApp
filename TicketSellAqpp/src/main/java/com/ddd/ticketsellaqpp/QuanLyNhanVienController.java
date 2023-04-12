@@ -121,7 +121,7 @@ public class QuanLyNhanVienController implements Initializable {
 
                                 } catch (SQLException ex) {
                                     MessageBox.getBox("Warning", "Chuyến xe hiện đang sắp khởi hành hoặc đang trong danh sách chạy!!!", Alert.AlertType.WARNING).show();
-                                    Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                    Logger.getLogger(QuanLyNhanVienController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
 
                             }
@@ -133,7 +133,7 @@ public class QuanLyNhanVienController implements Initializable {
                 @Override
                 public void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || getTableRow().getItem() == null) {
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                         setGraphic(null);
                     } else {
                         setGraphic(btn);
@@ -213,7 +213,7 @@ public class QuanLyNhanVienController implements Initializable {
                                 }
                             } catch (SQLException ex) {
                                 MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                                Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(QuanLyNhanVienController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         });
                     });
@@ -223,7 +223,7 @@ public class QuanLyNhanVienController implements Initializable {
                 @Override
                 public void updateItem(Void item, boolean empty) {
                     super.updateItem(item, empty);
-                    if (empty || getTableRow().getItem() == null) {
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                         setGraphic(null);
                     } else {
                         setGraphic(btn);

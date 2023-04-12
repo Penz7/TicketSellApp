@@ -7,7 +7,6 @@ package com.ddd.ticketsellaqpp;
 import com.ddd.pojo.Couchette;
 import com.ddd.pojo.User;
 import com.ddd.repostitories.CouchetteRepostitory;
-import static com.ddd.ticketsellaqpp.SeatController.s;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,17 +29,15 @@ import javafx.stage.Stage;
  * @author admin
  */
 public class QuyDinhController {
-    
+
     static CouchetteRepostitory s = new CouchetteRepostitory();
 
     private static User currentUser;
 
-    
-    
-  @FXML
+    @FXML
     private void checkSeat() {
         StackPane secondaryLayout = new StackPane();
-        
+
         Label lbSeat = new Label("Giới hạn số lượng ghế:");
         TextField txtSeat = new TextField();
 
@@ -48,7 +45,6 @@ public class QuyDinhController {
         Button confirmButton = new Button("Xác nhận");
 
         HBox hbox = new HBox(10, lbSeat, txtSeat);
-        
 
         VBox vbox = new VBox(10, hbox, confirmButton);
         secondaryLayout.getChildren().addAll(vbox);
@@ -58,36 +54,38 @@ public class QuyDinhController {
         newWindow.setTitle("Sửa quy định");
         newWindow.setScene(new Scene(secondaryLayout, 500, 200));
         newWindow.show();
-        
-        confirmButton.setOnAction(e -> { 
-            
+
+        confirmButton.setOnAction(e -> {
+
         });
     }
-    
+
     @FXML
     private void getSeat() {
         try {
             Label idLabel = new Label("Nhập id của xe cần tìm:");
             TextField idTextField = new TextField();
+            Label idLabel2 = new Label("Nhập id của ghế cần tìm:");
+            TextField idTextField2 = new TextField();
             Button searchBtn = new Button("Tìm kiếm");
 
             TableView<Couchette> seatTable = new TableView<>();
             TableColumn<Couchette, Integer> idColumn = new TableColumn<>("Số ghế");
-            idColumn.setCellValueFactory(new PropertyValueFactory<>("ID_Ghe"));
+            idColumn.setCellValueFactory(new PropertyValueFactory<>("CouchetteId"));
 
             TableColumn<Couchette, Boolean> seatStatusColumn = new TableColumn<>("Tình trạng ghế");
-            seatStatusColumn.setCellValueFactory(new PropertyValueFactory<>("TinhTrangGhe"));
+            seatStatusColumn.setCellValueFactory(new PropertyValueFactory<>("Status"));
 
             TableColumn<Couchette, Integer> coachIdColumn = new TableColumn<>("Xe");
-            coachIdColumn.setCellValueFactory(new PropertyValueFactory<>("ID_Xe"));
+            coachIdColumn.setCellValueFactory(new PropertyValueFactory<>("CouchId"));
 
             seatTable.getColumns().addAll(idColumn, seatStatusColumn, coachIdColumn);
 
-            List<Couchette> seats = s.getSeatByCoadID(null);
+            List<Couchette> seats = s.getSeatsByVehicleId(null);
             seatTable.setItems(FXCollections.observableList(seats));
 
             HBox hbox = new HBox(10);
-            hbox.getChildren().addAll(idLabel, idTextField, searchBtn);
+            hbox.getChildren().addAll(idLabel, idTextField, idLabel2, idTextField2, searchBtn);
 
             Stage newWindow = new Stage();
             newWindow.setTitle("Thông tin các ghế trên");

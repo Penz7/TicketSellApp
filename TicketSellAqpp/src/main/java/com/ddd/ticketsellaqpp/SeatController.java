@@ -55,7 +55,7 @@ public class SeatController implements Initializable {
 
             seatTable.getColumns().addAll(idColumn, seatStatusColumn, coachIdColumn);
 
-            List<Couchette> seats = s.getSeatByCoadID(null);
+            List<Couchette> seats = s.getSeatsByVehicleId(null);
             seatTable.setItems(FXCollections.observableList(seats));
 
             HBox hbox = new HBox(10);

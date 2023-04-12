@@ -51,25 +51,16 @@ public class RouteRepostitory {
         return routes;
     }
 
-//    public List<Route> getRoutetById(Integer ID_ChuyenXe) throws SQLException {
-//        List<Route> routes = new ArrayList<>();
-//        
-//        try (Connection connection = JdbcUtils.getConn()) {
-//            String query = "SELECT * FROM chuyenxe WHERE ID_ChuyenXe = ?";
-//            PreparedStatement preparedStatement = connection.prepareStatement(query);
-//            preparedStatement.setInt(1, ID_ChuyenXe);
-//            ResultSet rs = preparedStatement.executeQuery();
-//            if (rs.next()) {
-//                Route route = new Route(
-//                        rs.getInt("ID_ChuyenXe"),
-//                        rs.getString("tenCX"),
-//                        rs.getBigDecimal("giaChuyen")
-//                rs.getString());
-//                routes.add(route);
-//            }
-//        }
-//        return routes;
-//    }
+    public boolean checkRouteExists(int diID, int denID) throws SQLException {
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM chuyenxe WHERE ID_benDi = ? AND ID_benDen = ?")) {
+            ps.setInt(1, diID);
+            ps.setInt(2, denID);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
+
     public List<Route> getRoute(String kw) throws SQLException {
         List<Route> results = new ArrayList<>();
 
