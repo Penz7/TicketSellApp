@@ -299,7 +299,11 @@ public class BookingController implements Initializable {
                                         List<Integer> couchetteIds = entry.getValue();
                                         if (!couchetteIds.isEmpty()) {
                                             for (Integer couchetteId : couchetteIds) {
-                                                cbTicketOrdered.getItems().add("Chuyến: " + routeId + " - Ghế: " + couchetteId);
+                                                try {
+                                                    cbTicketOrdered.getItems().add("Chuyến: " + routeId + " - Ghế: " + COUCHETTE_SERVICE.getOneCouchetteByID(couchetteId).getOrderOfCouchette());
+                                                } catch (SQLException ex) {
+                                                    Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
+                                                }
                                             }
                                         }
                                     }
@@ -536,7 +540,7 @@ public class BookingController implements Initializable {
                     if (couchette == null) {
                         continue; // skip this ticket if couchette is null
                     }
-                    routeInfo += " - Ghế: " + couchette.getCouchetteId();
+                    routeInfo += " - Ghế: " + couchette.getOrderOfCouchette();
                     RouteCoach routeCoach = ROUTE_COACH_SERVICE.getOneRouteCoachById(routeId, couchette.getCouchId());
                     if (routeCoach == null) {
                         continue; // skip this ticket if routeCoach is null
