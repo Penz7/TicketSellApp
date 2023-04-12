@@ -116,10 +116,14 @@ public class SignInController implements Initializable {
         if ("".equals(this.txtUsername.getText().trim()) || this.txtUsername.getText().trim().length() < 6) {
             MessageBox.getBox("Question", "Tên tài khoản phải có ít nhất 6 ký tự !!", Alert.AlertType.INFORMATION).show();
             return false;
-        } else if ("".equals(this.txtPassword.getText().trim()) || this.txtPassword.getText().trim().length() < 6) {
-            MessageBox.getBox("Question", "Mật khẩu phải có ít nhất 6 ký tự !!", Alert.AlertType.INFORMATION).show();
+        } else if ("".equals(this.txtPassword.getText().trim()) || this.txtPassword.getText().trim().length() < 6 ) {
+            MessageBox.getBox("Question", "Mật khẩu phải có ít nhất 6 ký tự và không có khoảng trắng !!", Alert.AlertType.INFORMATION).show();
             return false;
-        } else {
+        } else if(this.txtPassword.getText().contains(" ")){
+             MessageBox.getBox("Question", "Mật khẩu của bạn đang có khoảng trắng", Alert.AlertType.INFORMATION).show();
+             return false;
+        }
+        else {
             return true;
         }
     }

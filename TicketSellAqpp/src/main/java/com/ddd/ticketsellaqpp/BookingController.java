@@ -547,7 +547,7 @@ public class BookingController implements Initializable {
                     }
                     LocalDateTime departureTime = routeCoach.getDepartureTime().toLocalDateTime();
                     String formattedDepartureTime = DTF.format(departureTime);
-                    routeInfo += "- Thời gian: " + formattedDepartureTime;
+                    routeInfo += "- Giờ khởi hành: " + formattedDepartureTime;
                     if (ticket.getPrintingDate() == null) {
                         routeInfo += " - Tình trạng vé: Chưa lấy vé";
                     } else {
