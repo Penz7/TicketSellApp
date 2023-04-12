@@ -12,11 +12,13 @@ public class Couchette {
     private Integer CouchetteId;
     private Boolean Status;
     private Integer CouchId;
+    private Integer OrderOfCouchette;
 
-    public Couchette(Integer CouchetteId, Boolean Status, Integer CouchId) {
+    public Couchette(Integer CouchetteId, Boolean Status, Integer CouchId, Integer OrderOfCouchette) {
         this.CouchetteId = CouchetteId;
         this.Status = Status;
         this.CouchId = CouchId;
+        this.OrderOfCouchette = OrderOfCouchette;
     }
 
     public Couchette() {
@@ -46,8 +48,16 @@ public class Couchette {
         this.Status = Status;
     }
 
-   
+    public Integer getOrderOfCouchette() {
+        return OrderOfCouchette;
+    }
 
+    public void setOrderOfCouchette(Integer OrderOfCouchette) {
+        this.OrderOfCouchette = OrderOfCouchette;
+    }
+
+   
+    
     
     
     

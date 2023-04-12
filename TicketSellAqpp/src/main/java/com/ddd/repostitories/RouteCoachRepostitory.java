@@ -35,10 +35,10 @@ public class RouteCoachRepostitory {
                 routeCoach.setCoachId(rs.getInt("ID_Xe"));
                 routeCoach.setDepartureTime(rs.getTimestamp("gioKhoiHanh"));
                 return routeCoach;
+            } else {
+                throw new SQLException("No RouteID found with ID " + RouteId + " and CoachId with ID = " + CoachId);
             }
 
         }
-        return null;
-
     }
 }

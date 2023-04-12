@@ -219,13 +219,20 @@ public class BookingController implements Initializable {
 
     private void loadTableColumns() {
 
-        TableColumn<RouteCoachCouchette, Integer> col0 = new TableColumn("Mã chuyến xe");
+        TableColumn<RouteCoachCouchette, Integer> col0 = new TableColumn("Mã chuyến");
 
         col0.setCellValueFactory(
                 new PropertyValueFactory("routeID"));
         col0.setPrefWidth(
-                100);
+                75);
+        
+        TableColumn<RouteCoachCouchette, Integer> col6 = new TableColumn("Thứ tự ghế");
 
+        col0.setCellValueFactory(
+                new PropertyValueFactory("OrderOfCouchette"));
+        col0.setPrefWidth(
+                75);
+        
         TableColumn<RouteCoachCouchette, String> col1 = new TableColumn("Tên chuyến xe");
 
         col1.setCellValueFactory(
@@ -238,7 +245,7 @@ public class BookingController implements Initializable {
         col2.setCellValueFactory(
                 new PropertyValueFactory("coachName"));
         col2.setPrefWidth(
-                150);
+                100);
 
         TableColumn<RouteCoachCouchette, Date> col3 = new TableColumn("Giờ khởi hành");
 
@@ -247,7 +254,7 @@ public class BookingController implements Initializable {
         col3.setPrefWidth(
                 150);
 
-        TableColumn<RouteCoachCouchette, Integer> col4 = new TableColumn("Ghế");
+        TableColumn<RouteCoachCouchette, Integer> col4 = new TableColumn("Mã ghế");
 
         col4.setCellValueFactory(
                 new PropertyValueFactory("couchetteID"));
@@ -376,7 +383,7 @@ public class BookingController implements Initializable {
         );
 
         this.tvRoute.getColumns()
-                .addAll(col0, col1, col2, col3, col4, col5, colOrderTicket);
+                .addAll(col0,col1,col2, col3, col4, col5, col6, colOrderTicket);
     }
 
     private void setInfoAcount() {

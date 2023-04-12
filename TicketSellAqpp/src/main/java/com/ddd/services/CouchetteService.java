@@ -24,8 +24,8 @@ public class CouchetteService {
         return COUCHETTE_REPOSTITORY.getSeatsByVehicleId(kw);
     }
     
-    public Couchette getOneCouchetteByID(Integer ID) throws SQLException {
-        return COUCHETTE_REPOSTITORY.getOneCouchetteByID(ID);
+    public Couchette getOneCouchetteByID(Integer CouchetteId) throws SQLException {
+        return COUCHETTE_REPOSTITORY.getOneCouchetteByID(CouchetteId);
     }
     
     public List<Couchette> getAllSeat() throws SQLException {

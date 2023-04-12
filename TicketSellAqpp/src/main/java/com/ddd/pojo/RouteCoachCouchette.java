@@ -18,17 +18,19 @@ public class RouteCoachCouchette {
     private Timestamp departureTime;
     private Integer couchetteID;
     private Double fare;
+    private Integer OrderOfCouchette;
 
     public RouteCoachCouchette() {
     }
 
-    public RouteCoachCouchette(Integer routeID, String routeName, String coachName, Timestamp departureTime, Integer couchetteID, Double fare) {
+    public RouteCoachCouchette(Integer routeID, String routeName, String coachName, Timestamp departureTime, Integer couchetteID, Double fare, Integer OrderOfCouchette) {
         this.routeID = routeID;
         this.routeName = routeName;
         this.coachName = coachName;
         this.departureTime = departureTime;
         this.couchetteID = couchetteID;
         this.fare = fare;
+        this.OrderOfCouchette = OrderOfCouchette;
     }
 
     public String getCoachName() {
@@ -45,6 +47,10 @@ public class RouteCoachCouchette {
 
     public Double getFare() {
         return fare;
+    }
+
+    public Integer getOrderOfCouchette() {
+        return OrderOfCouchette;
     }
 
     public Integer getRouteID() {
@@ -71,6 +77,10 @@ public class RouteCoachCouchette {
         this.fare = fare;
     }
 
+    public void setOrderOfCouchette(Integer OrderOfCouchette) {
+        this.OrderOfCouchette = OrderOfCouchette;
+    }
+
     public void setRouteID(Integer routeID) {
         this.routeID = routeID;
     }
@@ -78,4 +88,6 @@ public class RouteCoachCouchette {
     public void setRouteName(String routeName) {
         this.routeName = routeName;
     }
+
+    
 }

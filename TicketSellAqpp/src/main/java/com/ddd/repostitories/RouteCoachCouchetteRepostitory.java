@@ -22,7 +22,7 @@ public class RouteCoachCouchetteRepostitory {
     public List<RouteCoachCouchette> getDataForTableViewBooking(Integer routeId) throws SQLException {
         List<RouteCoachCouchette> data = new ArrayList<>();
         try (Connection connection = JdbcUtils.getConn()) {
-            String query = "SELECT chuyenxe.ID_ChuyenXe, chuyenxe.tenCX, xe.TenXe, chuyenxe_xe.gioKhoiHanh,ghe.ID_Ghe, chuyenxe.giaChuyen\n"
+            String query = "SELECT chuyenxe.ID_ChuyenXe, chuyenxe.tenCX, xe.TenXe, chuyenxe_xe.gioKhoiHanh,ghe.ID_Ghe, chuyenxe.giaChuyen, ghe.ThuTuGhe\n"
                     + "FROM chuyenxe\n"
                     + "JOIN chuyenxe_xe ON chuyenxe.ID_ChuyenXe = chuyenxe_xe.ID_ChuyenXe\n"
                     + "JOIN xe ON chuyenxe_xe.ID_Xe = xe.ID_Xe\n"
@@ -41,7 +41,8 @@ public class RouteCoachCouchetteRepostitory {
                         rs.getString("TenXe"),
                         rs.getTimestamp("gioKhoiHanh"),
                         rs.getInt("ID_Ghe"),
-                        rs.getDouble("giaChuyen"));
+                        rs.getDouble("giaChuyen"),
+                        rs.getInt("ThuTuGhe"));
                 data.add(routeCoachCouchette);
             }
         }

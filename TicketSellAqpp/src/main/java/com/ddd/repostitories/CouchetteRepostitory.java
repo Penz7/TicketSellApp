@@ -35,7 +35,7 @@ public class CouchetteRepostitory {
             }
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                Couchette seat = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"));
+                Couchette seat = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"), rs.getInt("ThuTuGhe"));
                 seats.add(seat);
             }
         }
@@ -43,15 +43,15 @@ public class CouchetteRepostitory {
         return seats;
     }
 
-    public Couchette getOneCouchetteByID(Integer ID) throws SQLException {
-        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM ghe WHERE ID_Ghe = ?")) {
-            stm.setInt(1, ID);
+    public Couchette getOneCouchetteByID(Integer CouchetteId) throws SQLException {
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM ghe WHERE ID_Ghe = ? ")) {
+            stm.setInt(1, CouchetteId);
             try (ResultSet rs = stm.executeQuery()) {
                 if (rs.next()) {
-                    Couchette s = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"));
+                    Couchette s = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"), rs.getInt("ThuTuGhe"));
                     return s;
                 } else {
-                    throw new SQLException("No couchette found with ID " + ID);
+                    throw new SQLException("No couchette found with ID " + CouchetteId );
                 }
             }
         }
@@ -65,7 +65,7 @@ public class CouchetteRepostitory {
             PreparedStatement stm = conn.prepareCall(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Couchette s = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"));
+                Couchette s = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"), rs.getInt("ThuTuGhe"));
                 results.add(s);
             }
         }
