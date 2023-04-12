@@ -277,11 +277,11 @@ public class BookingController implements Initializable {
 
                 {
                     btn.setOnAction(evt -> {
-
                         Button b = (Button) evt.getSource();
                         TableCell cell = (TableCell) b.getParent();
                         RouteCoachCouchette st = (RouteCoachCouchette) cell.getTableRow().getItem();
                         if ("đặt".equalsIgnoreCase(btn.getText())) {
+                         
                             Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc đặt vé này", Alert.AlertType.CONFIRMATION);
                             a.showAndWait().ifPresent(res -> {
                                 if (res == ButtonType.OK) {
@@ -329,6 +329,7 @@ public class BookingController implements Initializable {
                                     MessageBox.getBox("Đặt vé", "Vé xe đã vào danh sách xác nhận", Alert.AlertType.INFORMATION).show();
                                 }
                             });
+                           
                         } else {
                             if ("hủy".equalsIgnoreCase(btn.getText())) {
                                 Alert a = MessageBox.getBox("Hủy vé", "Bạn có chắc hủy vé này", Alert.AlertType.CONFIRMATION);
