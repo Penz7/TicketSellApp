@@ -395,7 +395,6 @@ public class BookingController implements Initializable {
 
     @FXML
     private void checkOrder() {
-        if (checkTimeOrder() == false) {
             Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
             Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
             a.showAndWait().ifPresent(res -> {
@@ -441,9 +440,6 @@ public class BookingController implements Initializable {
                 }
             }
             );
-        } else {
-            MessageBox.getBox("Warning", "Chuyến xe bạn đang đặt sắp khởi hành trong 60 phút nữa!!! Vui lòng chọn chuyến xe khác ", Alert.AlertType.ERROR);
-        }
     }
 
     @FXML
@@ -514,47 +510,47 @@ public class BookingController implements Initializable {
     }
 
     public void loadTicketOrdered() throws SQLException {
-    StringBuilder sb = new StringBuilder();
-    List<Ticket> tickets = BOOKING_SERVICE.getAllTicketByCustomerId(App.currentUser.getUser_id());
-    if (tickets.isEmpty()) {
-        txtArea.clear();
-    } else {
-        try {
-            for (Ticket ticket : tickets) {
-                String info = "Mã vé: " + ticket.getTicketId();
-                Integer routeId = ticket.getRoute();
-                Integer couchetteId = ticket.getCouchette();
-                if (routeId == null || couchetteId == null) {
-                    continue; // skip this ticket if routeId or couchetteId is null
+        StringBuilder sb = new StringBuilder();
+        List<Ticket> tickets = BOOKING_SERVICE.getAllTicketByCustomerId(App.currentUser.getUser_id());
+        if (tickets.isEmpty()) {
+            txtArea.clear();
+        } else {
+            try {
+                for (Ticket ticket : tickets) {
+                    String info = "Mã vé: " + ticket.getTicketId();
+                    Integer routeId = ticket.getRoute();
+                    Integer couchetteId = ticket.getCouchette();
+                    if (routeId == null || couchetteId == null) {
+                        continue; // skip this ticket if routeId or couchetteId is null
+                    }
+                    String routeInfo = " - Mã chuyến: " + routeId;
+                    Couchette couchette = COUCHETTE_SERVICE.getOneCouchetteByID(couchetteId);
+                    if (couchette == null) {
+                        continue; // skip this ticket if couchette is null
+                    }
+                    routeInfo += " - Ghế: " + couchette.getCouchetteId();
+                    RouteCoach routeCoach = ROUTE_COACH_SERVICE.getOneRouteCoachById(routeId, couchette.getCouchId());
+                    if (routeCoach == null) {
+                        continue; // skip this ticket if routeCoach is null
+                    }
+                    LocalDateTime departureTime = routeCoach.getDepartureTime().toLocalDateTime();
+                    String formattedDepartureTime = DTF.format(departureTime);
+                    routeInfo += "- Thời gian: " + formattedDepartureTime;
+                    if (ticket.getPrintingDate() == null) {
+                        routeInfo += " - Tình trạng vé: Chưa lấy vé";
+                    } else {
+                        routeInfo += " - Tình trạng vé: Đã lấy vé";
+                    }
+                    info += routeInfo;
+                    sb.append(info);
+                    sb.append("\n\n"); // add two new lines between each ticket info
                 }
-                String routeInfo = " - Mã chuyến: " + routeId;
-                Couchette couchette = COUCHETTE_SERVICE.getOneCouchetteByID(couchetteId);
-                if (couchette == null) {
-                    continue; // skip this ticket if couchette is null
-                }
-                routeInfo += " - Ghế: " + couchette.getCouchetteId();
-                RouteCoach routeCoach = ROUTE_COACH_SERVICE.getOneRouteCoachById(routeId, couchette.getCouchId());
-                if (routeCoach == null) {
-                    continue; // skip this ticket if routeCoach is null
-                }
-                LocalDateTime departureTime = routeCoach.getDepartureTime().toLocalDateTime();
-                String formattedDepartureTime = DTF.format(departureTime);
-                routeInfo += "- Thời gian: " + formattedDepartureTime;
-                if (ticket.getPrintingDate() == null) {
-                    routeInfo += " - Tình trạng vé: Chưa lấy vé";
-                } else {
-                    routeInfo += " - Tình trạng vé: Đã lấy vé";
-                }
-                info += routeInfo;
-                sb.append(info);
-                sb.append("\n\n"); // add two new lines between each ticket info
+                txtArea.setText(sb.toString());
+            } catch (NullPointerException ex) {
+                // Handle the exception here
             }
-            txtArea.setText(sb.toString());
-        } catch (NullPointerException ex) {
-            // Handle the exception here
         }
     }
-}
 
     public void loadTicketOrderedStaff() throws SQLException {
         StringBuilder sb = new StringBuilder();
@@ -585,23 +581,10 @@ public class BookingController implements Initializable {
         }
     }
 
-    public boolean checkTimeOrder() {
-        this.tvRoute.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                Timestamp departureTimestamp = newSelection.getDepartureTime();
-                LocalTime departureTime = departureTimestamp.toLocalDateTime().toLocalTime();
-                LocalTime currentTime = LocalTime.now();
-                LocalTime bookingTime = currentTime.plusMinutes(60);
-                if (departureTime.isAfter(currentTime) && departureTime.isBefore(bookingTime)) {
-                    canBookTicket = true;
-                } else {
-                    canBookTicket = false;
-                }
-            } else {
-                canBookTicket = false;
-            }
-        });
-        return canBookTicket;
+    public boolean checkTimeOrder(Timestamp departureTime) {
+        LocalTime depTime = departureTime.toLocalDateTime().toLocalTime();
+        LocalTime bookingTime = LocalTime.now().plusMinutes(60);
+        return (depTime.isAfter(LocalTime.now()) && depTime.isBefore(bookingTime));
     }
 
     @FXML
