@@ -15,17 +15,9 @@ public class Route {
 
     private int routeId;
     private String nameRoute;
-
-
     private Double fare;
     private Integer destinationID;
     private Integer departureID;
-
-
-
-
-   
-   
 
     public Route(int routeId, String nameRoute, Double fare, Integer destinationID, Integer departureID) {
         this.routeId = routeId;
@@ -77,9 +69,6 @@ public class Route {
 
     public void setNameRoute(String nameRoute) {
         this.nameRoute = nameRoute;
-    }
-
-    
-    
+    } 
 
 }

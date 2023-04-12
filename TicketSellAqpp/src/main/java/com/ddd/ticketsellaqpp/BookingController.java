@@ -225,14 +225,7 @@ public class BookingController implements Initializable {
                 new PropertyValueFactory("routeID"));
         col0.setPrefWidth(
                 75);
-        
-        TableColumn<RouteCoachCouchette, Integer> col6 = new TableColumn("Thứ tự ghế");
 
-        col0.setCellValueFactory(
-                new PropertyValueFactory("OrderOfCouchette"));
-        col0.setPrefWidth(
-                75);
-        
         TableColumn<RouteCoachCouchette, String> col1 = new TableColumn("Tên chuyến xe");
 
         col1.setCellValueFactory(
@@ -268,6 +261,13 @@ public class BookingController implements Initializable {
         col5.setPrefWidth(
                 100);
 
+        TableColumn<RouteCoachCouchette, Integer> col6 = new TableColumn("Thứ tự ghế");
+
+        col6.setCellValueFactory(
+                new PropertyValueFactory("OrderOfCouchette"));
+        col6.setPrefWidth(
+                75);
+
         TableColumn<RouteCoachCouchette, Void> colOrderTicket = new TableColumn<>("Đặt");
 
         colOrderTicket.setCellFactory(r
@@ -281,7 +281,7 @@ public class BookingController implements Initializable {
                         TableCell cell = (TableCell) b.getParent();
                         RouteCoachCouchette st = (RouteCoachCouchette) cell.getTableRow().getItem();
                         if ("đặt".equalsIgnoreCase(btn.getText())) {
-                         
+
                             Alert a = MessageBox.getBox("Đặt vé", "Bạn có chắc đặt vé này", Alert.AlertType.CONFIRMATION);
                             a.showAndWait().ifPresent(res -> {
                                 if (res == ButtonType.OK) {
@@ -329,7 +329,7 @@ public class BookingController implements Initializable {
                                     MessageBox.getBox("Đặt vé", "Vé xe đã vào danh sách xác nhận", Alert.AlertType.INFORMATION).show();
                                 }
                             });
-                           
+
                         } else {
                             if ("hủy".equalsIgnoreCase(btn.getText())) {
                                 Alert a = MessageBox.getBox("Hủy vé", "Bạn có chắc hủy vé này", Alert.AlertType.CONFIRMATION);
@@ -384,7 +384,7 @@ public class BookingController implements Initializable {
         );
 
         this.tvRoute.getColumns()
-                .addAll(col0,col1,col2, col3, col4, col5, col6, colOrderTicket);
+                .addAll(col0, col1, col2, col3, col4, col5, col6, colOrderTicket);
     }
 
     private void setInfoAcount() {
@@ -403,51 +403,51 @@ public class BookingController implements Initializable {
 
     @FXML
     private void checkOrder() {
-            Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
-            Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
-            a.showAndWait().ifPresent(res -> {
-                if (res == ButtonType.OK) {
-                    try {
-                        for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-                            Integer currentRouteId = entry.getKey();
-                            List<Integer> list = map.get(currentRouteId);
-                            Iterator<Integer> iterator = list.iterator();
-                            while (iterator.hasNext()) {
-                                int i = iterator.next();
-                                Ticket t = new Ticket(null,
-                                        i,
-                                        App.currentUser.getUser_id(),
-                                        USER_SERVICE.getOneUserIdByName("Duy nến").getUser_id(),
-                                        currentRouteId,
-                                        false);
-                                if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
-                                    seat.updateStatusSeat(i, true);
-                                    iterator.remove();
-                                } else {
-                                    MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
-                                }
+        Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
+        Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
+        a.showAndWait().ifPresent(res -> {
+            if (res == ButtonType.OK) {
+                try {
+                    for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                        Integer currentRouteId = entry.getKey();
+                        List<Integer> list = map.get(currentRouteId);
+                        Iterator<Integer> iterator = list.iterator();
+                        while (iterator.hasNext()) {
+                            int i = iterator.next();
+                            Ticket t = new Ticket(null,
+                                    i,
+                                    App.currentUser.getUser_id(),
+                                    USER_SERVICE.getOneUserIdByName("Duy nến").getUser_id(),
+                                    currentRouteId,
+                                    false);
+                            if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
+                                seat.updateStatusSeat(i, true);
+                                iterator.remove();
+                            } else {
+                                MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
                             }
                         }
-
-                        MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
-                        this.txtOrderCount.setText("");
-                        this.cbTicketOrdered.getItems().clear();
-                        this.btnFindRoute.setDisable(false);
-                        this.txtSearchDeparture.setDisable(false);
-                        this.txtSearchDestination.setDisable(false);
-                        this.dpDateOrder.setDisable(false);
-                        loadTicketOrdered();
-                        this.tvRoute.refresh();
-                        findRoute();
-
-                    } catch (SQLException ex) {
-                        Logger.getLogger(BookingController.class
-                                .getName()).log(Level.SEVERE, null, ex);
                     }
 
+                    MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
+                    this.txtOrderCount.setText("");
+                    this.cbTicketOrdered.getItems().clear();
+                    this.btnFindRoute.setDisable(false);
+                    this.txtSearchDeparture.setDisable(false);
+                    this.txtSearchDestination.setDisable(false);
+                    this.dpDateOrder.setDisable(false);
+                    loadTicketOrdered();
+                    this.tvRoute.refresh();
+                    findRoute();
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(BookingController.class
+                            .getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
-            );
+        }
+        );
     }
 
     @FXML
