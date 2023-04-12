@@ -22,4 +22,8 @@ public class TicketService {
     public Ticket getTicketById(Integer ticketId) throws SQLException{
         return TICKET_REPOSTITORY.getTicketById(ticketId);
     }
+    
+     public boolean checkUserCustomer(Integer user_id) throws SQLException{
+        return TICKET_REPOSTITORY.isUserCustomer(user_id);
+    }
 }

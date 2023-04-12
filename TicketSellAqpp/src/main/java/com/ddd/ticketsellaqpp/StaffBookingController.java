@@ -1,12 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.ddd.ticketsellaqpp;
 
-import com.ddd.pojo.Couchette;
 import com.ddd.pojo.Route;
-import com.ddd.pojo.RouteCoach;
 import com.ddd.pojo.RouteCoachCouchette;
 import com.ddd.pojo.Station;
 import com.ddd.pojo.Ticket;
@@ -57,11 +55,10 @@ import javafx.scene.input.MouseButton;
 import org.controlsfx.control.textfield.TextFields;
 
 /**
- * FXML Controller class
  *
- * @author Admin
+ * @author admin
  */
-public class BookingController implements Initializable {
+public class StaffBookingController implements Initializable {
 
     static CouchetteRepostitory seat = new CouchetteRepostitory();
 
@@ -144,11 +141,6 @@ public class BookingController implements Initializable {
 
         setInfoAcount();
         this.loadTableColumns();
-        try {
-            this.loadTicketOrdered();
-        } catch (SQLException ex) {
-            Logger.getLogger(BookingController.class.getName()).log(Level.SEVERE, null, ex);
-        }
         TextFields.bindAutoCompletion(txtSearchDestination, getAllNameStation());
         TextFields.bindAutoCompletion(txtSearchDeparture, getAllNameStation());
     }
@@ -400,52 +392,60 @@ public class BookingController implements Initializable {
     }
 
     @FXML
-    private void checkOrder() {
-        Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
-        Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
-        a.showAndWait().ifPresent(res -> {
-            if (res == ButtonType.OK) {
-                try {
-                    for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
-                        Integer currentRouteId = entry.getKey();
-                        List<Integer> list = map.get(currentRouteId);
-                        Iterator<Integer> iterator = list.iterator();
-                        while (iterator.hasNext()) {
-                            int i = iterator.next();
-                            Ticket t = new Ticket(null,
-                                    i,
-                                    App.currentUser.getUser_id(),
-                                    USER_SERVICE.getOneUserIdByName("Duy nến").getUser_id(),
-                                    currentRouteId,
-                                    false);
-                            if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
-                                seat.updateStatusSeat(i, true);
-                                iterator.remove();
-                            } else {
-                                MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
+    private void checkOrderStaff() throws SQLException {
+        if (TICKET_SERVICE.checkUserCustomer(Integer.parseInt(txtUserID.getText()))) {
+            if (txtUserID.getText().length() > 0) {
+                Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
+                Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
+                a.showAndWait().ifPresent(res -> {
+                    if (res == ButtonType.OK) {
+                        try {
+                            for (Map.Entry<Integer, List<Integer>> entry : map.entrySet()) {
+                                Integer currentRouteId = entry.getKey();
+                                List<Integer> list = map.get(currentRouteId);
+                                Iterator<Integer> iterator = list.iterator();
+                                while (iterator.hasNext()) {
+                                    int i = iterator.next();
+                                    Ticket t = new Ticket(null,
+                                            i,
+                                            Integer.parseInt(this.txtUserID.getText()),
+                                            App.currentUser.getUser_id(),
+                                            currentRouteId,
+                                            false);
+                                    if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
+                                        seat.updateStatusSeat(i, true);
+                                        iterator.remove();
+                                    } else {
+                                        MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
+                                    }
+                                }
                             }
+
+                            MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
+                            this.txtOrderCount.setText("");
+                            this.cbTicketOrdered.getItems().clear();
+                            this.btnFindRoute.setDisable(false);
+                            this.txtSearchDeparture.setDisable(false);
+                            this.txtSearchDestination.setDisable(false);
+                            this.dpDateOrder.setDisable(false);
+                            loadTicketOrderedStaff();
+                            this.tvRoute.refresh();
+                            findRoute();
+
+                        } catch (SQLException ex) {
+                            Logger.getLogger(BookingController.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                         }
+
                     }
-
-                    MessageBox.getBox("Xác nhận đặt vé thành công", "Hãy đến quầy OUBus để lấy vé!", Alert.AlertType.INFORMATION).showAndWait();
-                    this.txtOrderCount.setText("");
-                    this.cbTicketOrdered.getItems().clear();
-                    this.btnFindRoute.setDisable(false);
-                    this.txtSearchDeparture.setDisable(false);
-                    this.txtSearchDestination.setDisable(false);
-                    this.dpDateOrder.setDisable(false);
-                    loadTicketOrdered();
-                    this.tvRoute.refresh();
-                    findRoute();
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(BookingController.class
-                            .getName()).log(Level.SEVERE, null, ex);
                 }
-
+                );
+            } else {
+                MessageBox.getBox("Warning", "Thông tin id khách hàng chưa được nhập !!! ", Alert.AlertType.ERROR).show();
             }
+        } else {
+            MessageBox.getBox("Warning", "Không tồn tại khách hàng đã nhập !!! ", Alert.AlertType.ERROR).show();
         }
-        );
     }
 
     private void loadRouteData(Integer routeId) throws SQLException {
@@ -459,62 +459,57 @@ public class BookingController implements Initializable {
     }
 
     public static void setCurrentUser(User currentUser) {
-        BookingController.currentUser = currentUser;
+        StaffBookingController.currentUser = currentUser;
     }
 
-    public void loadTicketOrdered() throws SQLException {
+    public void loadTicketOrderedStaff() throws SQLException {
         StringBuilder sb = new StringBuilder();
-        List<Ticket> tickets = BOOKING_SERVICE.getAllTicketByCustomerId(App.currentUser.getUser_id());
-        if (tickets.isEmpty()) {
+        String input = this.txtUserID.getText();
+        if (input.matches("\\d+")) {
+            int userID = Integer.parseInt(input);
+            User a = USER_SERVICE.getOneUserByID(userID);
+            this.txtName.setText(a.getUser_fullname());
+            this.txtPhone.setText(a.getUser_phone_number());
+            this.txtAddress.setText(a.getUser_address());
+        } else {
+            MessageBox.getBox("Warning", "Không tìm được khách hàng", Alert.AlertType.ERROR);
+        }
+        if (BOOKING_SERVICE.getAllTicketByCustomerId(Integer.parseInt(this.txtUserID.getText())).isEmpty()) {
             txtArea.clear();
         } else {
-            try {
-                for (Ticket ticket : tickets) {
-                    String info = "Mã vé: " + ticket.getTicketId();
-                    Integer routeId = ticket.getRoute();
-                    Integer couchetteId = ticket.getCouchette();
-                    if (routeId == null || couchetteId == null) {
-                        continue; // skip this ticket if routeId or couchetteId is null
-                    }
-                    String routeInfo = " - Mã chuyến: " + routeId;
-                    Couchette couchette = COUCHETTE_SERVICE.getOneCouchetteByID(couchetteId);
-                    if (couchette == null) {
-                        continue; // skip this ticket if couchette is null
-                    }
-                    routeInfo += " - Ghế: " + couchette.getOrderOfCouchette();
-                    RouteCoach routeCoach = ROUTE_COACH_SERVICE.getOneRouteCoachById(routeId, couchette.getCouchId());
-                    if (routeCoach == null) {
-                        continue; // skip this ticket if routeCoach is null
-                    }
-                    LocalDateTime departureTime = routeCoach.getDepartureTime().toLocalDateTime();
-                    String formattedDepartureTime = DTF.format(departureTime);
-                    routeInfo += "- Giờ khởi hành: " + formattedDepartureTime;
-                    if (ticket.getPrintingDate() == null) {
-                        routeInfo += " - Tình trạng vé: Chưa lấy vé";
-                    } else {
-                        routeInfo += " - Tình trạng vé: Đã lấy vé";
-                    }
-                    info += routeInfo;
-                    sb.append(info);
-                    sb.append("\n\n"); // add two new lines between each ticket info
+            for (Ticket ticket : BOOKING_SERVICE.getAllTicketByCustomerId(Integer.parseInt(this.txtUserID.getText()))) {
+                String info = "Mã vé: " + ticket.getTicketId() + " - Mã chuyến: " + ticket.getRoute() + " - Ghế: " + ticket.getCouchette();
+                if (ticket.getPrintingDate() == null) {
+                    info += " - Tình trạng vé: Chưa lấy vé";
+                } else {
+                    info += " - Tình trạng vé: Đã lấy vé";
                 }
-                txtArea.setText(sb.toString());
-            } catch (NullPointerException ex) {
-                // Handle the exception here
+                sb.append(info);
+                sb.append("\n\n"); // add two new lines between each ticket info
             }
+            txtArea.setText(sb.toString());
         }
     }
 
     public boolean checkTimeOrder(Timestamp departureTime) {
         LocalTime depTime = departureTime.toLocalDateTime().toLocalTime();
-        LocalTime bookingTime = LocalTime.now().plusMinutes(60);
+        LocalTime bookingTime = LocalTime.now().plusMinutes(5);
         return (depTime.isAfter(LocalTime.now()) && depTime.isBefore(bookingTime));
     }
 
     @FXML
-    private void backMenu() {
+    private void setCustomerView() {
         try {
-            App.setRoot("home-customer");
+            App.setRoot("QuanLyKhachHang");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void backMenuStaff() {
+        try {
+            App.setRoot("home-staff");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

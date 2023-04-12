@@ -56,53 +56,34 @@ public class TicketRepostitory {
         }
     }
 
-//    public List<Ticket> getAllTickets() throws SQLException {
-//        List<Ticket> tickets = new ArrayList<>();
-//        try (Connection connection = JdbcUtils.getConn(); PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM vexe"); ResultSet rs = preparedStatement.executeQuery()) {
-//            while (rs.next()) {
-//                Ticket ticket = new Ticket();
-//                ticket.setTicketId(rs.getInt("ID_VeXe"));
-//                ticket.setCouchette(rs.getInt("ID_Ghe"));
-//                ticket.setCustomer(rs.getInt("ID_KhachHang"));
-//                ticket.setRoute(rs.getInt("ID_ChuyenXe"));
-//                ticket.setStaff(rs.getInt("ID_NhanVien"));
-//                ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
-//                ticket.setIsConfirm(rs.getBoolean("isConfirm"));
-//                tickets.add(ticket);
-//            }
-//        } catch (SQLException e) {
-//            throw new SQLException("Error occurred while retrieving tickets: " + e.getMessage());
-//        }
-//        return tickets;
-//    }
-   public List<Ticket> getAllTickets(Integer kw) throws SQLException {
-    List<Ticket> tickets = new ArrayList<>();
-    try (Connection connection = JdbcUtils.getConn()) {
-        String sql = "SELECT * FROM vexe";
-        if (kw != null) {
-            sql += " WHERE ID_VeXe LIKE CONCAT('%', ?, '%')";
+    public List<Ticket> getAllTickets(Integer kw) throws SQLException {
+        List<Ticket> tickets = new ArrayList<>();
+        try (Connection connection = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM vexe";
+            if (kw != null) {
+                sql += " WHERE ID_VeXe LIKE CONCAT('%', ?, '%')";
+            }
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            if (kw != null) {
+                preparedStatement.setInt(1, kw);
+            }
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Ticket ticket = new Ticket();
+                ticket.setTicketId(rs.getInt("ID_VeXe"));
+                ticket.setCouchette(rs.getInt("ID_Ghe"));
+                ticket.setCustomer(rs.getInt("ID_KhachHang"));
+                ticket.setRoute(rs.getInt("ID_ChuyenXe"));
+                ticket.setStaff(rs.getInt("ID_NhanVien"));
+                ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
+                ticket.setIsConfirm(rs.getBoolean("isConfirm"));
+                tickets.add(ticket);
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error occurred while retrieving tickets: " + e.getMessage());
         }
-        PreparedStatement preparedStatement = connection.prepareStatement(sql);
-        if (kw != null) {
-            preparedStatement.setInt(1, kw);
-        }
-        ResultSet rs = preparedStatement.executeQuery();
-        while (rs.next()) {
-            Ticket ticket = new Ticket();
-            ticket.setTicketId(rs.getInt("ID_VeXe"));
-            ticket.setCouchette(rs.getInt("ID_Ghe"));
-            ticket.setCustomer(rs.getInt("ID_KhachHang"));
-            ticket.setRoute(rs.getInt("ID_ChuyenXe"));
-            ticket.setStaff(rs.getInt("ID_NhanVien"));
-            ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
-            ticket.setIsConfirm(rs.getBoolean("isConfirm"));
-            tickets.add(ticket);
-        }
-    } catch (SQLException e) {
-        throw new SQLException("Error occurred while retrieving tickets: " + e.getMessage());
+        return tickets;
     }
-    return tickets;
-}
 
     public boolean deleteTicket(Integer id) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
@@ -118,6 +99,17 @@ public class TicketRepostitory {
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("UPDATE vexe SET isConfirm = true WHERE ID_VeXe = ?")) {
             stm.setInt(1, id);
             return stm.executeUpdate() > 0;
+        }
+    }
+
+    public boolean isUserCustomer(int userId) throws SQLException {
+        String query = "SELECT COUNT(*) FROM user WHERE role_id = 3 AND user_id = ?";
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
+            }
         }
     }
 }
