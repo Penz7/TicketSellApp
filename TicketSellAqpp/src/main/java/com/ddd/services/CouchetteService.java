@@ -39,4 +39,8 @@ public class CouchetteService {
      public List<Integer> getidSeatbyIdRoute(Integer routeID) throws SQLException {
         return COUCHETTE_REPOSTITORY.getIdSeatbyIDRoute(routeID);
     }
+     
+     public List<Boolean> getStatusSeatbyIDRoute(Integer idRoute) throws SQLException {
+         return COUCHETTE_REPOSTITORY.getStatusSeatbyIDRoute(idRoute);
+     }
 }

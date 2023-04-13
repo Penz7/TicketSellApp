@@ -108,5 +108,24 @@ public class CouchetteRepostitory {
         return results;
     }
 
-    
+    public List<Boolean> getStatusSeatbyIDRoute(Integer idRoute) throws SQLException {
+        List<Boolean> results = new ArrayList<>();
+        String sql = "SELECT TinhTrangGhe FROM ghe "
+                + "JOIN chuyenxe_xe ON ghe.id_xe = chuyenxe_xe.id_xe "
+                + "WHERE ID_ChuyenXe = ?";
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setInt(1, idRoute);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    boolean seatStatus = rs.getBoolean("TinhTrangGhe");
+                    results.add(seatStatus);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error getting seat status", ex);
+            throw ex;
+        }
+        return results;
+    }
+
 }

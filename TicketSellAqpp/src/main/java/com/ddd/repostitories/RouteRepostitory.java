@@ -11,11 +11,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 /**
  *
@@ -185,7 +185,6 @@ public class RouteRepostitory {
         return a;
     }
 
-
     public Route getOneRouteByID(Integer ID) throws SQLException {
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM chuyenxe WHERE ID_ChuyenXe = ?")) {
             stm.setInt(1, ID);
@@ -199,7 +198,23 @@ public class RouteRepostitory {
             }
         }
     }
-    
+
+    public Timestamp getDepartureTimeByIdRoute(Integer id) throws SQLException {
+        String query = "SELECT gioKhoiHanh FROM chuyenxe_xe WHERE ID_ChuyenXe = ?";
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getTimestamp("gioKhoiHanh");
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException ex) {
+            throw new SQLException("Error finding route with ID " + id, ex);
+        }
+    }
+
     public List<Integer> getIdRoute() throws SQLException {
         List<Integer> results = new ArrayList<>();
         String sql = "SELECT ID_ChuyenXe FROM chuyenxe";

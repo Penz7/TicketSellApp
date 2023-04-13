@@ -6,7 +6,6 @@ package com.ddd.ticketsellaqpp;
 
 import com.ddd.pojo.Ticket;
 import com.ddd.pojo.User;
-import com.ddd.repostitories.TicketRepostitory;
 import com.ddd.services.CouchetteService;
 import com.ddd.services.RouteService;
 import com.ddd.services.TicketService;
@@ -16,6 +15,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -36,7 +36,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -164,56 +163,64 @@ public class QuanLyVeXeController implements Initializable {
 
             {
                 cancelBtn.setOnAction(event -> {
-                     Button b = (Button) event.getSource();
+                    Button b = (Button) event.getSource();
                     TableCell cell = (TableCell) b.getParent();
                     Ticket ticket = (Ticket) cell.getTableRow().getItem();
-                    Label seatLabel = new Label("ID Ghế:");
-                    ComboBox<Integer> seatComboBox = new ComboBox<>();
-                    Label routeLabel = new Label("ID Chuyến xe:");
-                    ComboBox<Integer> routeComboBox = new ComboBox<>();
-                    Button confirmButton = new Button("Xác nhận");
-                    HBox inputBox = new HBox(10, seatLabel, seatComboBox, routeLabel, routeComboBox);
-                    VBox root = new VBox(10, inputBox, confirmButton);
-                    Scene scene = new Scene(root, 600, 200);
-                    Stage stage = new Stage();
-                    stage.setTitle("Sửa thời gian khởi hành");
-                    stage.setScene(scene);
-                    stage.show();
-
                     try {
-                        routeComboBox.getItems().addAll(ROUTE_SERVICE.getIdRoute());
-                    } catch (SQLException ex) {
-                        Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
-                    routeComboBox.setOnAction(event2 -> {
-                        try {
-                            seatComboBox.getItems().clear();
-                            Integer selectedRouteId = routeComboBox.getValue();
-                            seatComboBox.getItems().addAll(COUCHETTE_SERVICE.getidSeatbyIdRoute(selectedRouteId));
-                        } catch (SQLException ex) {
-                            Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    });
-
-                    confirmButton.setOnAction(event2 -> {
-                        Integer selectedSeatId = seatComboBox.getValue();
-                        Integer selectedRouteId = routeComboBox.getValue();
-                        COUCHETTE_SERVICE.updateStatusSeat(selectedRouteId, false);
-                        if (TICKET_SERVICE.updateTicketSeat(ticket.getTicketId(), selectedSeatId, selectedRouteId)) {
-                            MessageBox.getBox("Thông báo", "Sửa vé xe thành công!!!", Alert.AlertType.INFORMATION).show();
+                        if (!checkTimeOrder(ROUTE_SERVICE.getDepartureTimeByIdRoute(ticket.getRoute()))) {
+                            Label seatLabel = new Label("ID Ghế:");
+                            ComboBox<Integer> seatComboBox = new ComboBox<>();
+                            Label routeLabel = new Label("ID Chuyến xe:");
+                            ComboBox<Integer> routeComboBox = new ComboBox<>();
+                            Button confirmButton = new Button("Xác nhận");
+                            HBox inputBox = new HBox(10, seatLabel, seatComboBox, routeLabel, routeComboBox);
+                            VBox root = new VBox(10, inputBox, confirmButton);
+                            Scene scene = new Scene(root, 600, 200);
+                            Stage stage = new Stage();
+                            stage.setTitle("Sửa thời gian khởi hành");
+                            stage.setScene(scene);
+                            stage.show();
+                            
                             try {
-                                loadTicketData(null);
+                                routeComboBox.getItems().addAll(ROUTE_SERVICE.getIdRoute());
                             } catch (SQLException ex) {
                                 Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                            
+                            routeComboBox.setOnAction(event2 -> {
+                                try {
+                                    seatComboBox.getItems().clear();
+                                    Integer selectedRouteId = routeComboBox.getValue();
+                                    seatComboBox.getItems().addAll(COUCHETTE_SERVICE.getidSeatbyIdRoute(selectedRouteId));
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            });
+                            
+                            confirmButton.setOnAction(event2 -> {
+                                Integer selectedSeatId = seatComboBox.getValue();
+                                Integer selectedRouteId = routeComboBox.getValue();
+                                COUCHETTE_SERVICE.updateStatusSeat(selectedRouteId, false);
+                                if (TICKET_SERVICE.updateTicketSeat(ticket.getTicketId(), selectedSeatId, selectedRouteId)) {
+                                    MessageBox.getBox("Thông báo", "Sửa vé xe thành công!!!", Alert.AlertType.INFORMATION).show();
+                                    try {
+                                        loadTicketData(null);
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                } else {
+                                    // If the update fails, revert the seat's status to "available" in the database and show an error message
+                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchette(), true);
+                                    MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.ERROR).show();
+                                }
+                                stage.close();
+                            });
                         } else {
-                            // If the update fails, revert the seat's status to "available" in the database and show an error message
-                            COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchette(), true);
-                            MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.ERROR).show();
+                            MessageBox.getBox("Thông báo", "Chuyến xe sắp khởi hành trong 60 phút tới!! Vé xe không được sửa đổi nữa!!", Alert.AlertType.WARNING).show();
                         }
-                        stage.close();
-                    });
+                    } catch (SQLException ex) {
+                        Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 });
             }
 
@@ -273,6 +280,13 @@ public class QuanLyVeXeController implements Initializable {
                 }
             }
         });
+    }
+    
+    
+     public boolean checkTimeOrder(Timestamp departureTime) {
+        LocalTime depTime = departureTime.toLocalDateTime().toLocalTime();
+        LocalTime bookingTime = LocalTime.now().plusMinutes(60);
+        return (depTime.isAfter(LocalTime.now()) && depTime.isBefore(bookingTime));
     }
 
     @FXML

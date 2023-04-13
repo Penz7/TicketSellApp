@@ -8,6 +8,7 @@ import com.ddd.pojo.Route;
 import com.ddd.repostitories.RouteRepostitory;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -39,4 +40,8 @@ public class RouteService {
     public List<Integer> getIdRoute() throws SQLException {
         return ROUTE_REPOSITORY.getIdRoute();
     }
+    
+     public Timestamp getDepartureTimeByIdRoute(Integer id) throws SQLException {
+          return ROUTE_REPOSITORY.getDepartureTimeByIdRoute(id);
+     }
 }
