@@ -35,4 +35,8 @@ public class CouchetteService {
     public boolean updateStatusSeat(Integer seatId, boolean status) {
         return COUCHETTE_REPOSTITORY.updateStatusSeat(seatId, status);
     }
+
+     public List<Integer> getidSeatbyIdRoute(Integer routeID) throws SQLException {
+        return COUCHETTE_REPOSTITORY.getIdSeatbyIDRoute(routeID);
+    }
 }

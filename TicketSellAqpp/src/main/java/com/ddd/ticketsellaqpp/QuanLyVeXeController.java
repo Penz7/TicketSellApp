@@ -7,6 +7,9 @@ package com.ddd.ticketsellaqpp;
 import com.ddd.pojo.Ticket;
 import com.ddd.pojo.User;
 import com.ddd.repostitories.TicketRepostitory;
+import com.ddd.services.CouchetteService;
+import com.ddd.services.RouteService;
+import com.ddd.services.TicketService;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -21,14 +24,21 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  *
@@ -36,11 +46,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class QuanLyVeXeController implements Initializable {
 
-    static TicketRepostitory s = new TicketRepostitory();
+    private final static TicketService TICKET_SERVICE;
+    private final static CouchetteService COUCHETTE_SERVICE;
+    private final static RouteService ROUTE_SERVICE;
+
     private final static DateTimeFormatter DTF;
 
     static {
         DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        TICKET_SERVICE = new TicketService();
+        COUCHETTE_SERVICE = new CouchetteService();
+        ROUTE_SERVICE = new RouteService();
     }
     private static User currentUser;
 
@@ -115,7 +131,8 @@ public class QuanLyVeXeController implements Initializable {
                     confirmationDialog.showAndWait().ifPresent(result -> {
                         if (result == ButtonType.OK) {
                             try {
-                                if (s.deleteTicket(ticket.getTicketId())) {
+                                if (TICKET_SERVICE.deleteTicket(ticket.getTicketId())) {
+                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchette(), false);
                                     MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
                                     loadTicketData(null);
                                 } else {
@@ -141,11 +158,81 @@ public class QuanLyVeXeController implements Initializable {
             }
         });
 
-        tbTicket.getColumns().addAll(colTicketId, colCouchetteId, colCustomerId, colRouteId, colStaffId, colPrintingDate, colIsConfirm, colCancel);
+        TableColumn<Ticket, Void> colChange = new TableColumn<>("Đổi vé");
+        colChange.setCellFactory(column -> new TableCell<>() {
+            private final Button cancelBtn = new Button("Đổi vé");
+
+            {
+                cancelBtn.setOnAction(event -> {
+                     Button b = (Button) event.getSource();
+                    TableCell cell = (TableCell) b.getParent();
+                    Ticket ticket = (Ticket) cell.getTableRow().getItem();
+                    Label seatLabel = new Label("ID Ghế:");
+                    ComboBox<Integer> seatComboBox = new ComboBox<>();
+                    Label routeLabel = new Label("ID Chuyến xe:");
+                    ComboBox<Integer> routeComboBox = new ComboBox<>();
+                    Button confirmButton = new Button("Xác nhận");
+                    HBox inputBox = new HBox(10, seatLabel, seatComboBox, routeLabel, routeComboBox);
+                    VBox root = new VBox(10, inputBox, confirmButton);
+                    Scene scene = new Scene(root, 600, 200);
+                    Stage stage = new Stage();
+                    stage.setTitle("Sửa thời gian khởi hành");
+                    stage.setScene(scene);
+                    stage.show();
+
+                    try {
+                        routeComboBox.getItems().addAll(ROUTE_SERVICE.getIdRoute());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    routeComboBox.setOnAction(event2 -> {
+                        try {
+                            seatComboBox.getItems().clear();
+                            Integer selectedRouteId = routeComboBox.getValue();
+                            seatComboBox.getItems().addAll(COUCHETTE_SERVICE.getidSeatbyIdRoute(selectedRouteId));
+                        } catch (SQLException ex) {
+                            Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+
+                    confirmButton.setOnAction(event2 -> {
+                        Integer selectedSeatId = seatComboBox.getValue();
+                        Integer selectedRouteId = routeComboBox.getValue();
+                        COUCHETTE_SERVICE.updateStatusSeat(selectedRouteId, false);
+                        if (TICKET_SERVICE.updateTicketSeat(ticket.getTicketId(), selectedSeatId, selectedRouteId)) {
+                            MessageBox.getBox("Thông báo", "Sửa vé xe thành công!!!", Alert.AlertType.INFORMATION).show();
+                            try {
+                                loadTicketData(null);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        } else {
+                            // If the update fails, revert the seat's status to "available" in the database and show an error message
+                            COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchette(), true);
+                            MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.ERROR).show();
+                        }
+                        stage.close();
+                    });
+                });
+            }
+
+            @Override
+            public void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(cancelBtn);
+                }
+            }
+        });
+
+        tbTicket.getColumns().addAll(colTicketId, colCouchetteId, colCustomerId, colRouteId, colStaffId, colPrintingDate, colIsConfirm, colChange, colCancel);
     }
 
     private void loadTicketData(Integer kw) throws SQLException {
-        List<Ticket> tickets = s.getAllTickets(kw);
+        List<Ticket> tickets = TICKET_SERVICE.getAllTickets(kw);
         this.tbTicket.setItems(FXCollections.observableList(tickets));
     }
 
@@ -157,29 +244,22 @@ public class QuanLyVeXeController implements Initializable {
     }
 
     public void confirmOrder() throws SQLException {
-        // Add listener to selection model
         tbTicket.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
-                // Get the selected ticket's confirmation status
                 boolean isConfirmed = newSelection.isIsConfirm();
-
-                // Enable/disable the confirm button and update its text
                 confirmBtn.setDisable(isConfirmed);
                 confirmBtn.setText(isConfirmed ? "Vé đã xác nhận" : "Xác nhận vé");
             }
         });
-
-        // Add event handler to the confirm button
         confirmBtn.setOnAction(evt -> {
-            // Get the selected ticket
             Ticket selectedRow = tbTicket.getSelectionModel().getSelectedItem();
             if (selectedRow != null) {
                 int ticketId = selectedRow.getTicketId();
                 try {
-                    boolean isConfirmed = s.checkConfirmOrder(ticketId);
+                    boolean isConfirmed = TICKET_SERVICE.checkConfirmOrder(ticketId);
                     if (isConfirmed) {
                         Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
-                        if (s.addDateStaffOrder(App.currentUser.getUser_id(), printingDate, ticketId)) {
+                        if (TICKET_SERVICE.addDateStaffOrder(App.currentUser.getUser_id(), printingDate, ticketId)) {
                             MessageBox.getBox("Question", "Xác nhận thành công!!!", Alert.AlertType.INFORMATION).show();
                             loadTicketData(null);
                         } else {

@@ -5,22 +5,17 @@
 package com.ddd.repostitories;
 
 import com.ddd.pojo.Route;
-import com.ddd.pojo.Station;
 import com.ddd.utils.JdbcUtils;
-
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 
 /**
  *
@@ -190,21 +185,7 @@ public class RouteRepostitory {
         return a;
     }
 
-//    private String getStationnamebyID(int stateID) throws SQLException {
-//        if (stateID <= 0)
-//            return "";
-//        try (Connection connection = JdbcUtils.getConn()) {
-//            String query = "SELECT COUNT(p.pro_id) as pro_amount " +
-//                    "FROM Manufacturer m JOIN Product p ON m.man_id = p.man_id " +
-//                    "WHERE m.man_id = ? AND m.man_is_active = TRUE";
-//            PreparedStatement prepareStatement = connection.prepareStatement(query);
-//            prepareStatement.setInt(1, manId);
-//            ResultSet resultSet = prepareStatement.executeQuery();
-//            if (resultSet.next())
-//                return resultSet.getInt("pro_amount");
-//            return 0;
-//        }
-//    }
+
     public Route getOneRouteByID(Integer ID) throws SQLException {
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM chuyenxe WHERE ID_ChuyenXe = ?")) {
             stm.setInt(1, ID);
@@ -217,5 +198,20 @@ public class RouteRepostitory {
                 }
             }
         }
+    }
+    
+    public List<Integer> getIdRoute() throws SQLException {
+        List<Integer> results = new ArrayList<>();
+        String sql = "SELECT ID_ChuyenXe FROM chuyenxe";
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql); ResultSet rs = stm.executeQuery()) {
+            while (rs.next()) {
+                int id = rs.getInt("ID_ChuyenXe");
+                results.add(id);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error getting IDs of routes", ex);
+            throw ex;
+        }
+        return results;
     }
 }

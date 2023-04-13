@@ -7,13 +7,14 @@ package com.ddd.repostitories;
 import com.ddd.pojo.Ticket;
 import com.ddd.utils.JdbcUtils;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -110,6 +111,19 @@ public class TicketRepostitory {
                 rs.next();
                 return rs.getInt(1) > 0;
             }
+        }
+    }
+    
+    public boolean updateTicketSeat(Integer ticketID, Integer seatID, Integer routeID) {
+        String sql = "UPDATE vexe SET id_ghe = ?, id_chuyenxe = ? WHERE id_vexe = ?";
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+            stm.setInt(1, seatID);
+            stm.setInt(2, routeID);
+            stm.setInt(3, ticketID);
+            return stm.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error updating ticket seat for ID " + ticketID, ex);
+            return false;
         }
     }
 }

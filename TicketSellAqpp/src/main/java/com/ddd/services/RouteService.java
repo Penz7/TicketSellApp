@@ -22,18 +22,21 @@ public class RouteService {
         ROUTE_REPOSITORY = new RouteRepostitory();
     }
 
-    
     //Lấy các chuyến xe bởi id
     public List<Route> getRoutesById(Integer id) throws SQLException {
         return ROUTE_REPOSITORY.getRoutesById(id);
     }
-    
+
     // Lấy danh sách các chuyến xe bởi id bến đến, id bến đi và ngày đặt
     public List<Route> getRouteByDesIdByDepId(String desId, String depId, Date orderDate) throws SQLException {
         return ROUTE_REPOSITORY.getRouteByDesIdByDepId(desId, depId, orderDate);
     }
+
+    public Route getOneRouteByID(Integer ID) throws SQLException {
+        return ROUTE_REPOSITORY.getOneRouteByID(ID);
+    }
     
-       public Route getOneRouteByID(Integer ID) throws SQLException {
-           return ROUTE_REPOSITORY.getOneRouteByID(ID);
-       }
+    public List<Integer> getIdRoute() throws SQLException {
+        return ROUTE_REPOSITORY.getIdRoute();
+    }
 }

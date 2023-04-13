@@ -51,7 +51,7 @@ public class CouchetteRepostitory {
                     Couchette s = new Couchette(rs.getInt("ID_Ghe"), rs.getBoolean("TinhTrangGhe"), rs.getInt("ID_Xe"), rs.getInt("ThuTuGhe"));
                     return s;
                 } else {
-                    throw new SQLException("No couchette found with ID " + CouchetteId );
+                    throw new SQLException("No couchette found with ID " + CouchetteId);
                 }
             }
         }
@@ -83,4 +83,30 @@ public class CouchetteRepostitory {
             return false;
         }
     }
+
+    public List<Integer> getIdSeatbyIDRoute(Integer idRoute) throws SQLException {
+        List<Integer> results = new ArrayList<>();
+        String sql = "SELECT ghe.id_ghe\n"
+                + "FROM ghe\n"
+                + "JOIN chuyenxe_xe ON ghe.id_xe = chuyenxe_xe.id_xe\n"
+                + "Where ID_ChuyenXe = ?";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+            // Set the parameter value for the PreparedStatement
+            stm.setInt(1, idRoute);
+            try (ResultSet rs = stm.executeQuery()) {
+                while (rs.next()) {
+                    int id = rs.getInt("id_ghe"); // retrieve the correct column name
+                    results.add(id);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error getting IDs of routes", ex);
+            throw ex;
+        }
+
+        return results;
+    }
+
+    
 }
