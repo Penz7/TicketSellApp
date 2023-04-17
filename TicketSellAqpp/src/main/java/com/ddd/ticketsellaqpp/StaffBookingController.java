@@ -412,7 +412,7 @@ public class StaffBookingController implements Initializable {
                                             App.currentUser.getUser_id(),
                                             currentRouteId,
                                             false);
-                                    if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
+                                    if (BOOKING_SERVICE.AddTicket(t, i)) {
                                         seat.updateStatusSeat(i, true);
                                         iterator.remove();
                                     } else {

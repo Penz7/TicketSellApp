@@ -419,7 +419,7 @@ public class BookingController implements Initializable {
                                     USER_SERVICE.getOneUserIdByName("Duy nến").getUser_id(),
                                     currentRouteId,
                                     false);
-                            if (BOOKING_SERVICE.AddTicket(t, COUCHETTE_SERVICE.getOneCouchetteByID(i))) {
+                            if (BOOKING_SERVICE.AddTicket(t, i)) {
                                 seat.updateStatusSeat(i, true);
                                 iterator.remove();
                             } else {

@@ -28,12 +28,8 @@ public class BookingService {
         BOOKING_REPOSTITORY = new BookingRepostitory();
     }
 
-    public boolean AddTicket(Ticket ticket, Couchette couchette) throws SQLException {
-        return BOOKING_REPOSTITORY.AddTicket(ticket, couchette);
-    }
-
-    public boolean checkSeatLimit(int maVeXe) throws SQLException {
-        return BOOKING_REPOSTITORY.checkSeatLimit(maVeXe);
+    public boolean AddTicket(Ticket ticket, Integer couchetteId) throws SQLException {
+        return BOOKING_REPOSTITORY.AddTicket(ticket, couchetteId);
     }
 
     public List<Ticket> getAllTicketByCustomerId(Integer customerId) throws SQLException {

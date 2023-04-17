@@ -20,18 +20,19 @@ import java.util.List;
  */
 public class BookingRepostitory {
 
-    public boolean AddTicket(Ticket ticket, Couchette couchette) throws SQLException {
+    public boolean AddTicket(Ticket ticket, Integer couchetteId) throws SQLException {
         try (Connection connection = JdbcUtils.getConn()) {
             connection.setAutoCommit(false);
             String query = "INSERT INTO vexe (ID_Ghe, ID_KhachHang, ID_ChuyenXe, "
-                    + "ID_NhanVien, NgayIn) VALUES "
-                    + "(?,?,?,?,?)";
+                    + "ID_NhanVien, NgayIn, isConfirm) VALUES "
+                    + "(?,?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, couchette.getCouchetteId());
+            preparedStatement.setInt(1, couchetteId);
             preparedStatement.setInt(2, ticket.getCustomerId());
             preparedStatement.setInt(3, ticket.getRouteId());
             preparedStatement.setInt(4, ticket.getStaffId());
             preparedStatement.setTimestamp(5, ticket.getPrintingDate());
+            preparedStatement.setBoolean(6, ticket.isIsConfirm());
             preparedStatement.executeUpdate();
             connection.commit();
             return true;
@@ -66,23 +67,4 @@ public class BookingRepostitory {
         return tickets;
     }
     
-      public boolean checkSeatLimit(int maVeXe) throws SQLException {
-        String query = "SELECT COUNT(*) AS seat_count FROM ghe g JOIN vexe v ON g.ID_Ghe = v.ID_Ghe WHERE v.ID_VeXe = ? AND g.TinhTrangGhe = 1";
-
-        try (Connection conn = JdbcUtils.getConn()) {
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setInt(1, maVeXe);
-
-            ResultSet rs = ps.executeQuery();
-            int seatCount = 0;
-            if (rs.next()) {
-                seatCount = rs.getInt("seat_count");
-            }
-
-            if (seatCount >= 25) {
-                return false;
-            }
-            return true;
-        }
-    }
 }

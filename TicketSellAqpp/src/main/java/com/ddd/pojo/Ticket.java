@@ -25,7 +25,6 @@ public class Ticket {
     }
 
     public Ticket(Timestamp printingDate, Integer couchetteId, Integer customerId, Integer staffId, Integer routeId, boolean isConfirm) {
-        this.ticketId = ticketId;
         this.printingDate = printingDate;
         this.couchetteId = couchetteId;
         this.customerId = customerId;
