@@ -172,13 +172,13 @@ public class StaffBookingController implements Initializable {
             LocalDate dateOrder = dateTimeOrder.toLocalDate();
             if (STATION_SERVICE.getStationByName(txtSearchDestination.getText()) == null) {
                 MessageBox.getBox("Warning", "Bạn đã nhập chuyến đến không đúng", Alert.AlertType.INFORMATION).show();
-                loadRouteData(null);
+                loadRouteData(null,null);
             } else if (STATION_SERVICE.getStationByName(txtSearchDeparture.getText()) == null) {
                 MessageBox.getBox("Warning", "Bạn đã nhập chuyến đi không đúng", Alert.AlertType.INFORMATION).show();
-                loadRouteData(null);
+                loadRouteData(null,null);
             } else if (dateOrder.isBefore(currentDate)) {
                 MessageBox.getBox("Warning", "Bạn đã nhập ngày ở quá khứ", Alert.AlertType.INFORMATION).show();
-                loadRouteData(null);
+                loadRouteData(null,null);
             } else {
                 List<Route> listRoute = new ArrayList<>();
                 listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(
@@ -187,11 +187,11 @@ public class StaffBookingController implements Initializable {
                         java.sql.Date.valueOf(dpDateOrder.getValue()));
                 if (listRoute.isEmpty() == true) {
                     MessageBox.getBox("Warning", "Không có chuyến xe cần tìm", Alert.AlertType.INFORMATION).show();
-                    loadRouteData(null);
+                    loadRouteData(null,null);
                 } else {
                     for (Route r : listRoute) {
                         // only changes num, not the array element
-                        loadRouteData(r.getRouteId());
+                        loadRouteData(r.getRouteId(),java.sql.Date.valueOf(dpDateOrder.getValue()));
                     }
                 }
             }
@@ -448,9 +448,9 @@ public class StaffBookingController implements Initializable {
         }
     }
 
-    private void loadRouteData(Integer routeId) throws SQLException {
+    private void loadRouteData(Integer routeId, Date orderDate) throws SQLException {
 
-        List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
+        List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId, orderDate);
         this.tvRoute.setItems(FXCollections.observableList(data));
     }
 
@@ -478,7 +478,7 @@ public class StaffBookingController implements Initializable {
             txtArea.clear();
         } else {
             for (Ticket ticket : BOOKING_SERVICE.getAllTicketByCustomerId(Integer.parseInt(this.txtUserID.getText()))) {
-                String info = "Mã vé: " + ticket.getTicketId() + " - Mã chuyến: " + ticket.getRoute() + " - Ghế: " + ticket.getCouchette();
+                String info = "Mã vé: " + ticket.getTicketId() + " - Mã chuyến: " + ticket.getRouteId() + " - Ghế: " + ticket.getCouchetteId();
                 if (ticket.getPrintingDate() == null) {
                     info += " - Tình trạng vé: Chưa lấy vé";
                 } else {

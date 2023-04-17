@@ -471,8 +471,8 @@ public class BookingController implements Initializable {
             try {
                 for (Ticket ticket : tickets) {
                     String info = "Mã vé: " + ticket.getTicketId();
-                    Integer routeId = ticket.getRoute();
-                    Integer couchetteId = ticket.getCouchette();
+                    Integer routeId = ticket.getRouteId();
+                    Integer couchetteId = ticket.getCouchetteId();
                     if (routeId == null || couchetteId == null) {
                         continue; // skip this ticket if routeId or couchetteId is null
                     }

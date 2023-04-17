@@ -131,7 +131,7 @@ public class QuanLyVeXeController implements Initializable {
                         if (result == ButtonType.OK) {
                             try {
                                 if (TICKET_SERVICE.deleteTicket(ticket.getTicketId())) {
-                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchette(), false);
+                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchetteId(), false);
                                     MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
                                     loadTicketData(null);
                                 } else {
@@ -167,7 +167,7 @@ public class QuanLyVeXeController implements Initializable {
                     TableCell cell = (TableCell) b.getParent();
                     Ticket ticket = (Ticket) cell.getTableRow().getItem();
                     try {
-                        if (!checkTimeOrder(ROUTE_SERVICE.getDepartureTimeByIdRoute(ticket.getRoute()))) {
+                        if (!checkTimeOrder(ROUTE_SERVICE.getDepartureTimeByIdRoute(ticket.getRouteId()))) {
                             Label seatLabel = new Label("ID Ghế:");
                             ComboBox<Integer> seatComboBox = new ComboBox<>();
                             Label routeLabel = new Label("ID Chuyến xe:");
@@ -180,13 +180,13 @@ public class QuanLyVeXeController implements Initializable {
                             stage.setTitle("Sửa thời gian khởi hành");
                             stage.setScene(scene);
                             stage.show();
-                            
+
                             try {
                                 routeComboBox.getItems().addAll(ROUTE_SERVICE.getIdRoute());
                             } catch (SQLException ex) {
                                 Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            
+
                             routeComboBox.setOnAction(event2 -> {
                                 try {
                                     seatComboBox.getItems().clear();
@@ -196,7 +196,7 @@ public class QuanLyVeXeController implements Initializable {
                                     Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
                             });
-                            
+
                             confirmButton.setOnAction(event2 -> {
                                 Integer selectedSeatId = seatComboBox.getValue();
                                 Integer selectedRouteId = routeComboBox.getValue();
@@ -210,7 +210,7 @@ public class QuanLyVeXeController implements Initializable {
                                     }
                                 } else {
                                     // If the update fails, revert the seat's status to "available" in the database and show an error message
-                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchette(), true);
+                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchetteId(), true);
                                     MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.ERROR).show();
                                 }
                                 stage.close();
@@ -281,9 +281,8 @@ public class QuanLyVeXeController implements Initializable {
             }
         });
     }
-    
-    
-     public boolean checkTimeOrder(Timestamp departureTime) {
+
+    public boolean checkTimeOrder(Timestamp departureTime) {
         LocalTime depTime = departureTime.toLocalDateTime().toLocalTime();
         LocalTime bookingTime = LocalTime.now().plusMinutes(60);
         return (depTime.isAfter(LocalTime.now()) && depTime.isBefore(bookingTime));
