@@ -189,7 +189,7 @@ public class QuanLyNhanVienController implements Initializable {
                         // Một cửa sổ mới (Stage)
                         Stage newWindow = new Stage();
                         newWindow.setTitle("Sửa thông tin nhân viên");
-                        newWindow.setScene(new Scene(secondaryLayout, 600, 200));
+                        newWindow.setScene(new Scene(secondaryLayout, 400, 350));
                         newWindow.show();
 
                         confirmButton.setOnAction(e -> {
@@ -277,7 +277,7 @@ public class QuanLyNhanVienController implements Initializable {
         // Một cửa sổ mới (Stage)
         Stage newWindow = new Stage();
         newWindow.setTitle("Sửa thông tin nhân viên");
-        newWindow.setScene(new Scene(secondaryLayout, 600, 200));
+        newWindow.setScene(new Scene(secondaryLayout, 400, 350));
         newWindow.show();
 
         confirmButton.setOnAction(e -> {

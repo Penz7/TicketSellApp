@@ -235,12 +235,10 @@ public class QuanLyChuyenXeController implements Initializable {
 
         // Tạo button Xác nhận
         Button confirmButton = new Button("Xác nhận");
-        Scene secondScene = new Scene(secondaryLayout, 600, 200);
+        Scene secondScene = new Scene(secondaryLayout, 300, 250);
         secondaryLayout.getChildren().addAll(lbDi, cbDi, lbDen, cbDen, lbGia, txtGia, confirmButton);
-        HBox hbox = new HBox(10);
-        hbox.getChildren().addAll(lbDi, cbDi, lbDen, cbDen, lbGia, txtGia);
         VBox vbox = new VBox(10);
-        vbox.getChildren().addAll(hbox, confirmButton);
+        vbox.getChildren().addAll(lbDi, cbDi, lbDen, cbDen, lbGia, txtGia, confirmButton);
         secondaryLayout.getChildren().addAll(vbox);
 
         // Một cửa sổ mới (Stage)

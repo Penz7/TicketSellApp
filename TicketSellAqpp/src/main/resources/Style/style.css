@@ -20,6 +20,10 @@ HBox {
     -fx-spacing: 5;
 }
 
+VBox {
+    -fx-backgroud-color: lightblue;
+}
+
 Text.Subject {
     -fx-font-size: 30;
     -fx-fill: red;
