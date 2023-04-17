@@ -10,10 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
@@ -31,7 +28,7 @@ public class RouteTester {
     }
 
     @Test
-    void testGetRoutesById() throws SQLException {
+    public void testGetRoutesById() throws SQLException {
         // Set up test data
         int id = 1;
         Route expectedRoute = new Route(id, "Bình Thuận - Hồ Chí Minh", 560000.00, 3, 1);
@@ -50,7 +47,7 @@ public class RouteTester {
     }
 
     @Test
-    void testCheckRouteExists() throws SQLException {
+    public void testCheckRouteExists() throws SQLException {
         // Set up test data
         int diID = 1;
         int denID = 2;
@@ -70,7 +67,7 @@ public class RouteTester {
     }
 
     @Test
-    void testGetRoute() throws SQLException {
+    public void testGetRoute() throws SQLException {
         // Set up test data
         String kw = "Bình Thuận - Hồ Chí Minh";
 
@@ -90,7 +87,7 @@ public class RouteTester {
     }
 
     @Test
-    void testGetRouteByDesIdByDepId() throws SQLException {
+    public void testGetRouteByDesIdByDepId() throws SQLException {
         // Set up test data
         String desId = "3";
         String depId = "1";
@@ -112,7 +109,7 @@ public class RouteTester {
     }
 
     @Test
-    void testAddRoute() throws SQLException {
+    public void testAddRoute() throws SQLException {
         // Set up test data
         String name = "Test Route";
         int depId = 1;
@@ -128,7 +125,7 @@ public class RouteTester {
     }
 
     @Test
-    void testGetNameStation() throws SQLException {
+    public void testGetNameStation() throws SQLException {
         // Set up test data
         List<String> expected = Arrays.asList("Bình Thuận", "Đà lạt", "Hà Nội", "Hồ Chí Minh", "Kon Tum", "Ninh Bình");
 
@@ -145,7 +142,7 @@ public class RouteTester {
     }
 
     @Test
-    void testGetStationIDbyname() throws SQLException {
+    public void testGetStationIDbyname() throws SQLException {
         // Set up test data
         String name = "Hà nội";
 
@@ -159,7 +156,7 @@ public class RouteTester {
     }
 
     @Test
-    void testGetRouteIDbyname() throws SQLException {
+    public void testGetRouteIDbyname() throws SQLException {
         // Set up test data
         String name = "Test Route 1";
 
@@ -173,7 +170,7 @@ public class RouteTester {
     }
 
     @Test
-    public void testGetOneRouteByID() throws SQLException {
+    public public void testGetOneRouteByID() throws SQLException {
         // Get the ID of the newly inserted Route
         Integer id = 1;
 
@@ -190,7 +187,7 @@ public class RouteTester {
     
     
     @Test
-    void testGetDepartureTimeByIdRoute() throws SQLException {
+    public void testGetDepartureTimeByIdRoute() throws SQLException {
         RouteService r = new RouteService();
         Timestamp expectedTime = Timestamp.valueOf(LocalDateTime.of(2023, 4, 13, 17, 30, 0));
         Timestamp actualTime = r.getDepartureTimeByIdRoute(1);
@@ -198,7 +195,7 @@ public class RouteTester {
     }
 
     @Test
-    public void testGetIdRoute() throws SQLException {
+    public public void testGetIdRoute() throws SQLException {
         RouteService routeService = new RouteService();
         List<Integer> idList = routeService.getIdRoute();
 

@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 public class RoleTester {
     
     @Test
-    void testGetRoles() throws SQLException {
+    public void testGetRoles() throws SQLException {
         RoleService r = new RoleService();
         // Arrange
         String kw = "admin";
@@ -32,7 +32,7 @@ public class RoleTester {
     }
     
     @Test
-    void testGetRoleById() throws SQLException {
+    public void testGetRoleById() throws SQLException {
         // Arrange
         RoleService roleService = new RoleService();
         int roleId = 1;

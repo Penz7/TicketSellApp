@@ -81,7 +81,7 @@ public class UserTester {
     }
 
     @Test
-    void testDeleteStaff() throws ParseException {
+    public void testDeleteStaff() throws ParseException, SQLException {
         String dateString = "2002-01-04";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(dateString);
