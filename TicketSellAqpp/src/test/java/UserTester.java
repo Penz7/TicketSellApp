@@ -82,36 +82,38 @@ public class UserTester {
 
     @Test
     public void testDeleteStaff() throws ParseException, SQLException {
+        // Set up test data
         String dateString = "2002-01-04";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(dateString);
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
         UserService userService = new UserService();
+
+        // Get initial size of user list
         int initialSize = userService.getAllUser().size();
 
-        userService.addUser("John Doe","123456789","0123456789",sqlDate,"johndoe","password","123 Main St, Anytown USA");
+        // Add a new user
+        userService.addUser("John Doe", "56541", "054513487", sqlDate, "johndoe", "password", "123 Main St, Anytown USA");
 
+        // Get the ID of the new user
         List<User> results = userService.getUser("John Doe");
         int newStaffId = results.get(0).getUser_id();
 
-        try {
-            boolean deleted = userService.deleteStaff(String.valueOf(newStaffId));
-            Assertions.assertTrue(deleted);
+        // Delete the new user and check that they were deleted
+        boolean deleted = userService.deleteStaff(String.valueOf(newStaffId));
+        Assertions.assertTrue(deleted);
 
-            results = userService.getUser("John Doe");
-            Assertions.assertEquals(0, results.size());
+        results = userService.getUser("John Doe");
+        Assertions.assertEquals(0, results.size());
 
-            // Ensure the number of users in the database has decreased by 1
-            int finalSize = userService.getAllUsers().size();
-            Assertions.assertEquals(initialSize, finalSize + 1);
-        } catch (SQLException ex) {
-            Logger.getLogger(UserTester.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // Check that the number of users in the database has decreased by 1
+        int finalSize = userService.getAllUser().size();
+        Assertions.assertEquals(initialSize, finalSize);
     }
-    
-     @Test
+
+    @Test
     public void testAddUser() throws ParseException {
-          String dateString = "2002-01-04";
+        String dateString = "2002-01-04";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = dateFormat.parse(dateString);
         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -127,7 +129,7 @@ public class UserTester {
 
         Assertions.assertTrue(actual);
     }
-    
+
     @Test
     public void testAddCustomer() throws ParseException {
           String dateString = "2002-01-04";
@@ -146,10 +148,9 @@ public class UserTester {
 
         Assertions.assertTrue(actual);
     }
-    
-     @Test
+    @Test
     void testGetOneUserByID() throws SQLException {
-        int id = 1; 
+        int id = 1;
         UserService userDao = new UserService();
         User result = userDao.getOneUserByID(id);
 

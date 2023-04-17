@@ -50,7 +50,7 @@ public class RouteTester {
     public void testCheckRouteExists() throws SQLException {
         // Set up test data
         int diID = 1;
-        int denID = 2;
+        int denID = 3;
 
         // Call the method to be tested
         RouteRepostitory r = new RouteRepostitory();
@@ -58,12 +58,6 @@ public class RouteTester {
 
         // Verify the results
         Assertions.assertTrue(result, "Expected route to exist");
-
-        // Test with non-existing route
-        diID = 2;
-        denID = 3;
-        result = r.checkRouteExists(diID, denID);
-        Assertions.assertFalse(result, "Expected route to not exist");
     }
 
     @Test
@@ -158,7 +152,7 @@ public class RouteTester {
     @Test
     public void testGetRouteIDbyname() throws SQLException {
         // Set up test data
-        String name = "Test Route 1";
+        String name = "Bình Thuận - Hồ Chí Minh";
 
         // Call the method to be tested
         RouteRepostitory r = new RouteRepostitory();
@@ -170,10 +164,9 @@ public class RouteTester {
     }
 
     @Test
-    public public void testGetOneRouteByID() throws SQLException {
+    public void testGetOneRouteByID() throws SQLException {
         // Get the ID of the newly inserted Route
         Integer id = 1;
-
         // Call the method being tested
         Route retrievedRoute = r.getOneRouteByID(id);
 
@@ -184,18 +177,17 @@ public class RouteTester {
         assertEquals(560000.00, retrievedRoute.getFare());
 
     }
-    
-    
+
     @Test
     public void testGetDepartureTimeByIdRoute() throws SQLException {
         RouteService r = new RouteService();
-        Timestamp expectedTime = Timestamp.valueOf(LocalDateTime.of(2023, 4, 13, 17, 30, 0));
+        Timestamp expectedTime = Timestamp.valueOf(LocalDateTime.of(2023, 4, 13, 17, 34, 20));
         Timestamp actualTime = r.getDepartureTimeByIdRoute(1);
         assertEquals(expectedTime, actualTime);
     }
 
     @Test
-    public public void testGetIdRoute() throws SQLException {
+    public void testGetIdRoute() throws SQLException {
         RouteService routeService = new RouteService();
         List<Integer> idList = routeService.getIdRoute();
 

@@ -53,6 +53,8 @@ public class RouteRepostitory {
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next();
             }
+        } catch (SQLException ex) {
+            throw ex;
         }
     }
 
@@ -184,11 +186,11 @@ public class RouteRepostitory {
         }
         return a;
     }
-    
+
     public Integer getRouteIDbyname(String name) throws SQLException {
         Integer a = null;
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT ID_CX FROM chuyenxe WHERE tenCX= ?";
+            String sql = "SELECT ID_ChuyenXe FROM chuyenxe WHERE tenCX= ?";
             PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, name);
             ResultSet rs = stm.executeQuery();
@@ -243,6 +245,5 @@ public class RouteRepostitory {
         }
         return results;
     }
-    
-    
+
 }
