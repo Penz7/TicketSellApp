@@ -27,7 +27,7 @@ public class UserRepostitory {
         List<User> results = new ArrayList<>();
         String sql = "SELECT * FROM user";
         if (kw != null && !kw.isEmpty()) {
-            sql += " WHERE TenBen LIKE ?";
+            sql += " WHERE user_fullname LIKE ?";
             kw = "%" + kw + "%";
         }
 
@@ -51,6 +51,34 @@ public class UserRepostitory {
                 );
                 results.add(s);
             }
+        }
+
+        return results;
+    }
+
+    public List<User> getAllUser() {
+        List<User> results = new ArrayList<>();
+        final String SELECT_ALL_USERS_SQL = "SELECT * FROM user";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(SELECT_ALL_USERS_SQL); ResultSet rs = stm.executeQuery()) {
+
+            while (rs.next()) {
+                User s = new User(
+                        rs.getInt("user_id"),
+                        rs.getString("user_fullname"),
+                        rs.getString("user_id_card"),
+                        rs.getString("user_phone_number"),
+                        rs.getDate("user_date_of_birth"),
+                        rs.getDate("user_date_join"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("user_address"),
+                        rs.getInt("role_id")
+                );
+                results.add(s);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepostitory.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return results;
@@ -85,8 +113,8 @@ public class UserRepostitory {
         }
         return results;
     }
-    
-        public List<User> getCustomer(String kw) throws SQLException {
+
+    public List<User> getCustomer(String kw) throws SQLException {
         List<User> results = new ArrayList<>();
         String sql = "SELECT * FROM user WHERE role_id = 3";
         if (kw != null && !kw.isEmpty()) {
@@ -195,7 +223,7 @@ public class UserRepostitory {
             }
         }
     }
-    
+
     public boolean addCustomer(String user_fullname, String user_id_card, String user_phone_number, Date user_date_of_birth, String username, String password, String user_address) {
         String sql = "INSERT INTO user (user_fullname,user_id_card,user_phone_number,user_date_of_birth,user_date_join,username,password,user_address,role_id ) VALUES (?,?,?,?,?,?,?,?,?)";
         Connection conn = null;

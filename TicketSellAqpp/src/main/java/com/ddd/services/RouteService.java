@@ -28,20 +28,49 @@ public class RouteService {
         return ROUTE_REPOSITORY.getRoutesById(id);
     }
 
+     public boolean checkRouteExists(int diID, int denID) throws SQLException {
+        return ROUTE_REPOSITORY.checkRouteExists(diID, denID);
+    }
+
+    public List<Route> getRoute(String kw) throws SQLException {
+        return ROUTE_REPOSITORY.getRoute(kw);
+    }
+
     // Lấy danh sách các chuyến xe bởi id bến đến, id bến đi và ngày đặt
     public List<Route> getRouteByDesIdByDepId(String desId, String depId, Date orderDate) throws SQLException {
         return ROUTE_REPOSITORY.getRouteByDesIdByDepId(desId, depId, orderDate);
     }
 
+    public boolean deleteRoute(Integer id) throws SQLException {
+        return ROUTE_REPOSITORY.deleteRoute(id);
+    }
+
+    public boolean updateRouteById(String routeName, Integer routeID, Integer benDen, Integer benDi, Double Gia) {
+        return ROUTE_REPOSITORY.updateRouteById(routeName, routeID, benDen, benDi, Gia);
+    }
+
+    public boolean addRoute(String tenCX, Integer BenDi, Integer BenDen, Double gia) {
+        return ROUTE_REPOSITORY.addRoute(tenCX, BenDi, BenDen, gia);
+    }
+    
+    public List<String> getNameStation() throws SQLException {
+         return ROUTE_REPOSITORY.getNameStation();
+    }
+
+    public Integer getStationIDbyname(String name) throws SQLException {
+        return ROUTE_REPOSITORY.getStationIDbyname( name);
+    }
+    
+    public Timestamp getDepartureTimeByIdRoute(Integer id) throws SQLException {
+        return ROUTE_REPOSITORY.getDepartureTimeByIdRoute( id);
+    }
+
     public Route getOneRouteByID(Integer ID) throws SQLException {
         return ROUTE_REPOSITORY.getOneRouteByID(ID);
     }
-    
+
     public List<Integer> getIdRoute() throws SQLException {
         return ROUTE_REPOSITORY.getIdRoute();
     }
-    
-     public Timestamp getDepartureTimeByIdRoute(Integer id) throws SQLException {
-          return ROUTE_REPOSITORY.getDepartureTimeByIdRoute(id);
-     }
+
 }

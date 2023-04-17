@@ -26,17 +26,6 @@ public class SignInService {
 
     // Lay thong tin tai khoan
     public User getAccountMD5(String username, String password) throws SQLException, NoSuchAlgorithmException {
-//        try {
-//            password = MD5(password);
-//        } catch (Exception ex) {
-//            Logger.getLogger(Staff.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         return SIGN_IN_REPOSITORY.getAccount(username, password);
     }
-
-    // Lấy mã MD5 ---- Phục vụ viết testcase
-    public String MD5(String text) {
-        return MD5Utils.getMd5(text);
-    }
-
 }

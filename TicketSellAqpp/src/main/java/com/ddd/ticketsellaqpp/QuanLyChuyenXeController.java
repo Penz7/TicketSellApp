@@ -6,7 +6,7 @@ package com.ddd.ticketsellaqpp;
 
 import com.ddd.pojo.Route;
 import com.ddd.pojo.User;
-import com.ddd.repostitories.RouteRepostitory;
+import com.ddd.services.RouteService;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +41,11 @@ import javafx.stage.Stage;
  */
 public class QuanLyChuyenXeController implements Initializable {
 
-    static RouteRepostitory s = new RouteRepostitory();
+    private final static RouteService ROUTE_SERVICE;
+
+    static {
+        ROUTE_SERVICE = new RouteService();
+    }
 
     private static User currentUser;
 
@@ -101,7 +105,7 @@ public class QuanLyChuyenXeController implements Initializable {
                                 TableCell cell = (TableCell) b.getParent();
                                 Route st = (Route) cell.getTableRow().getItem();
                                 try {
-                                    if (s.deleteRoute(st.getRouteId())) {
+                                    if (ROUTE_SERVICE.deleteRoute(st.getRouteId())) {
                                         MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
                                         loadRouteData(null);
                                     } else {
@@ -146,8 +150,8 @@ public class QuanLyChuyenXeController implements Initializable {
                         ComboBox<String> cbDi = new ComboBox<>();
                         ComboBox<String> cbDen = new ComboBox<>();
                         try {
-                            cbDi.getItems().addAll(s.getNameStation());
-                            cbDen.getItems().addAll(s.getNameStation());
+                            cbDi.getItems().addAll(ROUTE_SERVICE.getNameStation());
+                            cbDen.getItems().addAll(ROUTE_SERVICE.getNameStation());
                         } catch (SQLException ex) {
                             Logger.getLogger(QuanLyChuyenXeController.class.getName()).log(Level.SEVERE, null, ex);
                         }
@@ -179,7 +183,7 @@ public class QuanLyChuyenXeController implements Initializable {
                             Route st = (Route) cell.getTableRow().getItem();
                             if (nameDen != null && nameDi != null && !nameDen.isEmpty() && !nameDi.isEmpty()) {
                                 try {
-                                    if (s.updateRouteById(nameDi + " - " + nameDen, st.getRouteId(), s.getStationIDbyname(nameDi), s.getStationIDbyname(nameDen), Double.parseDouble(txtGia.getText()))) {
+                                    if (ROUTE_SERVICE.updateRouteById(nameDi + " - " + nameDen, st.getRouteId(), ROUTE_SERVICE.getStationIDbyname(nameDi), ROUTE_SERVICE.getStationIDbyname(nameDen), Double.parseDouble(txtGia.getText()))) {
                                         MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
                                         loadRouteData(null);
                                     } else {
@@ -224,8 +228,8 @@ public class QuanLyChuyenXeController implements Initializable {
         ComboBox<String> cbDi = new ComboBox<>();
         ComboBox<String> cbDen = new ComboBox<>();
         try {
-            cbDi.getItems().addAll(s.getNameStation());
-            cbDen.getItems().addAll(s.getNameStation());
+            cbDi.getItems().addAll(ROUTE_SERVICE.getNameStation());
+            cbDen.getItems().addAll(ROUTE_SERVICE.getNameStation());
         } catch (SQLException ex) {
             Logger.getLogger(QuanLyChuyenXeController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -253,14 +257,14 @@ public class QuanLyChuyenXeController implements Initializable {
             if (nameDen != null && nameDi != null && !nameDen.isEmpty() && !nameDi.isEmpty()) {
                 if (!nameDen.equals(nameDi)) {
                     try {
-                        int diID = s.getStationIDbyname(nameDi);
-                        int denID = s.getStationIDbyname(nameDen);
+                        int diID = ROUTE_SERVICE.getStationIDbyname(nameDi);
+                        int denID = ROUTE_SERVICE.getStationIDbyname(nameDen);
                         double gia = Double.parseDouble(txtGia.getText());
 
-                        if (s.checkRouteExists(diID, denID)) {
+                        if (ROUTE_SERVICE.checkRouteExists(diID, denID)) {
                             MessageBox.getBox("Question", "Đã tồn tại chuyến xe này!!!", Alert.AlertType.WARNING).show();
                         } else {
-                            if (s.addRoute(nameDi + " - " + nameDen, diID, denID, gia)) {
+                            if (ROUTE_SERVICE.addRoute(nameDi + " - " + nameDen, diID, denID, gia)) {
                                 MessageBox.getBox("Question", "Thêm chuyến xe thành công!!!", Alert.AlertType.INFORMATION).show();
                                 loadRouteData(null);
                             } else {
@@ -284,7 +288,7 @@ public class QuanLyChuyenXeController implements Initializable {
 
     private void loadRouteData(String kw) throws SQLException {
 
-        List<Route> ques = s.getRoute(kw);
+        List<Route> ques = ROUTE_SERVICE.getRoute(kw);
         this.tbRoute.getItems().clear();
         this.tbRoute.setItems(FXCollections.observableList(ques));
     }

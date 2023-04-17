@@ -25,7 +25,7 @@ public class RouteRepostitory {
 
     public List<Route> getRoutesById(Integer id) throws SQLException {
         List<Route> routes = new ArrayList<>();
-        String query = "SELECT ID_ChuyenXe, tenCX, giaChuyen FROM chuyenxe WHERE ID_ChuyenXe = ?";
+        String query = "SELECT ID_ChuyenXe, tenCX, giaChuyen, ID_benDen, ID_benDi FROM chuyenxe WHERE ID_ChuyenXe = ?";
 
         try (Connection connection = JdbcUtils.getConn(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -184,6 +184,20 @@ public class RouteRepostitory {
         }
         return a;
     }
+    
+    public Integer getRouteIDbyname(String name) throws SQLException {
+        Integer a = null;
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT ID_CX FROM chuyenxe WHERE tenCX= ?";
+            PreparedStatement stm = conn.prepareStatement(sql);
+            stm.setString(1, name);
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                a = rs.getInt("ID_ChuyenXe");
+            }
+        }
+        return a;
+    }
 
     public Route getOneRouteByID(Integer ID) throws SQLException {
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement("SELECT * FROM chuyenxe WHERE ID_ChuyenXe = ?")) {
@@ -229,4 +243,6 @@ public class RouteRepostitory {
         }
         return results;
     }
+    
+    
 }

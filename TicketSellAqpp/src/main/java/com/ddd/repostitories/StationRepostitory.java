@@ -10,13 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 /**
  *
@@ -146,13 +143,12 @@ public class StationRepostitory {
 
     public boolean isExistStationByName(String name) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT * FROM benxe";
-            if (name != null && !name.isEmpty()) {
-                sql += " WHERE TenBen = '?'";
-            }
-            PreparedStatement stm = conn.prepareCall(sql);
+            String sql = "SELECT COUNT(*) FROM benxe WHERE TenBen=?";
+            PreparedStatement stm = conn.prepareStatement(sql);
             stm.setString(1, name);
-            return stm.executeQuery().next();
+            ResultSet rs = stm.executeQuery();
+            rs.next();
+            return rs.getInt(1) > 0;
         }
     }
 }
