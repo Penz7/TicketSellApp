@@ -77,6 +77,15 @@ public class HomeSignAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    @FXML
+    private void setBusStage() {
+        try {
+            App.setRoot("QuanLyXe");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void setInfoAcount() {
         User user = new User();
