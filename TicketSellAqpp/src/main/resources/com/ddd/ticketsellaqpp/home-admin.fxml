@@ -13,7 +13,6 @@
 
 <AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1200.0" styleClass="mainFxmlClass" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.HomeSignAdminController">
    <children>
-      <VBox layoutX="625.0" prefHeight="600.0" prefWidth="574.0" />
       <HBox alignment="CENTER" prefHeight="71.0" prefWidth="589.0">
          <children>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Trang quản trị hệ thống">
@@ -152,6 +151,23 @@
          </font>
       </Label>
       <VBox alignment="CENTER" layoutX="330.0" layoutY="417.0" prefHeight="143.0" prefWidth="142.0">
+         <children>
+            <ImageView fitHeight="98.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../image/bus-schedule.png" />
+               </image>
+            </ImageView>
+            <Button mnemonicParsing="false" onAction="#setBusStage" text="Quản lý xe">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="767.0" layoutY="417.0" prefHeight="143.0" prefWidth="142.0">
          <children>
             <ImageView fitHeight="98.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                <image>
