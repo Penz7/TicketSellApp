@@ -11,5 +11,5 @@ module com.ddd.ticketsellaqpp {
     exports com.ddd.pojo;
     exports com.ddd.services;
     exports com.ddd.repostitories;
-
+    
 }

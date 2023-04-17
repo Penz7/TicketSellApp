@@ -31,10 +31,10 @@ public class TicketRepostitory {
             if (rs.next()) {
                 Ticket ticket = new Ticket();
                 ticket.setTicketId(rs.getInt("ID_VeXe"));
-                ticket.setCouchette(rs.getInt("ID_Ghe"));
-                ticket.setCustomer(rs.getInt("ID_KhachHang"));
-                ticket.setRoute(rs.getInt("ID_ChuyenXe"));
-                ticket.setStaff(rs.getInt("ID_NhanVien"));
+                ticket.setCouchetteId(rs.getInt("ID_Ghe"));
+                ticket.setCustomerId(rs.getInt("ID_KhachHang"));
+                ticket.setRouteId(rs.getInt("ID_ChuyenXe"));
+                ticket.setStaffId(rs.getInt("ID_NhanVien"));
                 ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
                 ticket.setIsConfirm(rs.getBoolean("isConfirm"));
                 return ticket;
@@ -72,10 +72,10 @@ public class TicketRepostitory {
             while (rs.next()) {
                 Ticket ticket = new Ticket();
                 ticket.setTicketId(rs.getInt("ID_VeXe"));
-                ticket.setCouchette(rs.getInt("ID_Ghe"));
-                ticket.setCustomer(rs.getInt("ID_KhachHang"));
-                ticket.setRoute(rs.getInt("ID_ChuyenXe"));
-                ticket.setStaff(rs.getInt("ID_NhanVien"));
+                ticket.setCouchetteId(rs.getInt("ID_Ghe"));
+                ticket.setCustomerId(rs.getInt("ID_KhachHang"));
+                ticket.setRouteId(rs.getInt("ID_ChuyenXe"));
+                ticket.setStaffId(rs.getInt("ID_NhanVien"));
                 ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
                 ticket.setIsConfirm(rs.getBoolean("isConfirm"));
                 tickets.add(ticket);

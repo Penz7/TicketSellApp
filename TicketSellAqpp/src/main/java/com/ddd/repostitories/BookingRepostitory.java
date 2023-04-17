@@ -28,9 +28,9 @@ public class BookingRepostitory {
                     + "(?,?,?,?,?)";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, couchette.getCouchetteId());
-            preparedStatement.setInt(2, ticket.getCustomer());
-            preparedStatement.setInt(3, ticket.getRoute());
-            preparedStatement.setInt(4, ticket.getStaff());
+            preparedStatement.setInt(2, ticket.getCustomerId());
+            preparedStatement.setInt(3, ticket.getRouteId());
+            preparedStatement.setInt(4, ticket.getStaffId());
             preparedStatement.setTimestamp(5, ticket.getPrintingDate());
             preparedStatement.executeUpdate();
             connection.commit();
@@ -54,14 +54,35 @@ public class BookingRepostitory {
             while (rs.next()) {
                 Ticket ticket = new Ticket();
                 ticket.setTicketId(rs.getInt("ID_VeXe"));
-                ticket.setCouchette(rs.getInt("ID_Ghe"));
-                ticket.setCustomer(rs.getInt("ID_KhachHang"));
-                ticket.setRoute(rs.getInt("ID_ChuyenXe"));
-                ticket.setStaff(rs.getInt("ID_NhanVien"));
+                ticket.setCouchetteId(rs.getInt("ID_Ghe"));
+                ticket.setCustomerId(rs.getInt("ID_KhachHang"));
+                ticket.setRouteId(rs.getInt("ID_ChuyenXe"));
+                ticket.setStaffId(rs.getInt("ID_NhanVien"));
                 ticket.setPrintingDate(rs.getTimestamp("NgayIn"));
+                ticket.setIsConfirm(rs.getBoolean("isConfirm"));
                 tickets.add(ticket);
             }
         }
         return tickets;
+    }
+    
+      public boolean checkSeatLimit(int maVeXe) throws SQLException {
+        String query = "SELECT COUNT(*) AS seat_count FROM ghe g JOIN vexe v ON g.ID_Ghe = v.ID_Ghe WHERE v.ID_VeXe = ? AND g.TinhTrangGhe = 1";
+
+        try (Connection conn = JdbcUtils.getConn()) {
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, maVeXe);
+
+            ResultSet rs = ps.executeQuery();
+            int seatCount = 0;
+            if (rs.next()) {
+                seatCount = rs.getInt("seat_count");
+            }
+
+            if (seatCount >= 25) {
+                return false;
+            }
+            return true;
+        }
     }
 }

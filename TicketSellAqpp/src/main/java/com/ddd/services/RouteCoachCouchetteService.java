@@ -6,6 +6,7 @@ package com.ddd.services;
 
 import com.ddd.pojo.RouteCoachCouchette;
 import com.ddd.repostitories.RouteCoachCouchetteRepostitory;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class RouteCoachCouchetteService {
         ROUCOACOU_REPOSITORY = new RouteCoachCouchetteRepostitory();
     }
     
-     public List<RouteCoachCouchette> getDataForTableViewBooking(Integer routeId) throws SQLException {
-         return ROUCOACOU_REPOSITORY.getDataForTableViewBooking(routeId);
+     public List<RouteCoachCouchette> getDataForTableViewBooking(Integer routeId, Date orderDate) throws SQLException {
+         return ROUCOACOU_REPOSITORY.getDataForTableViewBooking(routeId,orderDate);
      }
 }
