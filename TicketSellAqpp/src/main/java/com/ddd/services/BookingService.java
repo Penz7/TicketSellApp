@@ -33,23 +33,7 @@ public class BookingService {
     }
 
     public boolean checkSeatLimit(int maVeXe) throws SQLException {
-        String query = "SELECT COUNT(*) AS seat_count FROM ghe g JOIN vexe v ON g.ID_Ghe = v.ID_Ghe WHERE v.ID_VeXe = ? AND g.TinhTrangGhe = 1";
-
-        try (Connection conn = JdbcUtils.getConn()) {
-            PreparedStatement ps = conn.prepareStatement(query);
-            ps.setInt(1, maVeXe);
-
-            ResultSet rs = ps.executeQuery();
-            int seatCount = 0;
-            if (rs.next()) {
-                seatCount = rs.getInt("seat_count");
-            }
-
-            if (seatCount >= 25) {
-                return false;
-            }
-            return true;
-        }
+        return BOOKING_REPOSTITORY.checkSeatLimit(maVeXe);
     }
 
     public List<Ticket> getAllTicketByCustomerId(Integer customerId) throws SQLException {

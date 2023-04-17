@@ -81,11 +81,11 @@ public class RouteRepostitory {
     public List<Route> getRouteByDesIdByDepId(String desId, String depId, Date orderDate) throws SQLException {
         List<Route> route = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT chuyenxe.ID_ChuyenXe, chuyenxe.tenCX, chuyenxe.giaChuyen, chuyenxe.ID_benDen, chuyenxe.ID_benDi\n"
-                    + "FROM chuyenxe\n"
-                    + "INNER JOIN chuyenxe_xe ON chuyenxe.ID_ChuyenXe = chuyenxe_xe.ID_ChuyenXe\n";
+            String sql = "SELECT cx.ID_ChuyenXe, cx.tenCX, cx.ID_benDen, cx.ID_benDi, cx.giaChuyen\n"
+                    + "FROM chuyenxe cx\n"
+                    + "INNER JOIN chuyenxe_xe cxx ON cx.ID_ChuyenXe = cxx.ID_ChuyenXe\n";
             if (desId != null && !desId.isEmpty() && depId != null && !depId.isEmpty()) {
-                sql += "WHERE chuyenxe.ID_benDen = ? AND chuyenxe.ID_benDi = ? AND chuyenxe_xe.gioKhoiHanh like concat('%',?,'%')";
+                sql += "WHERE cx.ID_benDen = ? AND cx.ID_benDi = ? AND DATE(cxx.gioKhoiHanh) = ?";
             }
             PreparedStatement stm = conn.prepareCall(sql);
             if (desId != "null" && !desId.isEmpty() && depId != "null" && !depId.isEmpty()) {

@@ -181,13 +181,13 @@ public class BookingController implements Initializable {
             LocalDate dateOrder = dateTimeOrder.toLocalDate();
             if (STATION_SERVICE.getStationByName(txtSearchDestination.getText()) == null) {
                 MessageBox.getBox("Warning", "Bạn đã nhập chuyến đến không đúng", Alert.AlertType.INFORMATION).show();
-                loadRouteData(null);
+                loadRouteData(null,null);
             } else if (STATION_SERVICE.getStationByName(txtSearchDeparture.getText()) == null) {
                 MessageBox.getBox("Warning", "Bạn đã nhập chuyến đi không đúng", Alert.AlertType.INFORMATION).show();
-                loadRouteData(null);
+                loadRouteData(null,null);
             } else if (dateOrder.isBefore(currentDate)) {
                 MessageBox.getBox("Warning", "Bạn đã nhập ngày ở quá khứ", Alert.AlertType.INFORMATION).show();
-                loadRouteData(null);
+                loadRouteData(null,null);
             } else {
                 List<Route> listRoute = new ArrayList<>();
                 listRoute = ROUTE_SERVICE.getRouteByDesIdByDepId(
@@ -196,11 +196,11 @@ public class BookingController implements Initializable {
                         java.sql.Date.valueOf(dpDateOrder.getValue()));
                 if (listRoute.isEmpty() == true) {
                     MessageBox.getBox("Warning", "Không có chuyến xe cần tìm", Alert.AlertType.INFORMATION).show();
-                    loadRouteData(null);
+                    loadRouteData(null,null);
                 } else {
                     for (Route r : listRoute) {
                         // only changes num, not the array element
-                        loadRouteData(r.getRouteId());
+                        loadRouteData(r.getRouteId(),java.sql.Date.valueOf(dpDateOrder.getValue()));
                     }
                 }
             }
@@ -413,7 +413,7 @@ public class BookingController implements Initializable {
                         Iterator<Integer> iterator = list.iterator();
                         while (iterator.hasNext()) {
                             int i = iterator.next();
-                            Ticket t = new Ticket(null,
+                            Ticket t = new Ticket(printingDate,
                                     i,
                                     App.currentUser.getUser_id(),
                                     USER_SERVICE.getOneUserIdByName("Duy nến").getUser_id(),
@@ -449,9 +449,8 @@ public class BookingController implements Initializable {
         );
     }
 
-    private void loadRouteData(Integer routeId) throws SQLException {
-
-        List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId);
+    private void loadRouteData(Integer routeId, Date orderDate) throws SQLException {
+        List<RouteCoachCouchette> data = ROUTE_COACH_COUCHETTE_SERVICE.getDataForTableViewBooking(routeId,orderDate);
         this.tvRoute.setItems(FXCollections.observableList(data));
     }
 
@@ -490,7 +489,7 @@ public class BookingController implements Initializable {
                     LocalDateTime departureTime = routeCoach.getDepartureTime().toLocalDateTime();
                     String formattedDepartureTime = DTF.format(departureTime);
                     routeInfo += "- Giờ khởi hành: " + formattedDepartureTime;
-                    if (ticket.getPrintingDate() == null) {
+                    if (ticket.isIsConfirm() == false) {
                         routeInfo += " - Tình trạng vé: Chưa lấy vé";
                     } else {
                         routeInfo += " - Tình trạng vé: Đã lấy vé";

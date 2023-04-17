@@ -20,80 +20,74 @@ public class Ticket {
     private Integer staffId;
     private Integer routeId;
     private boolean isConfirm;
-    
+
     public Ticket() {
     }
-    
-    public Integer getTicketId() {
-        return ticketId;
+
+    public Ticket(Timestamp printingDate, Integer couchetteId, Integer customerId, Integer staffId, Integer routeId, boolean isConfirm) {
+        this.ticketId = ticketId;
+        this.printingDate = printingDate;
+        this.couchetteId = couchetteId;
+        this.customerId = customerId;
+        this.staffId = staffId;
+        this.routeId = routeId;
+        this.isConfirm = isConfirm;
     }
 
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
+    public Integer getCouchetteId() {
+        return couchetteId;
+    }
+
+    public Integer getCustomerId() {
+        return customerId;
     }
 
     public Timestamp getPrintingDate() {
         return printingDate;
     }
 
-    public void setPrintingDate(Timestamp printingDate) {
-        this.printingDate = printingDate;
-    }
-
-    public Integer getCouchette() {
-        return couchetteId;
-    }
-
-    public void setCouchette(Integer couchette) {
-        this.couchetteId = couchette;
-    }
-
-
-    public void setRoute(Integer route) {
-        this.routeId = route;
-    }
-
-    public Integer getRoute() {
+    public Integer getRouteId() {
         return routeId;
     }
 
-    public Integer getCustomer() {
-        return customerId;
-    }
-
-    public Integer getStaff() {
+    public Integer getStaffId() {
         return staffId;
     }
 
-    public void setCustomer(Integer customer) {
-        this.customerId = customer;
-    }
-
-    public void setStaff(Integer staff) {
-        this.staffId = staff;
+    public Integer getTicketId() {
+        return ticketId;
     }
 
     public boolean isIsConfirm() {
         return isConfirm;
     }
 
+    public void setCouchetteId(Integer couchetteId) {
+        this.couchetteId = couchetteId;
+    }
+
+    public void setCustomerId(Integer customerId) {
+        this.customerId = customerId;
+    }
+
     public void setIsConfirm(boolean isConfirm) {
         this.isConfirm = isConfirm;
     }
 
-    public Ticket(Timestamp printingDate, Integer couchette, Integer customer, Integer staff, Integer route, Boolean isConfirm) {
+    public void setPrintingDate(Timestamp printingDate) {
         this.printingDate = printingDate;
-        this.couchetteId = couchette;
-        this.customerId = customer;
-        this.staffId = staff;
-        this.routeId = route;
-        this.isConfirm = isConfirm;
     }
-    
-    
-    @Override
-    public String toString() {
-        return getTicketId().toString(); 
+
+    public void setRouteId(Integer routeId) {
+        this.routeId = routeId;
+    }
+
+    public void setStaffId(Integer staffId) {
+        this.staffId = staffId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
     }
     
     
