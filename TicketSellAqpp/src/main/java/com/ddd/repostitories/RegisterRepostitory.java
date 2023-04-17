@@ -5,12 +5,14 @@
 package com.ddd.repostitories;
 
 import com.ddd.utils.JdbcUtils;
+import com.ddd.utils.MessageBox;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -18,6 +20,7 @@ import java.time.LocalDate;
  */
 public class RegisterRepostitory {
 
+    
     public boolean addAccount(String fullName, String idCard, String phoneNumber, String username, String password, String address) {
         LocalDate currentDate = LocalDate.now();
         String sql = "INSERT INTO user(user_fullname, user_id_card, user_phone_number, user_date_join, username, password, user_address) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -78,7 +81,7 @@ public class RegisterRepostitory {
                 }
             }
         } catch (SQLException e) {
-            // Xử lý lỗi và ghi log
+            MessageBox.getBox("Warning", "Username đã tồn tại", Alert.AlertType.ERROR).show();
             e.printStackTrace();
         }
         return false;

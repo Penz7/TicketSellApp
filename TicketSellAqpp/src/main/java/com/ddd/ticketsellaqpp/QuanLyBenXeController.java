@@ -17,9 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -27,7 +25,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -42,6 +39,7 @@ import javafx.stage.Stage;
  */
 public class QuanLyBenXeController implements Initializable {
 
+    
     static StationRepostitory s = new StationRepostitory();
 
     private static User currentUser;
@@ -143,7 +141,7 @@ public class QuanLyBenXeController implements Initializable {
 
                         // Tạo button Xác nhận
                         Button confirmButton = new Button("Xác nhận");
-                        Scene secondScene = new Scene(secondaryLayout, 250, 300);
+                        Scene secondScene = new Scene(secondaryLayout, 250, 200);
                         secondaryLayout.getChildren().addAll(cityLabel, cityTextField, confirmButton);
                         HBox hbox = new HBox(10);
                         hbox.getChildren().addAll(cityLabel, cityTextField);
