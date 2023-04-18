@@ -102,16 +102,16 @@ public class QuanLyVeXeController implements Initializable {
         colTicketId.setCellValueFactory(new PropertyValueFactory<>("ticketId"));
 
         TableColumn<Ticket, Integer> colCouchetteId = new TableColumn<>("Ghế");
-        colCouchetteId.setCellValueFactory(new PropertyValueFactory<>("couchette"));
+        colCouchetteId.setCellValueFactory(new PropertyValueFactory<>("couchetteId"));
 
         TableColumn<Ticket, Integer> colCustomerId = new TableColumn<>("Khách hàng");
-        colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
 
         TableColumn<Ticket, Integer> colRouteId = new TableColumn<>("Chuyến xe");
-        colRouteId.setCellValueFactory(new PropertyValueFactory<>("route"));
+        colRouteId.setCellValueFactory(new PropertyValueFactory<>("routeId"));
 
         TableColumn<Ticket, Integer> colStaffId = new TableColumn<>("Nhân viên");
-        colStaffId.setCellValueFactory(new PropertyValueFactory<>("staff"));
+        colStaffId.setCellValueFactory(new PropertyValueFactory<>("staffId"));
 
         TableColumn<Ticket, Timestamp> colPrintingDate = new TableColumn<>("Ngày xác nhận");
         colPrintingDate.setCellValueFactory(new PropertyValueFactory<>("printingDate"));
