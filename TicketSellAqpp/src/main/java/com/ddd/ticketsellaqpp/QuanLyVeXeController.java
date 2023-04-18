@@ -131,7 +131,7 @@ public class QuanLyVeXeController implements Initializable {
                         if (result == ButtonType.OK) {
                             try {
                                 if (TICKET_SERVICE.deleteTicket(ticket.getTicketId())) {
-                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchetteId(), false);
+                                    COUCHETTE_SERVICE.updateStatusCouchette(ticket.getCouchetteId(), false);
                                     MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
                                     loadTicketData(null);
                                 } else {
@@ -191,7 +191,7 @@ public class QuanLyVeXeController implements Initializable {
                                 try {
                                     seatComboBox.getItems().clear();
                                     Integer selectedRouteId = routeComboBox.getValue();
-                                    seatComboBox.getItems().addAll(COUCHETTE_SERVICE.getidSeatbyIdRoute(selectedRouteId));
+                                    seatComboBox.getItems().addAll(COUCHETTE_SERVICE.getIdCouchetteByIdRoute(selectedRouteId));
                                 } catch (SQLException ex) {
                                     Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
@@ -200,7 +200,7 @@ public class QuanLyVeXeController implements Initializable {
                             confirmButton.setOnAction(event2 -> {
                                 Integer selectedSeatId = seatComboBox.getValue();
                                 Integer selectedRouteId = routeComboBox.getValue();
-                                COUCHETTE_SERVICE.updateStatusSeat(selectedRouteId, false);
+                                COUCHETTE_SERVICE.updateStatusCouchette(selectedRouteId, false);
                                 if (TICKET_SERVICE.updateTicketSeat(ticket.getTicketId(), selectedSeatId, selectedRouteId)) {
                                     MessageBox.getBox("Thông báo", "Sửa vé xe thành công!!!", Alert.AlertType.INFORMATION).show();
                                     try {
@@ -210,7 +210,7 @@ public class QuanLyVeXeController implements Initializable {
                                     }
                                 } else {
                                     // If the update fails, revert the seat's status to "available" in the database and show an error message
-                                    COUCHETTE_SERVICE.updateStatusSeat(ticket.getCouchetteId(), true);
+                                    COUCHETTE_SERVICE.updateStatusCouchette(ticket.getCouchetteId(), true);
                                     MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.ERROR).show();
                                 }
                                 stage.close();

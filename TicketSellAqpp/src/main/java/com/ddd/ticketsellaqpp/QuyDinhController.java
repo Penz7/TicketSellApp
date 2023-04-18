@@ -90,7 +90,7 @@ public class QuyDinhController {
 
         idTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                List<Couchette> seats = s.getSeatsByVehicleId(Integer.parseInt(newValue));
+                List<Couchette> seats = s.getCouchettesByCoachId(Integer.parseInt(newValue));
                 seatTable.setItems(FXCollections.observableList(seats));
             } catch (SQLException ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error getting seats by vehicle ID", ex);
@@ -99,7 +99,7 @@ public class QuyDinhController {
 
         searchBtn.setOnAction(event -> {
             try {
-                List<Couchette> seats = s.getSeatsByVehicleId(Integer.parseInt(idTextField.getText()));
+                List<Couchette> seats = s.getCouchettesByCoachId(Integer.parseInt(idTextField.getText()));
                 seatTable.setItems(FXCollections.observableList(seats));
             } catch (SQLException ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error getting seats by vehicle ID", ex);

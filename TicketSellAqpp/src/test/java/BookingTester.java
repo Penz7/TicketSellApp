@@ -1,4 +1,3 @@
-
 import com.ddd.pojo.Couchette;
 import com.ddd.pojo.Ticket;
 import com.ddd.repostitories.TicketRepostitory;
@@ -33,10 +32,7 @@ public class BookingTester {
 
     private static Connection conn;
     private static BookingService bs;
-    private static TicketRepostitory tr;
     private final static DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-    ;
 
     @BeforeAll
     public static void beforeAll() {
@@ -47,8 +43,6 @@ public class BookingTester {
         }
 
         bs = new BookingService();
-        tr = new TicketRepostitory();
-
     }
 
     @AfterAll
@@ -84,7 +78,6 @@ public class BookingTester {
             Assertions.assertEquals("1", rs.getString("ID_Ghe")); // pass
             Assertions.assertEquals("1", rs.getString("ID_KhachHang")); // pass
             Assertions.assertEquals("1", rs.getString("ID_ChuyenXe")); // pass
-
         } catch (SQLException ex) {
             Logger.getLogger(BookingTester.class.getName()).log(Level.SEVERE, null, ex);
         }

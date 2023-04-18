@@ -22,16 +22,16 @@ import java.util.logging.Logger;
 public class CouchetteRepostitory {
 
 //    Lấy ghế trong các xe
-    public List<Couchette> getSeatsByVehicleId(Integer vehicleId) throws SQLException {
+    public List<Couchette> getCouchettesByCoachId(Integer coachId) throws SQLException {
         List<Couchette> seats = new ArrayList<>();
         String sql = "SELECT * FROM ghe";
-        if (vehicleId != null) {
+        if (coachId != null) {
             sql += " WHERE ID_Xe = ?";
         }
 
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            if (vehicleId != null) {
-                stmt.setInt(1, vehicleId);
+            if (coachId != null) {
+                stmt.setInt(1, coachId);
             }
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -57,7 +57,7 @@ public class CouchetteRepostitory {
         }
     }
 
-    public List<Couchette> getAllSeat() throws SQLException {
+    public List<Couchette> getAllCouchette() throws SQLException {
         List<Couchette> results = new ArrayList<>();
 
         try (Connection conn = JdbcUtils.getConn()) {
@@ -72,7 +72,7 @@ public class CouchetteRepostitory {
         return results;
     }
 
-    public boolean updateStatusSeat(Integer seatId, boolean status) {
+    public boolean updateStatusCouchette(Integer seatId, boolean status) {
         String sql = "UPDATE ghe SET TinhTrangGhe = ? WHERE ID_Ghe = ?";
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
             stm.setBoolean(1, status);
@@ -84,7 +84,7 @@ public class CouchetteRepostitory {
         }
     }
 
-    public List<Integer> getIdSeatbyIDRoute(Integer idRoute) throws SQLException {
+    public List<Integer> getIdCouchetteByIdRoute(Integer idRoute) throws SQLException {
         List<Integer> results = new ArrayList<>();
         String sql = "SELECT ghe.id_ghe\n"
                 + "FROM ghe\n"
@@ -108,7 +108,7 @@ public class CouchetteRepostitory {
         return results;
     }
 
-    public List<Boolean> getStatusSeatbyIDRoute(Integer idRoute) throws SQLException {
+    public List<Boolean> getStatusCouchettebyIDRoute(Integer idRoute) throws SQLException {
         List<Boolean> results = new ArrayList<>();
         String sql = "SELECT TinhTrangGhe FROM ghe "
                 + "JOIN chuyenxe_xe ON ghe.id_xe = chuyenxe_xe.id_xe "

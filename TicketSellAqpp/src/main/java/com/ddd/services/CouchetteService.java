@@ -20,27 +20,27 @@ public class CouchetteService {
         COUCHETTE_REPOSTITORY = new CouchetteRepostitory();
     }
     
-    public List<Couchette> getSeatByCoadID(Integer kw) throws SQLException {
-        return COUCHETTE_REPOSTITORY.getSeatsByVehicleId(kw);
+    public List<Couchette> getCouchettesByCoachId(Integer coachId) throws SQLException {
+        return COUCHETTE_REPOSTITORY.getCouchettesByCoachId(coachId);
     }
     
     public Couchette getOneCouchetteByID(Integer CouchetteId) throws SQLException {
         return COUCHETTE_REPOSTITORY.getOneCouchetteByID(CouchetteId);
     }
     
-    public List<Couchette> getAllSeat() throws SQLException {
-        return COUCHETTE_REPOSTITORY.getAllSeat();
+    public List<Couchette> getAllCouchette() throws SQLException {
+        return COUCHETTE_REPOSTITORY.getAllCouchette();
     }
     
-    public boolean updateStatusSeat(Integer seatId, boolean status) {
-        return COUCHETTE_REPOSTITORY.updateStatusSeat(seatId, status);
+    public boolean updateStatusCouchette(Integer seatId, boolean status) {
+        return COUCHETTE_REPOSTITORY.updateStatusCouchette(seatId, status);
     }
 
-     public List<Integer> getidSeatbyIdRoute(Integer routeID) throws SQLException {
-        return COUCHETTE_REPOSTITORY.getIdSeatbyIDRoute(routeID);
+     public List<Integer> getIdCouchetteByIdRoute(Integer routeID) throws SQLException {
+        return COUCHETTE_REPOSTITORY.getIdCouchetteByIdRoute(routeID);
     }
      
-     public List<Boolean> getStatusSeatbyIDRoute(Integer idRoute) throws SQLException {
-         return COUCHETTE_REPOSTITORY.getStatusSeatbyIDRoute(idRoute);
+     public List<Boolean> getStatusCouchettebyIDRoute(Integer idRoute) throws SQLException {
+         return COUCHETTE_REPOSTITORY.getStatusCouchettebyIDRoute(idRoute);
      }
 }

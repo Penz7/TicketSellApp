@@ -413,7 +413,7 @@ public class StaffBookingController implements Initializable {
                                             currentRouteId,
                                             false);
                                     if (BOOKING_SERVICE.AddTicket(t, i)) {
-                                        seat.updateStatusSeat(i, true);
+                                        seat.updateStatusCouchette(i, true);
                                         iterator.remove();
                                     } else {
                                         MessageBox.getBox("Xác nhận đặt vé không thành công", "Vui lòng đặt vé lại!", Alert.AlertType.ERROR).showAndWait();
