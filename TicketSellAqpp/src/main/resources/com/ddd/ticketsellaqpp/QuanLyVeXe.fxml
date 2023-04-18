@@ -9,7 +9,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="801.0" styleClass="mainFxmlClass" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.QuanLyVeXeController">
    <children>
-      <TextField fx:id="txtSearch" layoutX="126.0" layoutY="112.0" />
+      <TextField fx:id="txtSearch" layoutX="136.0" layoutY="112.0" />
       <Label layoutX="39.0" layoutY="116.0" text="Nhập vé cần tìm: " />
       <TableView fx:id="tbTicket" layoutX="40.0" layoutY="200.0" prefHeight="304.0" prefWidth="721.0" />
       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="14.0" text="Quản lý vé xe">
@@ -21,6 +21,6 @@
          <font>
             <Font name="Tahoma Bold" size="16.0" />
          </font></Button>
-      <Button fx:id="confirmBtn" layoutX="570.0" layoutY="103.0" mnemonicParsing="false" text="Xác nhận vé" />
+      <Button fx:id="confirmBtn" layoutX="570.0" layoutY="103.0" mnemonicParsing="false" text="In vé" />
    </children>
 </AnchorPane>
