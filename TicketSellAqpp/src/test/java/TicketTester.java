@@ -98,7 +98,7 @@ public class TicketTester {
     public void TestUpdateTicketSeat() {
         try {
             //Ghế ban đầu: ID = 42; ID_Ghe=1; ID_KhachHang= 1;	ID_ChuyenXe=1; ID_NhanVien=3;NgayIn = 2023-04-17 22:42:59; IsConfirm=0
-            Assertions.assertTrue(ts.updateTicketSeat(42, 2, 2)); // đổi vé lại thành Mã ghế = 2 , Mã chuyến xe = 2
+            Assertions.assertTrue(ts.updateTicketSeat(42, 6, 2)); // đổi vé lại thành Mã ghế = 2 , Mã chuyến xe = 2
 
             // Xem thử vé đã đổi được chưa
             Ticket t = ts.getTicketById(42); // ID = 42; ID_Ghe=2; ID_KhachHang= 1;	ID_ChuyenXe=2; ID_NhanVien=3;NgayIn = 2023-04-17 22:42:59; IsConfirm=0

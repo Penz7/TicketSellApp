@@ -36,7 +36,7 @@
       <DatePicker fx:id="dpDateOrder" layoutX="408.0" layoutY="154.0" />
       <TableView fx:id="tvRoute" layoutX="24.0" layoutY="292.0" prefHeight="200.0" prefWidth="801.0" />
       <Button fx:id="btnFindRoute" layoutX="626.0" layoutY="168.0" mnemonicParsing="false" onAction="#findRoute" prefHeight="26.0" prefWidth="114.0" text="Tìm vé" />
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="6.0" text="OU Bus">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="6.0" text="OU Bus" textFill="WHITE">
          <font>
             <Font name="System Bold Italic" size="54.0" />
          </font>
@@ -45,7 +45,7 @@
       <Label layoutX="209.0" layoutY="214.0" text="Số lượng" />
       <TextField fx:id="txtOrderCount" disable="true" layoutX="207.0" layoutY="244.0" prefHeight="26.0" prefWidth="51.0" />
       <Button fx:id="btnOrder" disable="true" layoutX="627.0" layoutY="244.0" mnemonicParsing="false" onAction="#checkOrderStaff" prefHeight="26.0" prefWidth="114.0" text="Xác nhận đặt vé" />
-      <Button cache="true" layoutX="719.0" layoutY="14.0" mnemonicParsing="false" onAction="#backMenuStaff" text="Quay trở về" />
+      <Button cache="true" layoutX="1107.0" layoutY="86.0" mnemonicParsing="false" onAction="#backMenuStaff" text="Quay trở về" />
       <ComboBox fx:id="cbTicketOrdered" layoutX="24.0" layoutY="244.0" prefWidth="150.0" promptText="Chuyến xe - Ghế" />
       <Accordion layoutX="943.0" layoutY="167.0" />
       <BorderPane layoutX="862.0" layoutY="123.0" prefHeight="386.0" prefWidth="318.0" visible="false">

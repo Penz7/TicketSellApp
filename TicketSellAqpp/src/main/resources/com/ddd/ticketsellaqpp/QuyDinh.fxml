@@ -2,20 +2,48 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="481.0" styleClass="mainFxmlClass" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.QuyDinhController">
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="1200.0" styleClass="mainFxmlClass" stylesheets="@../../../Style/style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ddd.ticketsellaqpp.QuyDinhController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="50.0" layoutY="52.0" text="Quy định ">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="512.0" layoutY="109.0" text="Quy định ">
          <font>
             <Font name="System Italic" size="41.0" />
          </font>
       </Label>
-      <Button layoutX="336.0" layoutY="372.0" mnemonicParsing="false" onAction="#backMenu" text="Quay lại">
+      <Button alignment="BASELINE_RIGHT" layoutX="237.0" layoutY="266.0" mnemonicParsing="false" onAction="#getSeat" prefHeight="100.0" prefWidth="260.0" text="Quản lý ghế">
          <font>
-            <Font name="Tahoma Bold" size="16.0" />
+            <Font name="Tahoma Bold" size="20.0" />
          </font></Button>
-      <Button layoutX="62.0" layoutY="169.0" mnemonicParsing="false" onAction="#getSeat" text="Quản lý ghế" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="84.0" stroke="BLACK" strokeType="INSIDE" width="1200.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="84.0" layoutY="516.0" stroke="BLACK" strokeType="INSIDE" width="1200.0" />
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="88.0" layoutY="2.0" text="OU Bus" textFill="#fffdfd">
+         <font>
+            <Font name="System Bold Italic" size="54.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="80.0" fitWidth="142.0" layoutX="4.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/bus.png" />
+         </image>
+      </ImageView>
+      <Button alignment="BASELINE_RIGHT" layoutX="687.0" layoutY="266.0" mnemonicParsing="false" onAction="#backMenu" prefHeight="100.0" prefWidth="260.0" text="Quay lại">
+         <font>
+            <Font name="Tahoma Bold" size="20.0" />
+         </font></Button>
+      <ImageView disable="true" fitHeight="100.0" fitWidth="102.0" layoutX="238.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/bus-schedule.png" />
+         </image>
+      </ImageView>
+      <ImageView disable="true" fitHeight="100.0" fitWidth="102.0" layoutX="687.0" layoutY="266.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/log-out.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
