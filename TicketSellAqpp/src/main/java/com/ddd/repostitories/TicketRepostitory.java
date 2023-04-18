@@ -43,7 +43,7 @@ public class TicketRepostitory {
         return null;
     }
 
-    public boolean addDateStaffOrder(Integer staffID, Timestamp date, Integer ticketID) throws SQLException {
+    public boolean updatePrintingDateAndStaffConfirm(Integer staffID, Timestamp date, Integer ticketID) throws SQLException {
         String query = "UPDATE vexe SET ID_NhanVien = ?, NgayIn = ? WHERE ID_VeXe = ?";
         try (Connection connection = JdbcUtils.getConn(); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, staffID);

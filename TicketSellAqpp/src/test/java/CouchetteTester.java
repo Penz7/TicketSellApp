@@ -65,7 +65,6 @@ public class CouchetteTester {
             for (Couchette c : couchettes) {
                 Assertions.assertEquals(1, c.getCouchId()); // 5 Ghế đều thuộc xe có ID là 1
             }
-
         } catch (SQLException ex) {
             Logger.getLogger(BookingTester.class.getName()).log(Level.SEVERE, null, ex);
         }

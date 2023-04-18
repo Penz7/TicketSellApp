@@ -266,7 +266,7 @@ public class QuanLyVeXeController implements Initializable {
                     boolean isConfirmed = TICKET_SERVICE.checkConfirmOrder(ticketId);
                     if (isConfirmed) {
                         Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));
-                        if (TICKET_SERVICE.addDateStaffOrder(App.currentUser.getUser_id(), printingDate, ticketId)) {
+                        if (TICKET_SERVICE.updatePrintingDateAndStaffConfirm(App.currentUser.getUser_id(), printingDate, ticketId)) {
                             MessageBox.getBox("Question", "Xác nhận thành công!!!", Alert.AlertType.INFORMATION).show();
                             loadTicketData(null);
                         } else {

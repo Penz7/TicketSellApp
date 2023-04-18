@@ -14,7 +14,7 @@ import java.util.List;
  * @author admin
  */
 public class CoachTester {
-
+    
     @Test
     public void testGetCoach() throws SQLException {
         // Arrange

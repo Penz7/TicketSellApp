@@ -46,7 +46,7 @@ public class TicketService {
         return TICKET_REPOSTITORY.checkConfirmOrder(id);
     }
 
-    public boolean addDateStaffOrder(Integer staffID, Timestamp date, Integer ticketID) throws SQLException {
-        return TICKET_REPOSTITORY.addDateStaffOrder(staffID, date, ticketID);
+    public boolean updatePrintingDateAndStaffConfirm(Integer staffID, Timestamp date, Integer ticketID) throws SQLException {
+        return TICKET_REPOSTITORY.updatePrintingDateAndStaffConfirm(staffID, date, ticketID);
     }
 }
