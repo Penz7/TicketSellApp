@@ -171,7 +171,6 @@ public class QuanLyChuyenXeXeController implements Initializable {
                         }
                         confirmButton.setOnAction(e -> {
                             Integer id_xe = coach.getValue();
-                            System.out.println(coach.getValue());
                             if (!txtThoigian.getText().isEmpty()) {
                                 try {
                                     dateFormat.parse(txtThoigian.getText());
