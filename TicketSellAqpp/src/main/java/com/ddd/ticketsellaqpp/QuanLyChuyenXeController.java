@@ -178,10 +178,11 @@ public class QuanLyChuyenXeController implements Initializable {
                         confirmButton.setOnAction(e -> {
                             String nameDen = cbDen.getValue();
                             String nameDi = cbDi.getValue();
+                            System.out.println();
                             Button b = (Button) event.getSource();
                             TableCell cell = (TableCell) b.getParent();
                             Route st = (Route) cell.getTableRow().getItem();
-                            if (nameDen != null && nameDi != null && !nameDen.isEmpty() && !nameDi.isEmpty()) {
+                            if (nameDen != null && nameDi != null && !nameDen.isEmpty() && !nameDi.isEmpty() && nameDen.equals(nameDi) == false) {
                                 try {
                                     if (ROUTE_SERVICE.updateRouteById(nameDi + " - " + nameDen, st.getRouteId(), ROUTE_SERVICE.getStationIDbyname(nameDi), ROUTE_SERVICE.getStationIDbyname(nameDen), Double.parseDouble(txtGia.getText()))) {
                                         MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
@@ -195,8 +196,11 @@ public class QuanLyChuyenXeController implements Initializable {
                                 } catch (NumberFormatException ex) {
                                     MessageBox.getBox("Question", "Giá chuyến phải là số!!!", Alert.AlertType.WARNING).show();
                                 }
-                            } else {
+                            } else if (nameDen == null || nameDi == null || nameDen.isEmpty() || nameDi.isEmpty()) {
                                 MessageBox.getBox("Question", "Vui lòng chọn địa điểm!!!", Alert.AlertType.WARNING).show();
+                                
+                            } else {
+                                MessageBox.getBox("Thông báo", "Thành phố đến và thành phố đi phải khác nhau!", Alert.AlertType.WARNING).show();
                             }
                         });
 

@@ -11,6 +11,7 @@ import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -25,6 +26,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -45,7 +47,9 @@ public class QuanLyChuyenXeXeController implements Initializable {
     static RouteCoachRepostitory s = new RouteCoachRepostitory();
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
+    
+    private final static DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    
     private static User currentUser;
 
     @FXML
@@ -167,10 +171,11 @@ public class QuanLyChuyenXeXeController implements Initializable {
                         }
                         confirmButton.setOnAction(e -> {
                             Integer id_xe = coach.getValue();
+                            System.out.println(coach.getValue());
                             if (!txtThoigian.getText().isEmpty()) {
                                 try {
                                     dateFormat.parse(txtThoigian.getText());
-                                    if (s.updateRouteCoachbyID(txtThoigian.getText(), st.getRouteId(),id_xe)) {
+                                    if (s.updateRouteCoachbyID(Timestamp.valueOf(txtThoigian.getText()), st.getRouteId(),id_xe)) {
                                         MessageBox.getBox("Thông báo", "Sửa chuyến xe xe thành công!!!", Alert.AlertType.INFORMATION).show();
                                         loadRouteData(null);
                                     } else {
