@@ -395,7 +395,9 @@ public class StaffBookingController implements Initializable {
     private void checkOrderStaff() throws SQLException {
         if (txtUserID.getText() == null || txtUserID.getText().trim().equals("")) {
             MessageBox.getBox("Warning", "Thông tin id khách hàng chưa được nhập !!! ", Alert.AlertType.ERROR).show();
-        } else if (TICKET_SERVICE.checkUserCustomer(Integer.parseInt(txtUserID.getText()))) {
+        } else if(txtUserID.getText().matches("\\d+") == false){
+            MessageBox.getBox("Warning", "Bạn đang nhập chữ cho phần ID khách hàng!!! ", Alert.AlertType.ERROR).show();
+        }else if (TICKET_SERVICE.checkUserCustomer(Integer.parseInt(txtUserID.getText()))) {
             if (txtUserID.getText().length() > 0) {
                 Alert a = MessageBox.getBox("Đặt vé", "Xác nhận đặt vé!", Alert.AlertType.CONFIRMATION);
                 Timestamp printingDate = Timestamp.valueOf(LocalDateTime.now().format(DTF));

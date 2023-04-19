@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.ddd.ticketsellaqpp;
+
 import com.ddd.pojo.User;
 import com.ddd.repostitories.UserRepostitory;
 import com.ddd.utils.MessageBox;
@@ -37,8 +38,9 @@ import javafx.stage.Stage;
  *
  * @author admin
  */
-public class QuanLyKhachHangController implements Initializable  {
-     static UserRepostitory s = new UserRepostitory();
+public class QuanLyKhachHangController implements Initializable {
+
+    static UserRepostitory s = new UserRepostitory();
 
     private static User currentUser;
 
@@ -94,7 +96,6 @@ public class QuanLyKhachHangController implements Initializable  {
         TableColumn colAdress = new TableColumn("Địa chỉ");
         colAdress.setCellValueFactory(new PropertyValueFactory("user_address"));
 
-       
         this.tbUser.getColumns().addAll(colID, colName, colCCCD, colPhone, colBirth, colAdress, colUsername, colPass, colJoin);
     }
 
@@ -143,20 +144,30 @@ public class QuanLyKhachHangController implements Initializable  {
         newWindow.show();
 
         confirmButton.setOnAction(e -> {
-            try {
-                LocalDate birthDate = dpBirth.getValue();
-                java.sql.Date sqlBirthDate = java.sql.Date.valueOf(birthDate);
-                if (s.addCustomer(txtFullname.getText(), txtUserIdCard.getText(), txtPhone.getText(), sqlBirthDate, txtUsername.getText(), txtPassword.getText(), txtAdress.getText())) {
-                    MessageBox.getBox("Question", "Thêm khách hàng thành công!!!", Alert.AlertType.INFORMATION).show();
-                    loadCustomerData(null);
-                } else {
-                    MessageBox.getBox("Question", "Thêm khách hàng thất bại!!!", Alert.AlertType.WARNING).show();
+            if (txtFullname.getText().isEmpty() || txtFullname.getText() == null || txtFullname.getText().trim().equals("")
+                    || txtAdress.getText().isEmpty() || txtAdress.getText() == null || txtAdress.getText().trim().equals("")
+                    || txtPassword.getText().isEmpty() || txtPassword.getText() == null || txtPassword.getText().trim().equals("")
+                    || txtPhone.getText().isEmpty() || txtPhone.getText() == null || txtPhone.getText().trim().equals("")
+                    || txtUserIdCard.getText().isEmpty() || txtUserIdCard.getText() == null || txtUserIdCard.getText().trim().equals("")
+                    || txtUsername.getText().isEmpty() || txtUsername.getText() == null || txtUsername.getText().trim().equals("")
+                    || dpBirth.getValue() == null) {
+                    MessageBox.getBox("Thông báo", "Chưa nhập đủ dữ liệu cần thiết!!!", Alert.AlertType.WARNING).show();
+            } else {
+                try {
+                    LocalDate birthDate = dpBirth.getValue();
+                    java.sql.Date sqlBirthDate = java.sql.Date.valueOf(birthDate);
+                    if (s.addCustomer(txtFullname.getText(), txtUserIdCard.getText(), txtPhone.getText(), sqlBirthDate, txtUsername.getText(), txtPassword.getText(), txtAdress.getText())) {
+                        MessageBox.getBox("Question", "Thêm khách hàng thành công!!!", Alert.AlertType.INFORMATION).show();
+                        loadCustomerData(null);
+                    } else {
+                        MessageBox.getBox("Question", "Thêm khách hàng thất bại!!!", Alert.AlertType.WARNING).show();
+                    }
+                } catch (SQLException ex) {
+                    MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                    Logger.getLogger(QuanLyNhanVienController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NumberFormatException ex) {
+                    MessageBox.getBox("Question", "Cột số chuyến phải là số!!!", Alert.AlertType.WARNING).show();
                 }
-            } catch (SQLException ex) {
-                MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                Logger.getLogger(QuanLyNhanVienController.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (NumberFormatException ex) {
-                MessageBox.getBox("Question", "Cột số chuyến phải là số!!!", Alert.AlertType.WARNING).show();
             }
         });
     }
