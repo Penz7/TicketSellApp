@@ -4,6 +4,7 @@
  */
 package com.ddd.repostitories;
 
+import com.ddd.pojo.Route;
 import com.ddd.pojo.Station;
 import com.ddd.utils.JdbcUtils;
 import java.sql.Connection;
@@ -150,5 +151,22 @@ public class StationRepostitory {
             rs.next();
             return rs.getInt(1) > 0;
         }
+    }
+    
+    public Station getStationById(Integer StationId) throws SQLException {
+ 
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM benxe WHERE ID_Ben = ?";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setInt(1, StationId);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()) {
+                Station s = new Station(rs.getInt("ID_Ben"), rs.getString("TenBen"));
+                return s;
+            }
+            else 
+                return null;
+        }
+        
     }
 }

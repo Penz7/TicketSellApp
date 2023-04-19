@@ -42,7 +42,7 @@ public class StationService {
     }
 
     // Cập nhật lại bến xe bởi tên và id
-    public boolean updateStationNameById(String id, String stationName) {
+    public boolean updateStationNameById(String id, String stationName) throws SQLException {
         return STATION_REPOSITORY.updateStationNameById(id, stationName);
     }
 
@@ -56,4 +56,7 @@ public class StationService {
          return STATION_REPOSITORY.isExistStationByName(name);
      }
     
+     public Station getStationById(Integer StationId) throws SQLException {
+         return STATION_REPOSITORY.getStationById(StationId);
+     }
 }

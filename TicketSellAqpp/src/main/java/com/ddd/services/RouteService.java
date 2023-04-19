@@ -72,5 +72,12 @@ public class RouteService {
     public List<Integer> getIdRoute() throws SQLException {
         return ROUTE_REPOSITORY.getIdRoute();
     }
-
+    
+    public List<Route> getRoutesByIdStation(Integer stationId) throws SQLException {
+        return ROUTE_REPOSITORY.getRoutesByIdStation(stationId);
+    }
+    
+    public boolean updateNameRouteById(Integer routeID ,String routeName) {
+        return ROUTE_REPOSITORY.updateNameRouteById(routeID, routeName);
+    }
 }

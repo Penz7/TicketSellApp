@@ -133,6 +133,18 @@ public class RouteRepostitory {
             return false;
         }
     }
+    
+    public boolean updateNameRouteById(Integer routeID ,String routeName) {
+        String sql = "UPDATE chuyenxe SET TenCX = ? WHERE ID_ChuyenXe = ?";
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareCall(sql)) {
+            stm.setString(1, routeName);
+            stm.setInt(2, routeID);
+            return stm.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error updating station name for ID " + routeID, ex);
+            return false;
+        }
+    }
 
     public boolean addRoute(String tenCX, Integer BenDi, Integer BenDen, Double gia) {
         String sql = "INSERT INTO chuyenxe(TenCX, ID_BenDi, ID_BenDen,giaChuyen) VALUES (?,?,?,?)";
@@ -246,5 +258,28 @@ public class RouteRepostitory {
         }
         return results;
     }
-
+    
+     public List<Route> getRoutesByIdStation(Integer stationId) throws SQLException {
+        List<Route> results = new ArrayList<>();
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT * FROM chuyenxe WHERE ID_benDi = ? OR ID_benDen = ?";
+            PreparedStatement stm = conn.prepareCall(sql);
+            if (stationId!= null) {
+                stm.setInt(1, stationId);
+                stm.setInt(2, stationId);
+            }
+            ResultSet rs = stm.executeQuery();
+             while(rs.next()) {
+                Route route = new Route(
+                        rs.getInt("ID_ChuyenXe"),
+                        rs.getString("tenCX"),
+                        rs.getDouble("giaChuyen"),
+                        rs.getInt("ID_benDen"),
+                        rs.getInt("ID_benDi")
+                );
+                results.add(route);
+            }
+        }
+        return results;
+    }
 }

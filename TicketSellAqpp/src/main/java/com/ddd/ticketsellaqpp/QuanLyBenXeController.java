@@ -4,9 +4,12 @@
  */
 package com.ddd.ticketsellaqpp;
 
+import com.ddd.pojo.Route;
 import com.ddd.repostitories.StationRepostitory;
 import com.ddd.pojo.Station;
 import com.ddd.pojo.User;
+import com.ddd.services.RouteService;
+import com.ddd.services.StationService;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +43,8 @@ import javafx.stage.Stage;
 public class QuanLyBenXeController implements Initializable {
 
     static StationRepostitory s = new StationRepostitory();
+    private static RouteService rs = new RouteService();
+    private static StationService ss = new StationService();
 
     private static User currentUser;
 
@@ -162,7 +167,19 @@ public class QuanLyBenXeController implements Initializable {
                                 TableCell cell = (TableCell) b.getParent();
                                 Station st = (Station) cell.getTableRow().getItem();
                                 try {
-                                    if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) {
+                   
+                                    if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) { // khi cái này chạy xong á
+                                        // là cái chuyến xe nó đổi 2 cái id bến đi bến đến rr mà chưa cập nhật lại name của chuyến
+                                        for (Route r : rs.getRoutesByIdStation(st.getStationId())) {
+                                            if (r.getDepartureID() == st.getStationId()) {
+                                                String RouteName = (cityTextField.getText() + " - " + ss.getStationById(r.getDestinationID()).getStationName());
+                                                rs.updateNameRouteById(r.getRouteId(), RouteName);
+                                            } else {
+                                                String RouteName = (ss.getStationById(r.getDepartureID()).getStationName() + " - " + cityTextField.getText());
+                                                rs.updateNameRouteById(r.getRouteId(), RouteName);
+                                            }
+                                        }
+                                        // là dòng này sẽ chạy một cái hàm s.updateStationName(truyền idbendi và idbenden , còn cái name là getnamebendi + getbanebenden)
                                         MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
                                         loadStationData(null);
 
