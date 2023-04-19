@@ -39,7 +39,6 @@ import javafx.stage.Stage;
  */
 public class QuanLyBenXeController implements Initializable {
 
-    
     static StationRepostitory s = new StationRepostitory();
 
     private static User currentUser;
@@ -156,21 +155,25 @@ public class QuanLyBenXeController implements Initializable {
                         newWindow.show();
 
                         confirmButton.setOnAction(e -> {
-                            Button b = (Button) event.getSource();
-                            TableCell cell = (TableCell) b.getParent();
-                            Station st = (Station) cell.getTableRow().getItem();
-                            try {
-                                if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) {
-                                    MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
-                                    loadStationData(null);
+                            if (cityTextField.getText().isEmpty() || cityTextField.getText() == null || cityTextField.getText().trim().equals("")) {
+                                MessageBox.getBox("Thông báo", "Chưa nhập thông tin thành phố!", Alert.AlertType.WARNING).show();
+                            } else {
+                                Button b = (Button) event.getSource();
+                                TableCell cell = (TableCell) b.getParent();
+                                Station st = (Station) cell.getTableRow().getItem();
+                                try {
+                                    if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) {
+                                        MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
+                                        loadStationData(null);
 
-                                } else {
-                                    MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.WARNING).show();
+                                    } else {
+                                        MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.WARNING).show();
+                                    }
+
+                                } catch (SQLException ex) {
+                                    MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                                    Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-
-                            } catch (SQLException ex) {
-                                MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                                Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         });
 
@@ -224,24 +227,19 @@ public class QuanLyBenXeController implements Initializable {
             newWindow.show();
 
             confirmButton.setOnAction(e -> {
-                try {
-                    if (s.addStation(cityTextField.getText())) {
-                        MessageBox.getBox("Question", "Thêm bến xe thành công!!!", Alert.AlertType.INFORMATION).show();
-                        this.loadStationData(null);
-
-                    } else {
-                        MessageBox.getBox("Question", "Thêm thất bại!!!", Alert.AlertType.WARNING).show();
+                if (cityTextField.getText().isEmpty() || cityTextField.getText() == null || cityTextField.getText().trim().equals("")) {
+                    MessageBox.getBox("Thông báo", "Chưa nhập thông tin thành phố!", Alert.AlertType.WARNING).show();
+                } else {
+                    if (cityTextField.getText().isEmpty() || cityTextField.getText() == null || cityTextField.getText().trim().equals("")) {
+                        MessageBox.getBox("Thông báo", "Chưa nhập thông tin thành phố!", Alert.AlertType.WARNING).show();
                     }
-
-                } catch (SQLException ex) {
-                    MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                    Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         });
     }
 
     @FXML
+
     private void backMenu() {
         try {
             App.setRoot("home-admin");

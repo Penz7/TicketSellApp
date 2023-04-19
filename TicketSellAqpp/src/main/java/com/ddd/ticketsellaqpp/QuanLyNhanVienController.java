@@ -193,8 +193,13 @@ public class QuanLyNhanVienController implements Initializable {
                         newWindow.show();
 
                         confirmButton.setOnAction(e -> {
-                            if (txtFullname.getText().isEmpty() || txtUserIdCard.getText().isEmpty()
-                                    || txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()) {
+                            if (txtFullname.getText().isEmpty() || txtFullname.getText() == null || txtFullname.getText().trim().equals("")
+                                    || txtAdress.getText().isEmpty() || txtAdress.getText() == null || txtAdress.getText().trim().equals("")
+                                    || txtPassword.getText().isEmpty() || txtPassword.getText() == null || txtPassword.getText().trim().equals("")
+                                    || txtPhone.getText().isEmpty() || txtPhone.getText() == null || txtPhone.getText().trim().equals("")
+                                    || txtUserIdCard.getText().isEmpty() || txtUserIdCard.getText() == null || txtUserIdCard.getText().trim().equals("")
+                                    || txtUsername.getText().isEmpty() || txtUsername.getText() == null || txtUsername.getText().trim().equals("")
+                                    || dpBirth.getValue() == null) {
                                 MessageBox.getBox("Question", "Vui lòng điền đầy đủ thông tin!!!", Alert.AlertType.WARNING).show();
                                 return;
                             }
