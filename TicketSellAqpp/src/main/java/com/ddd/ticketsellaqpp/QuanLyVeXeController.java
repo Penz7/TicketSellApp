@@ -100,26 +100,34 @@ public class QuanLyVeXeController implements Initializable {
     private void loadTableTicket() {
         TableColumn<Ticket, Integer> colTicketId = new TableColumn<>("Vé");
         colTicketId.setCellValueFactory(new PropertyValueFactory<>("ticketId"));
+         colTicketId.setPrefWidth(132);
 
-        TableColumn<Ticket, Integer> colCouchetteId = new TableColumn<>("Ghế");
+        TableColumn<Ticket, Integer> colCouchetteId = new TableColumn<>("Mã Ghế");
         colCouchetteId.setCellValueFactory(new PropertyValueFactory<>("couchetteId"));
+        colTicketId.setPrefWidth(132);
 
         TableColumn<Ticket, Integer> colCustomerId = new TableColumn<>("Khách hàng");
         colCustomerId.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        colTicketId.setPrefWidth(132);
 
         TableColumn<Ticket, Integer> colRouteId = new TableColumn<>("Chuyến xe");
         colRouteId.setCellValueFactory(new PropertyValueFactory<>("routeId"));
+        colTicketId.setPrefWidth(132);
 
         TableColumn<Ticket, Integer> colStaffId = new TableColumn<>("Nhân viên");
         colStaffId.setCellValueFactory(new PropertyValueFactory<>("staffId"));
+        colTicketId.setPrefWidth(132);
 
         TableColumn<Ticket, Timestamp> colPrintingDate = new TableColumn<>("Ngày xác nhận");
         colPrintingDate.setCellValueFactory(new PropertyValueFactory<>("printingDate"));
+        colTicketId.setPrefWidth(132);
 
         TableColumn<Ticket, Boolean> colIsConfirm = new TableColumn<>("Xác nhận");
         colIsConfirm.setCellValueFactory(new PropertyValueFactory<>("isConfirm"));
+        colTicketId.setPrefWidth(132);
 
         TableColumn<Ticket, Void> colCancel = new TableColumn<>("Hủy vé");
+        colTicketId.setPrefWidth(132);
         colCancel.setCellFactory(column -> new TableCell<>() {
             private final Button cancelBtn = new Button("Hủy vé");
 
@@ -132,10 +140,10 @@ public class QuanLyVeXeController implements Initializable {
                             try {
                                 if (TICKET_SERVICE.deleteTicket(ticket.getTicketId())) {
                                     COUCHETTE_SERVICE.updateStatusCouchette(ticket.getCouchetteId(), false);
-                                    MessageBox.getBox("Question", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
+                                    MessageBox.getBox("Thông báo", "Xóa thành công!!!", Alert.AlertType.INFORMATION).show();
                                     loadTicketData(null);
                                 } else {
-                                    MessageBox.getBox("Question", "Xóa thất bại!!!", Alert.AlertType.WARNING).show();
+                                    MessageBox.getBox("Thông báo", "Xóa thất bại!!!", Alert.AlertType.WARNING).show();
                                 }
                             } catch (SQLException ex) {
                                 MessageBox.getBox("Warning", "Chuyến xe hiện đang sắp khởi hành hoặc đang trong danh sách chạy!!!", Alert.AlertType.WARNING).show();
@@ -158,9 +166,9 @@ public class QuanLyVeXeController implements Initializable {
         });
 
         TableColumn<Ticket, Void> colChange = new TableColumn<>("Đổi vé");
+        colTicketId.setPrefWidth(132);
         colChange.setCellFactory(column -> new TableCell<>() {
             private final Button cancelBtn = new Button("Đổi vé");
-
             {
                 cancelBtn.setOnAction(event -> {
                     Button b = (Button) event.getSource();
@@ -198,22 +206,26 @@ public class QuanLyVeXeController implements Initializable {
                             });
 
                             confirmButton.setOnAction(event2 -> {
-                                Integer selectedSeatId = seatComboBox.getValue();
-                                Integer selectedRouteId = routeComboBox.getValue();
-                                COUCHETTE_SERVICE.updateStatusCouchette(selectedRouteId, false);
-                                if (TICKET_SERVICE.updateTicketSeat(ticket.getTicketId(), selectedSeatId, selectedRouteId)) {
-                                    MessageBox.getBox("Thông báo", "Sửa vé xe thành công!!!", Alert.AlertType.INFORMATION).show();
-                                    try {
-                                        loadTicketData(null);
-                                    } catch (SQLException ex) {
-                                        Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                if (seatComboBox.getValue() != null && routeComboBox.getValue() != null) {
+                                    Integer selectedSeatId = seatComboBox.getValue();
+                                    Integer selectedRouteId = routeComboBox.getValue();
+                                    COUCHETTE_SERVICE.updateStatusCouchette(selectedRouteId, false);
+                                    if (TICKET_SERVICE.updateTicketSeat(ticket.getTicketId(), selectedSeatId, selectedRouteId)) {
+                                        MessageBox.getBox("Thông báo", "Sửa vé xe thành công!!!", Alert.AlertType.INFORMATION).show();
+                                        try {
+                                            loadTicketData(null);
+                                        } catch (SQLException ex) {
+                                            Logger.getLogger(QuanLyVeXeController.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    } else {
+                                        // If the update fails, revert the seat's status to "available" in the database and show an error message
+                                        COUCHETTE_SERVICE.updateStatusCouchette(ticket.getCouchetteId(), true);
+                                        MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.ERROR).show();
                                     }
+                                    stage.close();
                                 } else {
-                                    // If the update fails, revert the seat's status to "available" in the database and show an error message
-                                    COUCHETTE_SERVICE.updateStatusCouchette(ticket.getCouchetteId(), true);
-                                    MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.ERROR).show();
+                                    MessageBox.getBox("Thông báo", "Chưa nhập dữ liệu cần thiết!", Alert.AlertType.ERROR).show();
                                 }
-                                stage.close();
                             });
                         } else {
                             MessageBox.getBox("Thông báo", "Chuyến xe sắp khởi hành trong 60 phút tới!! Vé xe không được sửa đổi nữa!!", Alert.AlertType.WARNING).show();

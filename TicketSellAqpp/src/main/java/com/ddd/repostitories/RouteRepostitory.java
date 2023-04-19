@@ -233,7 +233,8 @@ public class RouteRepostitory {
 
     public List<Integer> getIdRoute() throws SQLException {
         List<Integer> results = new ArrayList<>();
-        String sql = "SELECT ID_ChuyenXe FROM chuyenxe";
+        String sql = "SELECT ID_ChuyenXe FROM chuyenxe"
+                + " ORDER BY ID_ChuyenXe ASC";
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql); ResultSet rs = stm.executeQuery()) {
             while (rs.next()) {
                 int id = rs.getInt("ID_ChuyenXe");

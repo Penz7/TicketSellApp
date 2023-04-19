@@ -208,8 +208,7 @@ public class StaffBookingController implements Initializable {
 
         col0.setCellValueFactory(
                 new PropertyValueFactory("routeID"));
-        col0.setPrefWidth(
-                75);
+        col0.setPrefWidth(75);
 
         TableColumn<RouteCoachCouchette, String> col1 = new TableColumn("Tên chuyến xe");
 
@@ -319,7 +318,7 @@ public class StaffBookingController implements Initializable {
                                     }
                                 });
                             } else {
-                                MessageBox.getBox("Đặt vé", "Chuyến xe sắp khởi hành trong 60 phút nữa! vui lòng chọn chuyến xe khác", Alert.AlertType.INFORMATION).show();
+                                MessageBox.getBox("Đặt vé", "Chuyến xe sắp khởi hành trong 5 phút nữa! vui lòng chọn chuyến xe khác", Alert.AlertType.ERROR).show();
                             }
                         } else {
                             if ("hủy".equalsIgnoreCase(btn.getText())) {
