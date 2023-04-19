@@ -166,21 +166,26 @@ public class QuanLyXeController implements Initializable {
                         newWindow.show();
 
                         confirmButton.setOnAction(e -> {
-                            Button b = (Button) event.getSource();
-                            TableCell cell = (TableCell) b.getParent();
-                            Coach st = (Coach) cell.getTableRow().getItem();
-                            try {
-                                if (COACH_REPOSTITORY.updateCoachById(txtXe.getText(), txtBienso.getText(), st.getCoachId())) {
-                                    MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
-                                    loadCoachData(null);
+                            if (txtXe.getText().isEmpty() || txtXe.getText() == null || txtXe.getText().trim().equals("")
+                                    || txtBienso.getText().isEmpty() || txtBienso.getText() == null || txtBienso.getText().trim().equals("")) {
+                                MessageBox.getBox("Thông báo", "Chưa nhập đủ thông tin!", Alert.AlertType.WARNING).show();
+                            } else {
+                                Button b = (Button) event.getSource();
+                                TableCell cell = (TableCell) b.getParent();
+                                Coach st = (Coach) cell.getTableRow().getItem();
+                                try {
+                                    if (COACH_REPOSTITORY.updateCoachById(txtXe.getText(), txtBienso.getText(), st.getCoachId())) {
+                                        MessageBox.getBox("Question", "Sửa thông tin thành công!!!", Alert.AlertType.INFORMATION).show();
+                                        loadCoachData(null);
 
-                                } else {
-                                    MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.WARNING).show();
+                                    } else {
+                                        MessageBox.getBox("Question", "Sửa thất bại!!!", Alert.AlertType.WARNING).show();
+                                    }
+
+                                } catch (SQLException ex) {
+                                    MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                                    Logger.getLogger(QuanLyXeController.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-
-                            } catch (SQLException ex) {
-                                MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                                Logger.getLogger(QuanLyXeController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         });
 
@@ -238,18 +243,23 @@ public class QuanLyXeController implements Initializable {
             newWindow.show();
 
             confirmButton.setOnAction(e -> {
-                try {
-                    if (COACH_REPOSTITORY.addCoach(txtXe.getText(),txtBienso.getText())) {
-                        MessageBox.getBox("Question", "Thêm xe thành công!!!", Alert.AlertType.INFORMATION).show();
-                        this.loadCoachData(null);
+                if (txtXe.getText().isEmpty() || txtXe.getText() == null || txtXe.getText().trim().equals("")
+                        || txtBienso.getText().isEmpty() || txtBienso.getText() == null || txtBienso.getText().trim().equals("")) {
+                    MessageBox.getBox("Thông báo", "Chưa nhập đủ thông tin!", Alert.AlertType.WARNING).show();
+                } else {
+                    try {
+                        if (COACH_REPOSTITORY.addCoach(txtXe.getText(), txtBienso.getText())) {
+                            MessageBox.getBox("Question", "Thêm xe thành công!!!", Alert.AlertType.INFORMATION).show();
+                            this.loadCoachData(null);
 
-                    } else {
-                        MessageBox.getBox("Question", "Thêm thất bại!!!", Alert.AlertType.WARNING).show();
+                        } else {
+                            MessageBox.getBox("Question", "Thêm thất bại!!!", Alert.AlertType.WARNING).show();
+                        }
+
+                    } catch (SQLException ex) {
+                        MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
+                        Logger.getLogger(QuanLyXeController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
-                } catch (SQLException ex) {
-                    MessageBox.getBox("Question", ex.getMessage(), Alert.AlertType.WARNING).show();
-                    Logger.getLogger(QuanLyXeController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
         });
