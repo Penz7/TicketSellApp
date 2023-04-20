@@ -142,13 +142,20 @@ public class QuanLyChuyenXeController implements Initializable {
 
                 {
                     btn.setOnAction(event -> {
+                        Button bu = (Button) event.getSource();
+                        TableCell celll = (TableCell) bu.getParent();
+                        Route stt = (Route) celll.getTableRow().getItem();
                         StackPane secondaryLayout = new StackPane();
                         Label lbDi = new Label("Tên thành phố đi:");
 
                         Label lbDen = new Label("Tên thành phố đến:");
 
                         ComboBox<String> cbDi = new ComboBox<>();
+                        cbDi.setValue(stt.getDepartureID().toString());
+                        
                         ComboBox<String> cbDen = new ComboBox<>();
+                        cbDen.setValue(stt.getDestinationID().toString());
+                        
                         try {
                             cbDi.getItems().addAll(ROUTE_SERVICE.getNameStation());
                             cbDen.getItems().addAll(ROUTE_SERVICE.getNameStation());
@@ -158,6 +165,7 @@ public class QuanLyChuyenXeController implements Initializable {
 
                         Label lbGia = new Label("Giá chuyến:");
                         TextField txtGia = new TextField();
+                        txtGia.setText(stt.getFare().toString());
 
                         // Tạo button Xác nhận
                         Button confirmButton = new Button("Xác nhận");
@@ -198,7 +206,7 @@ public class QuanLyChuyenXeController implements Initializable {
                                 }
                             } else if (nameDen == null || nameDi == null || nameDen.isEmpty() || nameDi.isEmpty()) {
                                 MessageBox.getBox("Question", "Vui lòng chọn địa điểm!!!", Alert.AlertType.WARNING).show();
-                                
+
                             } else {
                                 MessageBox.getBox("Thông báo", "Thành phố đến và thành phố đi phải khác nhau!", Alert.AlertType.WARNING).show();
                             }

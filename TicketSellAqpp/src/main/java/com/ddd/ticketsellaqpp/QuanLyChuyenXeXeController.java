@@ -144,9 +144,13 @@ public class QuanLyChuyenXeXeController implements Initializable {
                         StackPane secondaryLayout = new StackPane();
                         Label lbXe = new Label("ID Xe:");
                         ComboBox<Integer> coach = new ComboBox<>();
+                        coach.setValue(st.getCoachId());
+                        
                         Label lbThoigian = new Label("Thời gian khởi hành:");
                         TextField txtThoigian = new TextField();
+                        txtThoigian.setText(st.getDepartureTime().toString());
                         Label lb2 = new Label("Thời gian có dạng là: YYYY-MM-DD 20:20:00");
+                        
                         Button confirmButton = new Button("Xác nhận");
                         Scene secondScene = new Scene(secondaryLayout, 600, 200);
                         secondaryLayout.getChildren().addAll( lbXe, coach, lbThoigian, txtThoigian, confirmButton);
