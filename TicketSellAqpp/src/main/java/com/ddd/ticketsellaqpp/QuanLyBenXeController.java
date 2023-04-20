@@ -251,8 +251,17 @@ public class QuanLyBenXeController implements Initializable {
                 if (cityTextField.getText().isEmpty() || cityTextField.getText() == null || cityTextField.getText().trim().equals("")) {
                     MessageBox.getBox("Thông báo", "Chưa nhập thông tin thành phố!", Alert.AlertType.WARNING).show();
                 } else {
-                    if (cityTextField.getText().isEmpty() || cityTextField.getText() == null || cityTextField.getText().trim().equals("")) {
-                        MessageBox.getBox("Thông báo", "Chưa nhập thông tin thành phố!", Alert.AlertType.WARNING).show();
+                    Boolean a = ss.addStation(cityTextField.getText());
+                    if(a){
+                        try {
+                            loadStationData(null);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(QuanLyBenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        MessageBox.getBox("Thông báo", "Thêm thành công!", Alert.AlertType.CONFIRMATION).show();
+                    }
+                else{
+                        MessageBox.getBox("Thông báo", "Thêm lỗi!", Alert.AlertType.WARNING).show();
                     }
                 }
             });
