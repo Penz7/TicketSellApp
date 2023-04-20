@@ -7,6 +7,7 @@ package com.ddd.ticketsellaqpp;
 import com.ddd.pojo.Route;
 import com.ddd.pojo.User;
 import com.ddd.services.RouteService;
+import com.ddd.services.StationService;
 import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
@@ -42,9 +43,11 @@ import javafx.stage.Stage;
 public class QuanLyChuyenXeController implements Initializable {
 
     private final static RouteService ROUTE_SERVICE;
+    private final static StationService STATION_SERVICE;
 
     static {
         ROUTE_SERVICE = new RouteService();
+        STATION_SERVICE = new StationService();
     }
 
     private static User currentUser;
@@ -151,10 +154,18 @@ public class QuanLyChuyenXeController implements Initializable {
                         Label lbDen = new Label("Tên thành phố đến:");
 
                         ComboBox<String> cbDi = new ComboBox<>();
-                        cbDi.setValue(stt.getDepartureID().toString());
+                        try {
+                            cbDi.setValue(STATION_SERVICE.getStationById(stt.getDepartureID()).getStationName());
+                        } catch (SQLException ex) {
+                            Logger.getLogger(QuanLyChuyenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         
                         ComboBox<String> cbDen = new ComboBox<>();
-                        cbDen.setValue(stt.getDestinationID().toString());
+                        try {
+                            cbDen.setValue(STATION_SERVICE.getStationById(stt.getDestinationID()).getStationName());
+                        } catch (SQLException ex) {
+                            Logger.getLogger(QuanLyChuyenXeController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         
                         try {
                             cbDi.getItems().addAll(ROUTE_SERVICE.getNameStation());
