@@ -169,8 +169,12 @@ public class QuanLyVeXeController implements Initializable {
                         if (!checkTimeOrder(ROUTE_SERVICE.getDepartureTimeByIdRoute(ticket.getRouteId()))) {
                             Label seatLabel = new Label("ID Ghế:");
                             ComboBox<Integer> seatComboBox = new ComboBox<>();
+                            seatComboBox.setValue(ticket.getCouchetteId());
+                            
                             Label routeLabel = new Label("ID Chuyến xe:");
                             ComboBox<Integer> routeComboBox = new ComboBox<>();
+                            routeComboBox.setValue(ticket.getRouteId());
+                            
                             Button confirmButton = new Button("Xác nhận");
                             HBox inputBox = new HBox(10, seatLabel, seatComboBox, routeLabel, routeComboBox);
                             VBox root = new VBox(10, inputBox, confirmButton);
