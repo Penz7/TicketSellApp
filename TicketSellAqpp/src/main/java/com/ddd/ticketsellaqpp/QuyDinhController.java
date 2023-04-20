@@ -7,6 +7,7 @@ package com.ddd.ticketsellaqpp;
 import com.ddd.pojo.Couchette;
 import com.ddd.pojo.User;
 import com.ddd.repostitories.CouchetteRepostitory;
+import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -66,9 +68,6 @@ public class QuyDinhController {
     private void getSeat() {
         Label idLabel = new Label("Nhập id của xe cần tìm:");
         TextField idTextField = new TextField();
-        Label idLabel2 = new Label("Nhập id của ghế cần tìm:");
-        TextField idTextField2 = new TextField();
-        Button searchBtn = new Button("Tìm kiếm");
 
         TableView<Couchette> seatTable = new TableView<>();
         TableColumn<Couchette, Integer> idColumn = new TableColumn<>("Số ghế");
@@ -86,21 +85,18 @@ public class QuyDinhController {
         seatTable.getColumns().addAll(orderedColumn, idColumn, seatStatusColumn, coachIdColumn);
 
         HBox hbox = new HBox(10);
-        hbox.getChildren().addAll(idLabel, idTextField, idLabel2, idTextField2, searchBtn);
+        hbox.getChildren().addAll(idLabel, idTextField);
 
         idTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-                List<Couchette> seats = s.getCouchettesByCoachId(Integer.parseInt(newValue));
-                seatTable.setItems(FXCollections.observableList(seats));
-            } catch (SQLException ex) {
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error getting seats by vehicle ID", ex);
-            }
-        });
-
-        searchBtn.setOnAction(event -> {
-            try {
-                List<Couchette> seats = s.getCouchettesByCoachId(Integer.parseInt(idTextField.getText()));
-                seatTable.setItems(FXCollections.observableList(seats));
+                if (newValue.matches("\\d+") == true) {
+                    List<Couchette> seats = s.getCouchettesByCoachId(Integer.parseInt(newValue));
+                    seatTable.setItems(FXCollections.observableList(seats));
+                } else if(newValue == null || newValue.toString().trim().equals("")){
+                    idTextField.setText("");
+                }else if(newValue.matches("\\d+") == false){
+                    MessageBox.getBox("Warning", "Phải nhập số cho ID xe", Alert.AlertType.ERROR).show();
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error getting seats by vehicle ID", ex);
             }

@@ -10,7 +10,11 @@ import com.ddd.utils.MessageBox;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -41,6 +45,8 @@ import javafx.stage.Stage;
 public class QuanLyNhanVienController implements Initializable {
 
     static UserRepostitory s = new UserRepostitory();
+    
+     private final static DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd");;
 
     private static User currentUser;
 
@@ -150,27 +156,37 @@ public class QuanLyNhanVienController implements Initializable {
 
                 {
                     btn.setOnAction(event -> {
+                        Button bu = (Button) event.getSource();
+                        TableCell celll = (TableCell) bu.getParent();
+                        User u = (User) celll.getTableRow().getItem();
                         StackPane secondaryLayout = new StackPane();
                         Label lbFullname = new Label("Tên người dùng:");
                         TextField txtFullname = new TextField();
+                        txtFullname.setText(u.getUser_fullname());
 
                         Label lbusername = new Label("Tài khoản:");
                         TextField txtUsername = new TextField();
+                        txtUsername.setText(u.getUsername());
 
                         Label lbPassword = new Label("Mật khẩu:");
                         TextField txtPassword = new TextField();
+                        txtPassword.setText(u.getPassword());
 
                         Label lbUserIdCard = new Label("CCCD:");
                         TextField txtUserIdCard = new TextField();
+                        txtUserIdCard.setText(u.getUser_id_card());
 
                         Label lbPhone = new Label("Số điện thoại:");
                         TextField txtPhone = new TextField();
+                        txtPhone.setText(u.getUser_phone_number());
 
                         Label lbBirth = new Label("Ngày sinh:");
                         DatePicker dpBirth = new DatePicker();
+                        dpBirth.setValue(LocalDate.parse(u.getUser_date_of_birth().toString(), DTF) );
 
                         Label lbAdress = new Label("Địa chỉ:");
                         TextField txtAdress = new TextField();
+                        txtAdress.setText(u.getUser_address());
 
                         // Tạo button Xác nhận
                         Button confirmButton = new Button("Xác nhận");
