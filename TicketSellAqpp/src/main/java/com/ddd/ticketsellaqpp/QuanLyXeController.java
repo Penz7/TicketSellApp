@@ -141,11 +141,18 @@ public class QuanLyXeController implements Initializable {
 
                 {
                     btn.setOnAction(event -> {
+                        Button bu = (Button) event.getSource();
+                        TableCell celll = (TableCell) bu.getParent();
+                        Coach c = (Coach) celll.getTableRow().getItem();
                         StackPane secondaryLayout = new StackPane();
+                        
                         Label lbXe = new Label("Tên xe:");
                         TextField txtXe = new TextField();
+                        txtXe.setText(c.getCoachName());
+                        
                         Label lbBienso = new Label("Biển số xe:");
                         TextField txtBienso = new TextField();
+                        txtBienso.setText(c.getLicensePlates());
 
                         // Tạo button Xác nhận
                         Button confirmButton = new Button("Xác nhận");

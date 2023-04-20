@@ -139,9 +139,13 @@ public class QuanLyBenXeController implements Initializable {
 
                 {
                     btn.setOnAction(event -> {
+                        Button bu = (Button) event.getSource();
+                        TableCell celll = (TableCell) bu.getParent();
+                        Station stt = (Station) celll.getTableRow().getItem();
                         StackPane secondaryLayout = new StackPane();
                         Label cityLabel = new Label("Tên Thành Phố:");
                         TextField cityTextField = new TextField();
+                        cityTextField.setText(stt.getStationName());
 
                         // Tạo button Xác nhận
                         Button confirmButton = new Button("Xác nhận");
@@ -167,7 +171,7 @@ public class QuanLyBenXeController implements Initializable {
                                 TableCell cell = (TableCell) b.getParent();
                                 Station st = (Station) cell.getTableRow().getItem();
                                 try {
-                   
+
                                     if (s.updateStationNameById(st.getStationId().toString(), cityTextField.getText())) { // khi cái này chạy xong á
                                         // là cái chuyến xe nó đổi 2 cái id bến đi bến đến rr mà chưa cập nhật lại name của chuyến
                                         for (Route r : rs.getRoutesByIdStation(st.getStationId())) {
